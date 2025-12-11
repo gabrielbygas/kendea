@@ -412,113 +412,184 @@ img {
     border: none;
 }
 
-/* Activity Card Styles */
-.activite-card {
+/* Activity Card Styles - Grid Layout */
+.activities-grid-container {
+    position: relative;
+    min-height: 400px;
+}
+
+.activity-card {
+    background-color: var(--color-white);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    border: 2px solid transparent;
+    transition: all var(--transition-base);
+    cursor: pointer;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--color-gray-200);
+}
+
+.activity-card.selected {
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.2);
+}
+
+.activity-card.selected .activity-card-image::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(74, 144, 226, 0.1);
+    pointer-events: none;
+}
+
+.activity-card-image {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+    background-color: var(--color-gray-200);
+}
+
+.activity-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-slow);
+}
+
+.activity-card:hover .activity-card-image img {
+    transform: scale(1.1);
+}
+
+.activity-card-checkbox {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 10;
+    background-color: var(--color-white);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
     display: flex;
     align-items: center;
-    width: 100%;
-    padding: var(--spacing-md);
-    background-color: var(--color-white);
-    border: 2px solid transparent;
-    border-radius: var(--radius-lg);
-    transition: all var(--transition-base);
-}
-
-.activite-card.selected {
-    border-color: var(--color-primary);
-    background-color: rgba(74, 144, 226, 0.05);
-    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.1);
-}
-
-.activite-card:hover {
-    transform: translateY(-2px);
+    justify-content: center;
     box-shadow: var(--shadow-md);
+    transition: all var(--transition-fast);
 }
 
-.activite-checkbox {
-    width: 24px;
-    height: 24px;
+.activity-card-checkbox:hover {
+    transform: scale(1.1);
+}
+
+.activity-card-checkbox input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
     cursor: pointer;
     accent-color: var(--color-primary);
+    margin: 0;
 }
 
-.activity-image {
-    width: 150px;
-    height: 120px;
-    object-fit: cover;
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-sm);
+.activity-card-body {
+    padding: var(--spacing-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
 }
 
-.activity-details {
-    flex: 1;
-    padding: 0 var(--spacing-md);
-}
-
-.activity-name {
-    font-size: 1.25rem;
+.activity-card-title {
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--color-gray-900);
-    margin-bottom: 0.5rem;
+    margin-bottom: var(--spacing-xs);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: 2.6em;
 }
 
-.activity-category {
-    display: inline-block;
-    padding: 0.25rem 0.75rem;
+.activity-card-location {
     font-size: 0.875rem;
-    font-weight: 600;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    border-radius: var(--radius-sm);
-    margin-right: 0.5rem;
-}
-
-.activity-location {
-    font-size: 0.9rem;
     color: var(--color-gray-600);
-    margin-bottom: 0.5rem;
-}
-
-.activity-description {
-    font-size: 0.95rem;
-    color: var(--color-gray-700);
-    line-height: 1.5;
-    margin-bottom: 0.75rem;
-}
-
-.activity-rating {
+    margin-bottom: var(--spacing-xs);
     display: flex;
     align-items: center;
-    margin-bottom: 0.5rem;
+    gap: 4px;
 }
 
-.activity-rating i {
-    margin-right: 2px;
+.activity-card-location i {
+    color: var(--color-primary);
 }
 
-.activity-price {
-    font-size: 1.5rem;
+.activity-card-rating {
+    font-size: 0.875rem;
+    margin-bottom: var(--spacing-sm);
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.activity-card-rating i {
+    color: #ffc107;
+}
+
+.activity-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: var(--spacing-sm);
+    border-top: 1px solid var(--color-gray-200);
+}
+
+.activity-card-price {
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-primary);
-    margin-bottom: 0.5rem;
 }
 
-.voir-details {
-    padding: 0.5rem 1.25rem;
-    font-weight: 600;
-    background-color: var(--color-white);
+.activity-card-footer .voir-details {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
+    background-color: transparent;
     color: var(--color-primary);
-    border: 2px solid var(--color-primary);
+    border: 1px solid var(--color-primary);
     border-radius: var(--radius-md);
-    transition: all var(--transition-base);
+    transition: all var(--transition-fast);
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.voir-details:hover {
+.activity-card-footer .voir-details:hover {
     background-color: var(--color-primary);
     color: var(--color-white);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-sm);
+    transform: scale(1.05);
+}
+
+/* Loading and empty states */
+#loading-activities,
+#no-activities {
+    padding: var(--spacing-xl) 0;
+}
+
+#no-activities i {
+    font-size: 4rem;
+    color: var(--color-gray-400);
 }
 
 /* DataTables Pagination */
@@ -1002,17 +1073,16 @@ img {
         font-size: 2rem;
     }
 
-    .activity-image {
-        width: 120px;
-        height: 100px;
+    .activity-card-image {
+        height: 180px;
     }
 
-    .activity-name {
+    .activity-card-title {
+        font-size: 1rem;
+    }
+
+    .activity-card-price {
         font-size: 1.1rem;
-    }
-
-    .activity-price {
-        font-size: 1.25rem;
     }
 
     #total-price {
@@ -1022,24 +1092,25 @@ img {
 
 /* Mobile devices (< 768px) */
 @media (max-width: 767px) {
-    .activite-card {
-        flex-direction: column;
-        text-align: center;
+    .activity-card-image {
+        height: 160px;
     }
 
-    .activity-image {
-        width: 100%;
-        height: 200px;
-        margin-bottom: var(--spacing-sm);
+    .activity-card-body {
+        padding: var(--spacing-sm);
     }
 
-    .activity-details {
-        padding: var(--spacing-sm) 0;
+    .activity-card-title {
+        font-size: 0.95rem;
     }
 
-    .voir-details {
-        width: 100%;
-        margin-top: var(--spacing-sm);
+    .activity-card-price {
+        font-size: 1rem;
+    }
+
+    .activity-card-footer .voir-details {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
     }
 
     .category-btn {
@@ -1057,9 +1128,8 @@ img {
         margin-bottom: var(--spacing-sm);
     }
 
-    #activities-table tbody td {
-        display: block;
-        width: 100%;
+    #sort-select {
+        width: 100% !important;
     }
 }
 

@@ -4,7 +4,8 @@
 // Global variables
 let selectedActivities = [];
 let totalPrice = 0;
-let activitiesDataTable = null;
+let currentCategory = '';
+let currentSort = 'nom_asc';
 const WHATSAPP_NUMBER = '+971582032582'; // TODO: Replace with actual WhatsApp number
 
 // Document ready
@@ -17,8 +18,8 @@ $(document).ready(function() {
         offset: 100
     });
 
-    // Initialize DataTables
-    initializeDataTable();
+    // Load activities
+    loadActivities();
 
     // Event listeners
     setupEventListeners();
@@ -43,56 +44,92 @@ $(document).ready(function() {
 });
 
 /**
- * Initialize DataTables for activities
+ * Load activities via AJAX
  */
-function initializeDataTable() {
-    activitiesDataTable = $('#activities-table').DataTable({
-        processing: true,
-        serverSide: true,
-        ajax: {
-            url: '/api/activities',
-            type: 'GET',
-            data: function(d) {
-                d.category_id = $('.category-btn.active').data('category');
+function loadActivities() {
+    // Show loading, hide no results
+    $('#loading-activities').show();
+    $('#no-activities').addClass('d-none');
+    $('#activities-grid').empty();
+
+    $.ajax({
+        url: '/api/activities',
+        method: 'GET',
+        data: {
+            category_id: currentCategory,
+            sort: currentSort
+        },
+        success: function(response) {
+            $('#loading-activities').hide();
+
+            if (response.activities && response.activities.length > 0) {
+                renderActivities(response.activities);
+            } else {
+                $('#no-activities').removeClass('d-none');
             }
         },
-        columns: [
-            { data: 'checkbox', name: 'checkbox', orderable: false, searchable: false, width: '5%' },
-            { data: 'image', name: 'image', orderable: false, searchable: false, width: '15%' },
-            { data: 'details', name: 'nom', width: '65%' },
-            { data: 'actions', name: 'actions', orderable: false, searchable: false, width: '15%' }
-        ],
-        pageLength: 12,
-        lengthChange: false,
-        searching: false,
-        ordering: true,
-        order: [[2, 'asc']], // Sort by name by default
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/fr-FR.json',
-            processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Chargement...</span></div>',
-            zeroRecords: 'Aucune activité trouvée',
-            emptyTable: 'Aucune activité disponible',
-            info: 'Affichage de _START_ à _END_ sur _TOTAL_ activités',
-            infoEmpty: 'Aucune activité disponible',
-            infoFiltered: '(filtré de _MAX_ activités au total)',
-            paginate: {
-                first: 'Premier',
-                last: 'Dernier',
-                next: 'Suivant',
-                previous: 'Précédent'
-            }
-        },
-        dom: '<"row"<"col-sm-12"tr>><"row"<"col-sm-12 col-md-5"i><"col-sm-12 col-md-7"p>>',
-        drawCallback: function() {
-            // Reattach event listeners after table redraw
-            attachActivityListeners();
-            // Update selected activities visual feedback
-            updateSelectedActivitiesUI();
-        },
-        createdRow: function(row, data, dataIndex) {
-            $(row).addClass('activity-row');
+        error: function() {
+            $('#loading-activities').hide();
+            showToast('Erreur lors du chargement des activités', 'error');
         }
     });
+}
+
+/**
+ * Render activities as cards
+ */
+function renderActivities(activities) {
+    const grid = $('#activities-grid');
+    grid.empty();
+
+    activities.forEach(activity => {
+        const firstImage = activity.images && activity.images.length > 0
+            ? activity.images[0]
+            : 'images/default.jpg';
+
+        const isSelected = selectedActivities.some(a => a.id === activity.id);
+        const selectedClass = isSelected ? 'selected' : '';
+
+        const stars = generateStars(activity.notes);
+
+        const card = `
+            <div class="col">
+                <div class="activity-card ${selectedClass}" data-id="${activity.id}" data-prix="${activity.prix}">
+                    <div class="activity-card-image">
+                        <img src="/${firstImage}" alt="${activity.nom}" loading="lazy">
+                        <div class="activity-card-checkbox">
+                            <input type="checkbox" class="activite-checkbox form-check-input"
+                                   id="activite-${activity.id}"
+                                   value="${activity.id}"
+                                   ${isSelected ? 'checked' : ''}>
+                        </div>
+                    </div>
+                    <div class="activity-card-body">
+                        <h5 class="activity-card-title">${activity.nom}</h5>
+                        <div class="activity-card-location">
+                            <i class="bi bi-geo-alt"></i> ${activity.location}
+                        </div>
+                        <div class="activity-card-rating">
+                            ${stars}
+                        </div>
+                        <div class="activity-card-footer">
+                            <div class="activity-card-price">
+                                <strong>${parseFloat(activity.prix).toFixed(2)} AED</strong>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary voir-details" data-id="${activity.id}">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        grid.append(card);
+    });
+
+    // Attach event listeners
+    attachActivityListeners();
 }
 
 /**
@@ -103,13 +140,14 @@ function setupEventListeners() {
     $('.category-btn').on('click', function() {
         $('.category-btn').removeClass('active');
         $(this).addClass('active');
-        activitiesDataTable.ajax.reload();
+        currentCategory = $(this).data('category');
+        loadActivities();
     });
 
     // Sorting
     $('#sort-select').on('change', function() {
-        const sortValue = $(this).val();
-        applySorting(sortValue);
+        currentSort = $(this).val();
+        loadActivities();
     });
 
     // View cart button
@@ -149,8 +187,8 @@ function attachActivityListeners() {
     // Checkbox change
     $('.activite-checkbox').off('change').on('change', function() {
         const activityId = parseInt($(this).val());
-        const activityPrice = parseFloat($(this).closest('.activite-card').data('prix'));
-        const activityCard = $(this).closest('.activite-card');
+        const activityCard = $(this).closest('.activity-card');
+        const activityPrice = parseFloat(activityCard.data('prix'));
 
         if ($(this).is(':checked')) {
             // Add to selection
@@ -174,46 +212,14 @@ function attachActivityListeners() {
         const activityId = $(this).data('id');
         loadActivityDetails(activityId);
     });
-}
 
-/**
- * Update selected activities UI after table redraw
- */
-function updateSelectedActivitiesUI() {
-    selectedActivities.forEach(activity => {
-        const checkbox = $('#activite-' + activity.id);
-        if (checkbox.length) {
-            checkbox.prop('checked', true);
-            checkbox.closest('.activite-card').addClass('selected');
+    // Card click (except on buttons/checkboxes)
+    $('.activity-card').off('click').on('click', function(e) {
+        if (!$(e.target).is('input, button, .voir-details, .bi-eye')) {
+            const checkbox = $(this).find('.activite-checkbox');
+            checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
         }
     });
-}
-
-/**
- * Apply sorting to DataTable
- */
-function applySorting(sortValue) {
-    let column, direction;
-
-    switch(sortValue) {
-        case 'nom_asc':
-            column = 2; direction = 'asc';
-            break;
-        case 'nom_desc':
-            column = 2; direction = 'desc';
-            break;
-        case 'prix_asc':
-        case 'prix_desc':
-        case 'notes_desc':
-            // For prix and notes, we'll need server-side ordering
-            // DataTables will handle this through AJAX
-            activitiesDataTable.order([2, direction]).draw();
-            return;
-        default:
-            column = 2; direction = 'asc';
-    }
-
-    activitiesDataTable.order([column, direction]).draw();
 }
 
 /**

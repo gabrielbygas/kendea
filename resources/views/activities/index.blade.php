@@ -111,21 +111,20 @@
             </div>
         </div>
 
-        {{-- Activities Grid (DataTables) --}}
-        <div class="activities-grid" data-aos="fade-up" data-aos-delay="300">
-            <table id="activities-table" class="table table-hover display responsive nowrap" style="width:100%">
-                <thead class="d-none">
-                    <tr>
-                        <th>Sélection</th>
-                        <th>Image</th>
-                        <th>Détails</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {{-- DataTables will populate via AJAX --}}
-                </tbody>
-            </table>
+        {{-- Activities Grid (Cards) --}}
+        <div class="activities-grid-container" data-aos="fade-up" data-aos-delay="300">
+            <div id="activities-grid" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                {{-- Cards will be populated via AJAX --}}
+            </div>
+            <div id="loading-activities" class="text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Chargement...</span>
+                </div>
+            </div>
+            <div id="no-activities" class="text-center py-5 d-none">
+                <i class="bi bi-inbox" style="font-size: 3rem; color: var(--color-gray-400);"></i>
+                <p class="text-muted mt-3">Aucune activité trouvée</p>
+            </div>
         </div>
 
         {{-- Total Price Display --}}
