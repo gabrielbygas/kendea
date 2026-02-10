@@ -147,47 +147,47 @@
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="orderModalLabel">
-                    <i class="bi bi-clipboard-check"></i> Finaliser votre Commande
+                <h5 class="modal-title text-white" id="orderModalLabel">
+                    <i class="bi bi-clipboard-check"></i> {{ __('Finaliser votre Commande') }}
                 </h5>
-                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="{{ __('Fermer') }}"></button>
             </div>
             <div class="modal-body">
                 <form id="order-form">
                     <div class="mb-3">
-                        <label for="prenom" class="form-label">Prénom <span class="text-danger">*</span></label>
+                        <label for="prenom" class="form-label">{{ __('Prénom') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="prenom" name="prenom" required>
-                        <div class="invalid-feedback">Veuillez entrer votre prénom.</div>
+                        <div class="invalid-feedback">{{ __('Veuillez entrer votre prénom.') }}</div>
                     </div>
                     <div class="mb-3">
-                        <label for="nom" class="form-label">Nom <span class="text-danger">*</span></label>
+                        <label for="nom" class="form-label">{{ __('Nom') }} <span class="text-danger">*</span></label>
                         <input type="text" class="form-control" id="nom" name="nom" required>
-                        <div class="invalid-feedback">Veuillez entrer votre nom.</div>
+                        <div class="invalid-feedback">{{ __('Veuillez entrer votre nom.') }}</div>
                     </div>
                     <div class="mb-3">
-                        <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
+                        <label for="email" class="form-label">{{ __('Email') }} <span class="text-danger">*</span></label>
                         <input type="email" class="form-control" id="email" name="email" required>
-                        <div class="invalid-feedback">Veuillez entrer un email valide.</div>
+                        <div class="invalid-feedback">{{ __('Veuillez entrer un email valide.') }}</div>
                     </div>
                     <div class="mb-3">
-                        <label for="phone" class="form-label">Téléphone WhatsApp <span class="text-danger">*</span></label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+243..." required>
-                        <div class="invalid-feedback">Veuillez entrer votre numéro de téléphone.</div>
+                        <label for="phone" class="form-label">{{ __('Téléphone WhatsApp') }} <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="+971..." required>
+                        <div class="invalid-feedback">{{ __('Veuillez entrer votre numéro de téléphone.') }}</div>
                     </div>
                     <div class="mb-3">
-                        <label for="datetime" class="form-label">Date et Heure souhaitée <span class="text-danger">*</span></label>
+                        <label for="datetime" class="form-label">{{ __('Date et Heure souhaitée') }} <span class="text-danger">*</span></label>
                         <input type="datetime-local" class="form-control" id="datetime" name="datetime" required>
-                        <div class="invalid-feedback">Veuillez sélectionner une date.</div>
+                        <div class="invalid-feedback">{{ __('Veuillez sélectionner une date.') }}</div>
                     </div>
                     <div class="alert alert-info">
-                        <i class="bi bi-info-circle"></i> Votre commande sera confirmée via WhatsApp.
+                        <i class="bi bi-info-circle"></i> {{ __('Votre commande sera confirmée via WhatsApp.') }}
                     </div>
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
                 <button type="button" class="btn btn-primary" id="confirm-order-btn">
-                    <i class="bi bi-whatsapp"></i> Confirmer via WhatsApp
+                    <i class="bi bi-whatsapp"></i> {{ __('Confirmer via WhatsApp') }}
                 </button>
             </div>
         </div>
