@@ -18,6 +18,9 @@ $(document).ready(function() {
         offset: 100
     });
 
+    // Load cart from localStorage
+    loadCartFromStorage();
+
     // Load activities
     loadActivities();
 
@@ -223,6 +226,30 @@ function attachActivityListeners() {
 }
 
 /**
+ * Load cart from localStorage
+ */
+function loadCartFromStorage() {
+    const savedCart = localStorage.getItem('kendea_cart');
+    if (savedCart) {
+        try {
+            selectedActivities = JSON.parse(savedCart);
+            updateTotalPrice();
+            updateCartCount();
+        } catch (e) {
+            console.error('Error loading cart from storage:', e);
+            selectedActivities = [];
+        }
+    }
+}
+
+/**
+ * Save cart to localStorage
+ */
+function saveCartToStorage() {
+    localStorage.setItem('kendea_cart', JSON.stringify(selectedActivities));
+}
+
+/**
  * Update total price calculation
  */
 function updateTotalPrice() {
@@ -236,6 +263,9 @@ function updateTotalPrice() {
     } else {
         $('#total-section').slideUp();
     }
+    
+    // Save to localStorage
+    saveCartToStorage();
 }
 
 /**
