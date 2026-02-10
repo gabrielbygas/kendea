@@ -39,6 +39,7 @@ Route::get('/cart', [ActivityController::class, 'cart'])->name('cart.index');
 Route::prefix('api')->group(function () {
     Route::get('/activities', [ActivityController::class, 'getActivities'])->name('api.activities');
     Route::get('/activities/{id}', [ActivityController::class, 'show'])->name('api.activities.show');
+    Route::post('/activities/bulk', [ActivityController::class, 'getBulk'])->name('api.activities.bulk');
     Route::post('/commandes', [CommandeController::class, 'store'])->name('api.commandes.store');
 });
 

@@ -37,10 +37,14 @@
                     </ul>
                 </li>
                 
-                <li class="nav-item">
+                <li class="nav-item position-relative">
                     <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{{ route('cart.index') }}">
-                        <i class="bi bi-cart3"></i> {{ __('Panier') }} <span class="badge bg-danger d-none" id="panier-count">0</span>
+                        <i class="bi bi-cart3"></i> {{ __('Panier') }}
                     </a>
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="panier-count">
+                        0
+                        <span class="visually-hidden">{{ __('activités dans le panier') }}</span>
+                    </span>
                 </li>
             </ul>
         </div>

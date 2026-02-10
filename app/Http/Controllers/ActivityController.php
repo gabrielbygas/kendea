@@ -81,6 +81,39 @@ class ActivityController extends Controller
     }
 
     /**
+     * Display cart page
+     */
+    public function cart()
+    {
+        return view('cart.index');
+    }
+
+    /**
+     * Get multiple activities by IDs
+     */
+    public function getBulk(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        $activities = Activity::with('category')
+            ->whereIn('id', $ids)
+            ->get()
+            ->map(function ($activity) {
+                return [
+                    'id' => $activity->id,
+                    'nom' => $activity->nom,
+                    'slug' => $activity->slug,
+                    'lieu' => $activity->lieu,
+                    'prix' => $activity->prix,
+                    'notes' => $activity->notes,
+                    'first_image' => $activity->first_image,
+                    'category' => $activity->category ? $activity->category->nom : null
+                ];
+            });
+
+        return response()->json($activities);
+    }
+
+    /**
      * Helper to render star rating
      */
     private function renderStars($rating)
