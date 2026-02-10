@@ -5,6 +5,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CommandeController;
+use App\Http\Controllers\BlogController;
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 
 // Language switch
 Route::get('/lang/{locale}', function ($locale) {
@@ -19,6 +22,15 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // Activities page
 Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
+
+// Blog page
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+
+// About page
+Route::get('/about', [AboutController::class, 'index'])->name('about');
+
+// Contact page
+Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
 // API routes for AJAX
 Route::prefix('api')->group(function () {
