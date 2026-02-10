@@ -15,17 +15,23 @@ class CategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            'Aventures dans le Désert',
-            'Attractions Aquatiques',
-            'Visites Culturelles',
-            'Sports Extrêmes',
-            'Expériences de Luxe',
+            ['nom' => 'Monuments Emblématiques et Architecture Moderne', 'nom_en' => 'Iconic Landmarks & Modern Architecture'],
+            ['nom' => 'Aventures dans le Désert', 'nom_en' => 'Desert Adventures'],
+            ['nom' => 'Parcs à Thèmes et Attractions Familiales', 'nom_en' => 'Theme Parks & Family Attractions'],
+            ['nom' => 'Nature et Sports d\'Aventure', 'nom_en' => 'Nature & Adventure Sports'],
+            ['nom' => 'Culture et Exploration Historique', 'nom_en' => 'Culture & Historical Exploration'],
+            ['nom' => 'Gastronomie, Shopping et Vie Nocturne', 'nom_en' => 'Dining, Shopping & Nightlife'],
+            ['nom' => 'Croisières et Activités Nautiques', 'nom_en' => 'Cruises & Water Activities'],
+            ['nom' => 'Festivals, Événements et Activités Saisonnières', 'nom_en' => 'Festivals, Events & Seasonal Activities'],
+            ['nom' => 'Expériences de Luxe et Bien-être', 'nom_en' => 'Luxury Experiences & Wellness'],
+            ['nom' => 'Sports Extrêmes et Sensations Fortes', 'nom_en' => 'Extreme Sports & Thrills'],
         ];
 
-        foreach ($categories as $categoryName) {
+        foreach ($categories as $category) {
             Category::create([
-                'nom' => $categoryName,
-                'slug' => Str::slug($categoryName),
+                'nom' => $category['nom'],
+                'nom_en' => $category['nom_en'],
+                'slug' => Str::slug($category['nom']),
             ]);
         }
     }
