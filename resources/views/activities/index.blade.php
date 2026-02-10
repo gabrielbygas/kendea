@@ -39,6 +39,19 @@
                     </select>
                 </div>
                 <div>
+                    <label for="emirate-select" class="me-2">{{ __('Émirat:') }}</label>
+                    <select id="emirate-select" class="form-select d-inline-block w-auto">
+                        <option value="">{{ __('Tous') }}</option>
+                        <option value="Abu Dhabi">Abu Dhabi</option>
+                        <option value="Ajman">Ajman</option>
+                        <option value="Dubai">Dubai</option>
+                        <option value="Fujairah">Fujairah</option>
+                        <option value="Ras Al Khaimah">Ras Al Khaimah</option>
+                        <option value="Sharjah">Sharjah</option>
+                        <option value="Umm Al Quwain">Umm Al Quwain</option>
+                    </select>
+                </div>
+                <div>
                     <label for="sort-select" class="me-2">{{ __('Trier par:') }}</label>
                     <select id="sort-select" class="form-select d-inline-block w-auto">
                         <option value="nom_asc">{{ __('Nom (A-Z)') }}</option>

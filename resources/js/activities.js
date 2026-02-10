@@ -5,6 +5,7 @@ class ActivitiesManager {
     constructor(cart) {
         this.cart = cart;
         this.currentCategory = '';
+        this.currentEmirate = '';
         this.currentSort = 'nom_asc';
         this.init();
     }
@@ -15,15 +16,23 @@ class ActivitiesManager {
     }
 
     attachEventListeners() {
-        // Category filters
-        document.querySelectorAll('.category-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                document.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
-                this.currentCategory = e.target.dataset.category || '';
+        // Category select
+        const categorySelect = document.getElementById('category-select');
+        if (categorySelect) {
+            categorySelect.addEventListener('change', (e) => {
+                this.currentCategory = e.target.value;
                 this.loadActivities();
             });
-        });
+        }
+
+        // Emirate select
+        const emirateSelect = document.getElementById('emirate-select');
+        if (emirateSelect) {
+            emirateSelect.addEventListener('change', (e) => {
+                this.currentEmirate = e.target.value;
+                this.loadActivities();
+            });
+        }
 
         // Sort select
         const sortSelect = document.getElementById('sort-select');
@@ -65,6 +74,7 @@ class ActivitiesManager {
         try {
             const params = new URLSearchParams();
             if (this.currentCategory) params.append('category', this.currentCategory);
+            if (this.currentEmirate) params.append('emirate', this.currentEmirate);
             params.append('sort', this.currentSort);
 
             const response = await fetch(`/api/activities?${params.toString()}`);
