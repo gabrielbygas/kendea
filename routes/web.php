@@ -32,6 +32,9 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 // Contact page
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 
+// Cart page
+Route::get('/cart', [ActivityController::class, 'cart'])->name('cart.index');
+
 // API routes for AJAX
 Route::prefix('api')->group(function () {
     Route::get('/activities', [ActivityController::class, 'getActivities'])->name('api.activities');

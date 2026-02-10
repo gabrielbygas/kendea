@@ -38,7 +38,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white ms-2 px-3" href="#" id="panier-btn">
+                    <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{{ route('cart.index') }}">
                         <i class="bi bi-cart3"></i> {{ __('Panier') }} <span class="badge bg-danger d-none" id="panier-count">0</span>
                     </a>
                 </li>
