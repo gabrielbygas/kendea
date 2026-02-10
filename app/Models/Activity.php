@@ -17,6 +17,7 @@ class Activity extends Model
         'description',
         'prix',
         'location',
+        'emirate',
         'categorie_id',
         'images',
         'notes'
