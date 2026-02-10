@@ -1915,3 +1915,38 @@ textarea:focus {
         page-break-inside: avoid;
     }
 }
+
+/* ========================================
+   BOOTSTRAP OUTLINE BUTTONS OVERRIDE
+   ======================================== */
+.btn-outline-primary {
+    color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    background-color: transparent !important;
+}
+
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active,
+.btn-outline-primary.active {
+    color: var(--color-white) !important;
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+}
+
+.btn-outline-primary:focus {
+    box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.25) !important;
+}
+
+/* Category buttons specific */
+.category-btn {
+    border-width: 2px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.category-btn.active {
+    background-color: var(--color-primary) !important;
+    border-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+}
