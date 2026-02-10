@@ -19,58 +19,7 @@
     </div>
 </section>
 
-{{-- Dubai Presentation Section --}}
-<section id="a-propos" class="py-5 bg-light-custom">
-    <div class="container">
-        <div class="row align-items-center">
-            <div class="col-lg-6 mb-4" data-aos="fade-right">
-                <h2 class="section-title mb-4">{{ __('Bienvenue à Dubaï') }}</h2>
-                <p class="text-muted">
-                    {{ __('Dubaï, la perle du Moyen-Orient, est une destination qui allie modernité et tradition.') }}
-                    {{ __('De ses gratte-ciels impressionnants à ses vastes déserts dorés, Dubaï offre une expérience unique pour chaque visiteur.') }}
-                </p>
-                <p class="text-muted">
-                    {{ __('Que vous recherchiez l\'aventure dans le désert, la détente sur les plages paradisiaques, ou l\'exploration culturelle des souks traditionnels, Dubaï a tout pour vous séduire.') }}
-                </p>
-                <ul class="list-unstyled mt-4">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Plus de 300 jours de soleil par an') }}</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Attractions mondiales de renommée') }}</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Expériences luxueuses et abordables') }}</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Accueil chaleureux et multiculturel') }}</li>
-                </ul>
-            </div>
-            <div class="col-lg-6" data-aos="fade-left">
-                <div class="p-4 bg-white rounded shadow">
-                    <h4 class="mb-3">{{ __('Pourquoi Réserver avec Nous ?') }}</h4>
-                    <p>{{ __('Notre plateforme simplifie votre réservation d\'activités. En quelques clics, sélectionnez vos activités préférées et confirmez via WhatsApp.') }}</p>
-                    <div class="mt-4">
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="step-icon bg-primary text-white rounded-circle me-3">1</div>
-                            <div>
-                                <h6>Choisissez vos Activités</h6>
-                                <small class="text-muted">Parcourez notre catalogue</small>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start mb-3">
-                            <div class="step-icon bg-primary text-white rounded-circle me-3">2</div>
-                            <div>
-                                <h6>Remplissez vos Informations</h6>
-                                <small class="text-muted">Entrez vos coordonnées</small>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-start">
-                            <div class="step-icon bg-primary text-white rounded-circle me-3">3</div>
-                            <div>
-                                <h6>Confirmez via WhatsApp</h6>
-                                <small class="text-muted">Recevez une confirmation instantanée</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
+
 
 {{-- Activities Section --}}
 <section id="activites" class="py-5">
