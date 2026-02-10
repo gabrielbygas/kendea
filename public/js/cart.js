@@ -75,7 +75,7 @@ function renderCartItems(activities, cart) {
                     </div>
                     <div class="col-md-4">
                         <h6 class="mb-1">${activity.nom}</h6>
-                        <small class="text-muted"><i class="bi bi-geo-alt"></i> ${activity.location}</small>
+                        <small class="text-muted"><i class="bi bi-geo-alt"></i> ${activity.localisation || ''}</small>
                     </div>
                     <div class="col-md-2 text-center">
                         <strong>${parseFloat(activity.prix).toFixed(2)} AED</strong>
