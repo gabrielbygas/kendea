@@ -140,10 +140,8 @@ function renderActivities(activities) {
  */
 function setupEventListeners() {
     // Category filter
-    $('.category-btn').on('click', function() {
-        $('.category-btn').removeClass('active');
-        $(this).addClass('active');
-        currentCategory = $(this).data('category');
+    $('#category-select').on('change', function() {
+        currentCategory = $(this).val();
         loadActivities();
     });
 

@@ -26,29 +26,28 @@
     <div class="container">
         <h2 class="section-title text-center mb-5" data-aos="fade-up">{{ __('Nos Activités') }}</h2>
 
-        {{-- Category Filter --}}
-        <div class="category-filter mb-4" data-aos="fade-up" data-aos-delay="100">
-            <div class="d-flex flex-wrap justify-content-center gap-2">
-                <button class="btn btn-outline-primary category-btn active" data-category="">{{ __('Toutes') }}</button>
-                @foreach($categories as $category)
-                    <button class="btn btn-outline-primary category-btn" data-category="{{ $category->id }}">
-                        {{ __($category->nom) }}
-                    </button>
-                @endforeach
-            </div>
-        </div>
-
-        {{-- Sorting and Cart --}}
-        <div class="sort-filter mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3" data-aos="fade-up" data-aos-delay="200">
-            <div>
-                <label for="sort-select" class="me-2">{{ __('Trier par:') }}</label>
-                <select id="sort-select" class="form-select d-inline-block w-auto">
-                    <option value="nom_asc">{{ __('Nom (A-Z)') }}</option>
-                    <option value="nom_desc">{{ __('Nom (Z-A)') }}</option>
-                    <option value="prix_asc">{{ __('Prix (Croissant)') }}</option>
-                    <option value="prix_desc">{{ __('Prix (Décroissant)') }}</option>
-                    <option value="notes_desc">{{ __('Notes (Meilleures)') }}</option>
-                </select>
+        {{-- Filters and Cart --}}
+        <div class="sort-filter mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3" data-aos="fade-up" data-aos-delay="100">
+            <div class="d-flex flex-wrap gap-3 align-items-center">
+                <div>
+                    <label for="category-select" class="me-2">{{ __('Catégorie:') }}</label>
+                    <select id="category-select" class="form-select d-inline-block w-auto">
+                        <option value="">{{ __('Toutes') }}</option>
+                        @foreach($categories as $category)
+                            <option value="{{ $category->id }}">{{ __($category->nom) }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div>
+                    <label for="sort-select" class="me-2">{{ __('Trier par:') }}</label>
+                    <select id="sort-select" class="form-select d-inline-block w-auto">
+                        <option value="nom_asc">{{ __('Nom (A-Z)') }}</option>
+                        <option value="nom_desc">{{ __('Nom (Z-A)') }}</option>
+                        <option value="prix_asc">{{ __('Prix (Croissant)') }}</option>
+                        <option value="prix_desc">{{ __('Prix (Décroissant)') }}</option>
+                        <option value="notes_desc">{{ __('Notes (Meilleures)') }}</option>
+                    </select>
+                </div>
             </div>
             <div>
                 <button class="btn btn-success" id="voir-panier-btn">
