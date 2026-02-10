@@ -3,6 +3,10 @@
 
 @section('title', __('Mon Panier'))
 
+@push('styles')
+<link rel="stylesheet" href="{{ asset('css/cart.css') }}">
+@endpush
+
 @push('scripts')
 <script>
     const translations = {
@@ -45,7 +49,20 @@
                     <div class="card shadow-sm mb-4">
                         <div class="card-body">
                             <h5 class="card-title mb-4">{{ __('Activités sélectionnées') }}</h5>
-                            <div id="cart-items"></div>
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="cart-table">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ __('Activité') }}</th>
+                                            <th class="text-center">{{ __('Nombre de personnes') }}</th>
+                                            <th class="text-end">{{ __('Prix') }}</th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="cart-items">
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,36 +208,37 @@ document.addEventListener('DOMContentLoaded', function() {
             totalPrice += itemTotal;
 
             const itemHtml = `
-                <div class="cart-item mb-3 p-3 border rounded" data-id="${activity.id}">
-                    <div class="row align-items-center">
-                        <div class="col-md-2">
-                            <img src="${activity.first_image}" alt="${activity.nom}" class="img-fluid rounded">
-                        </div>
-                        <div class="col-md-5">
-                            <h6>${activity.nom}</h6>
-                            <small class="text-muted">
-                                <i class="bi bi-geo-alt"></i> ${activity.lieu}
-                            </small>
-                        </div>
-                        <div class="col-md-2 text-center">
-                            <div class="input-group input-group-sm">
-                                <button class="btn btn-outline-secondary qty-decrease" type="button">-</button>
-                                <input type="number" class="form-control text-center quantity-input" value="${quantity}" min="1" max="10" readonly>
-                                <button class="btn btn-outline-secondary qty-increase" type="button">+</button>
+                <tr class="cart-item" data-id="${activity.id}">
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <img src="${activity.first_image}" alt="${activity.nom}" class="rounded me-3" style="width: 60px; height: 60px; object-fit: cover;">
+                            <div>
+                                <strong>${activity.nom}</strong>
+                                <br>
+                                <small class="text-muted">
+                                    <i class="bi bi-geo-alt"></i> ${activity.lieu}
+                                </small>
                             </div>
                         </div>
-                        <div class="col-md-2 text-end">
-                            <strong class="item-total">${itemTotal.toFixed(2)} AED</strong>
-                            <br>
-                            <small class="text-muted">${activity.prix} AED/pers</small>
+                    </td>
+                    <td class="text-center align-middle">
+                        <div class="d-inline-flex align-items-center">
+                            <button class="btn btn-sm btn-outline-secondary qty-decrease" type="button">-</button>
+                            <input type="number" class="form-control form-control-sm text-center mx-2 quantity-input" value="${quantity}" min="1" max="10" readonly style="width: 60px;">
+                            <button class="btn btn-sm btn-outline-secondary qty-increase" type="button">+</button>
                         </div>
-                        <div class="col-md-1 text-end">
-                            <button class="btn btn-sm btn-outline-danger remove-item" data-id="${activity.id}">
-                                <i class="bi bi-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                    </td>
+                    <td class="text-end align-middle">
+                        <strong class="item-total">${itemTotal.toFixed(2)} AED</strong>
+                        <br>
+                        <small class="text-muted">${activity.prix} AED/pers</small>
+                    </td>
+                    <td class="text-center align-middle">
+                        <button class="btn btn-sm btn-outline-danger remove-item" data-id="${activity.id}" title="{{ __('Supprimer') }}">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+                </tr>
             `;
             cartItemsContainer.innerHTML += itemHtml;
         });

@@ -1,0 +1,57 @@
+/* Modified by Claude */
+
+/* Cart table styling */
+#cart-table {
+    border: none;
+}
+
+#cart-table thead th {
+    border-bottom: 2px solid #dee2e6;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    padding: 1rem 0.75rem;
+}
+
+#cart-table tbody tr {
+    border: none;
+    transition: background-color 0.2s ease;
+}
+
+#cart-table tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+#cart-table tbody td {
+    border: none;
+    padding: 1.25rem 0.75rem;
+    vertical-align: middle;
+}
+
+/* Quantity controls */
+.quantity-input {
+    border: 1px solid #dee2e6;
+}
+
+.qty-decrease,
+.qty-increase {
+    border-color: #dee2e6;
+    color: var(--color-text-primary);
+}
+
+.qty-decrease:hover,
+.qty-increase:hover {
+    background-color: var(--color-primary);
+    color: white;
+    border-color: var(--color-primary);
+}
+
+/* Remove button */
+.remove-item {
+    transition: all 0.3s ease;
+}
+
+.remove-item:hover {
+    background-color: #dc3545;
+    color: white;
+    border-color: #dc3545;
+}
