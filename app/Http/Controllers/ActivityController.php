@@ -26,28 +26,28 @@ class ActivityController extends Controller
         $query = Activity::with('category');
 
         // Apply category filter if provided
-        if ($request->has('category_id') && $request->category_id != '') {
-            $query->where('categorie_id', $request->category_id);
+        if ($request->has('category') && $request->category != '') {
+            $query->where('categorie_id', $request->category);
         }
 
         // Apply sorting
-        if ($request->has('sort')) {
-            switch ($request->sort) {
-                case 'nom_asc':
-                    $query->orderBy('nom', 'asc');
-                    break;
-                case 'nom_desc':
-                    $query->orderBy('nom', 'desc');
-                    break;
-                case 'prix_asc':
-                    $query->orderBy('prix', 'asc');
-                    break;
-                case 'prix_desc':
-                    $query->orderBy('prix', 'desc');
-                    break;
-                case 'notes_desc':
-                    $query->orderBy('notes', 'desc');
-                    break;
+        $sort = $request->get('sort', 'nom_asc');
+        switch ($sort) {
+            case 'nom_asc':
+                $query->orderBy('nom', 'asc');
+                break;
+            case 'nom_desc':
+                $query->orderBy('nom', 'desc');
+                break;
+            case 'prix_asc':
+                $query->orderBy('prix', 'asc');
+                break;
+            case 'prix_desc':
+                $query->orderBy('prix', 'desc');
+                break;
+            case 'notes_desc':
+                $query->orderBy('notes', 'desc');
+                break;
                 default:
                     $query->orderBy('nom', 'asc');
             }
