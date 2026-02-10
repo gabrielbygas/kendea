@@ -1273,7 +1273,7 @@ textarea:focus {
     width: 100%;
     margin: 0;
     padding: 0;
-    background: #0a3d52;
+    background: #1E1E1E;
 }
 
 .kendea-hero-slider .carousel {
@@ -1313,7 +1313,7 @@ textarea:focus {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(to right, rgba(10, 61, 82, 0.95) 0%, rgba(10, 61, 82, 0.8) 40%, rgba(10, 61, 82, 0.4) 70%, transparent 100%);
+    background: linear-gradient(to right, rgba(30, 30, 30, 0.95) 0%, rgba(30, 30, 30, 0.85) 40%, rgba(30, 30, 30, 0.5) 70%, transparent 100%);
     z-index: 1;
 }
 
