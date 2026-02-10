@@ -4,21 +4,21 @@
         <div class="row">
             <div class="col-md-4 mb-4">
                 <h5 style="color: #FF6A00;">KENDEA</h5>
-                <p>Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.</p>
+                <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}</p>
             </div>
             <div class="col-md-4 mb-4">
-                <h5>Liens Rapides</h5>
+                <h5>{{ __('Liens Rapides') }}</h5>
                 <ul class="list-unstyled">
-                    <li><a href="{{ route('home') }}" class="text-light text-decoration-none">Accueil</a></li>
-                    <li><a href="{{ route('home') }}#about" class="text-light text-decoration-none">À Propos</a></li>
-                    <li><a href="{{ route('activities.index') }}" class="text-light text-decoration-none">Activités</a></li>
-                    <li><a href="#" class="text-light text-decoration-none">Contact</a></li>
+                    <li><a href="{{ route('home') }}" class="text-light text-decoration-none">{{ __('Accueil') }}</a></li>
+                    <li><a href="{{ route('home') }}#about" class="text-light text-decoration-none">{{ __('À Propos') }}</a></li>
+                    <li><a href="{{ route('activities.index') }}" class="text-light text-decoration-none">{{ __('Activités') }}</a></li>
+                    <li><a href="{{ route('contact') }}" class="text-light text-decoration-none">{{ __('Contact') }}</a></li>
                 </ul>
             </div>
             <div class="col-md-4 mb-4">
-                <h5>Contact</h5>
-                <p><i class="bi bi-whatsapp"></i> WhatsApp: +971 XX XXX XXXX</p>
-                <p><i class="bi bi-envelope"></i> Email: info@kendea.ae</p>
+                <h5>{{ __('Contact') }}</h5>
+                <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 XX XXX XXXX</p>
+                <p><i class="bi bi-envelope"></i> {{ __('Email') }}: info@kendea.ae</p>
                 <div class="social-icons mt-3">
                     <a href="#" class="text-light me-3"><i class="bi bi-facebook fs-4"></i></a>
                     <a href="#" class="text-light me-3"><i class="bi bi-instagram fs-4"></i></a>
@@ -28,7 +28,7 @@
         </div>
         <hr class="bg-light">
         <div class="text-center">
-            <p class="mb-0">&copy; 2026 KENDEA. Tous droits réservés.</p>
+            <p class="mb-0">&copy; 2026 KENDEA. {{ __('Tous droits réservés.') }}</p>
         </div>
     </div>
 </div>

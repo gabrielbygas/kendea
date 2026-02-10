@@ -9,12 +9,12 @@
 <section id="accueil" class="hero-section" data-aos="fade-in">
     <div class="hero-overlay"></div>
     <div class="container hero-content">
-        <h1 class="display-3 fw-bold text-white mb-4" data-aos="fade-up">Découvrez Dubaï</h1>
+        <h1 class="display-3 fw-bold text-white mb-4" data-aos="fade-up">{{ __('Découvrez Dubaï') }}</h1>
         <p class="lead text-white mb-4" data-aos="fade-up" data-aos-delay="100">
-            Les meilleures activités et expériences pour votre séjour à Dubaï
+            {{ __('Les meilleures activités et expériences pour votre séjour à Dubaï') }}
         </p>
         <a href="#activites" class="btn btn-primary btn-lg" data-aos="fade-up" data-aos-delay="200">
-            Voir les Activités <i class="bi bi-arrow-down"></i>
+            {{ __('Voir les Activités') }} <i class="bi bi-arrow-down"></i>
         </a>
     </div>
 </section>
@@ -24,28 +24,25 @@
     <div class="container">
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4" data-aos="fade-right">
-                <h2 class="section-title mb-4">Bienvenue à Dubaï</h2>
+                <h2 class="section-title mb-4">{{ __('Bienvenue à Dubaï') }}</h2>
                 <p class="text-muted">
-                    Dubaï, la perle du Moyen-Orient, est une destination qui allie modernité et tradition.
-                    De ses gratte-ciels impressionnants à ses vastes déserts dorés, Dubaï offre une expérience unique
-                    pour chaque visiteur.
+                    {{ __('Dubaï, la perle du Moyen-Orient, est une destination qui allie modernité et tradition.') }}
+                    {{ __('De ses gratte-ciels impressionnants à ses vastes déserts dorés, Dubaï offre une expérience unique pour chaque visiteur.') }}
                 </p>
                 <p class="text-muted">
-                    Que vous recherchiez l'aventure dans le désert, la détente sur les plages paradisiaques,
-                    ou l'exploration culturelle des souks traditionnels, Dubaï a tout pour vous séduire.
+                    {{ __('Que vous recherchiez l\'aventure dans le désert, la détente sur les plages paradisiaques, ou l\'exploration culturelle des souks traditionnels, Dubaï a tout pour vous séduire.') }}
                 </p>
                 <ul class="list-unstyled mt-4">
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> Plus de 300 jours de soleil par an</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> Attractions mondiales de renommée</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> Expériences luxueuses et abordables</li>
-                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> Accueil chaleureux et multiculturel</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Plus de 300 jours de soleil par an') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Attractions mondiales de renommée') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Expériences luxueuses et abordables') }}</li>
+                    <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i> {{ __('Accueil chaleureux et multiculturel') }}</li>
                 </ul>
             </div>
             <div class="col-lg-6" data-aos="fade-left">
                 <div class="p-4 bg-white rounded shadow">
-                    <h4 class="mb-3">Pourquoi Réserver avec Nous ?</h4>
-                    <p>Notre plateforme simplifie votre réservation d'activités à Dubaï. En quelques clics,
-                    sélectionnez vos activités préférées et confirmez via WhatsApp.</p>
+                    <h4 class="mb-3">{{ __('Pourquoi Réserver avec Nous ?') }}</h4>
+                    <p>{{ __('Notre plateforme simplifie votre réservation d\'activités. En quelques clics, sélectionnez vos activités préférées et confirmez via WhatsApp.') }}</p>
                     <div class="mt-4">
                         <div class="d-flex align-items-start mb-3">
                             <div class="step-icon bg-primary text-white rounded-circle me-3">1</div>
@@ -78,15 +75,15 @@
 {{-- Activities Section --}}
 <section id="activites" class="py-5">
     <div class="container">
-        <h2 class="section-title text-center mb-5" data-aos="fade-up">Nos Activités</h2>
+        <h2 class="section-title text-center mb-5" data-aos="fade-up">{{ __('Nos Activités') }}</h2>
 
         {{-- Category Filter --}}
         <div class="category-filter mb-4" data-aos="fade-up" data-aos-delay="100">
             <div class="d-flex flex-wrap justify-content-center gap-2">
-                <button class="btn btn-outline-primary category-btn active" data-category="">Toutes</button>
+                <button class="btn btn-outline-primary category-btn active" data-category="">{{ __('Toutes') }}</button>
                 @foreach($categories as $category)
                     <button class="btn btn-outline-primary category-btn" data-category="{{ $category->id }}">
-                        {{ $category->nom }}
+                        {{ __($category->nom) }}
                     </button>
                 @endforeach
             </div>
@@ -95,18 +92,18 @@
         {{-- Sorting and Cart --}}
         <div class="sort-filter mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3" data-aos="fade-up" data-aos-delay="200">
             <div>
-                <label for="sort-select" class="me-2">Trier par:</label>
+                <label for="sort-select" class="me-2">{{ __('Trier par:') }}</label>
                 <select id="sort-select" class="form-select d-inline-block w-auto">
-                    <option value="nom_asc">Nom (A-Z)</option>
-                    <option value="nom_desc">Nom (Z-A)</option>
-                    <option value="prix_asc">Prix (Croissant)</option>
-                    <option value="prix_desc">Prix (Décroissant)</option>
-                    <option value="notes_desc">Notes (Meilleures)</option>
+                    <option value="nom_asc">{{ __('Nom (A-Z)') }}</option>
+                    <option value="nom_desc">{{ __('Nom (Z-A)') }}</option>
+                    <option value="prix_asc">{{ __('Prix (Croissant)') }}</option>
+                    <option value="prix_desc">{{ __('Prix (Décroissant)') }}</option>
+                    <option value="notes_desc">{{ __('Notes (Meilleures)') }}</option>
                 </select>
             </div>
             <div>
                 <button class="btn btn-success" id="voir-panier-btn">
-                    <i class="bi bi-cart-check"></i> Voir le Panier (<span id="panier-count-inline">0</span>)
+                    <i class="bi bi-cart-check"></i> {{ __('Voir le Panier') }} (<span id="panier-count-inline">0</span>)
                 </button>
             </div>
         </div>
@@ -118,12 +115,12 @@
             </div>
             <div id="loading-activities" class="text-center py-5">
                 <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Chargement...</span>
+                    <span class="visually-hidden">{{ __('Chargement...') }}</span>
                 </div>
             </div>
             <div id="no-activities" class="text-center py-5 d-none">
                 <i class="bi bi-inbox" style="font-size: 3rem; color: var(--color-gray-400);"></i>
-                <p class="text-muted mt-3">Aucune activité trouvée</p>
+                <p class="text-muted mt-3">{{ __('Aucune activité trouvée') }}</p>
             </div>
         </div>
 
@@ -131,13 +128,13 @@
         <div class="total-price-section mt-5 p-4 bg-white rounded shadow" id="total-section" style="display:none;" data-aos="fade-up">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h4>Total de votre Sélection</h4>
-                    <p class="text-muted mb-0"><span id="selected-count">0</span> activité(s) sélectionnée(s)</p>
+                    <h4>{{ __('Total de votre Sélection') }}</h4>
+                    <p class="text-muted mb-0"><span id="selected-count">0</span> {{ __('activité(s) sélectionnée(s)') }}</p>
                 </div>
                 <div class="col-md-4 text-end">
                     <h3 class="text-primary mb-0"><span id="total-price">0.00</span> AED</h3>
                     <button class="btn btn-primary mt-3" id="commander-btn">
-                        <i class="bi bi-bag-check"></i> Commander
+                        <i class="bi bi-bag-check"></i> {{ __('Commander') }}
                     </button>
                 </div>
             </div>
