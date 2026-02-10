@@ -48,11 +48,8 @@ class ActivityController extends Controller
             case 'notes_desc':
                 $query->orderBy('notes', 'desc');
                 break;
-                default:
-                    $query->orderBy('nom', 'asc');
-            }
-        } else {
-            $query->orderBy('nom', 'asc');
+            default:
+                $query->orderBy('nom', 'asc');
         }
 
         $activities = $query->get();
