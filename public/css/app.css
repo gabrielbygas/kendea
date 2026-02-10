@@ -1633,3 +1633,285 @@ textarea:focus {
         font-size: 2rem;
     }
 }
+
+/* ========================================
+   RESPONSIVE DESIGN - MOBILE FIRST
+   ======================================== */
+
+/* Small devices (landscape phones, 576px and up) */
+@media (max-width: 575.98px) {
+    /* Hero Slider */
+    .kendea-hero-slider .carousel-item {
+        height: 400px;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 1.75rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-slide-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+    
+    .hero-slide-price {
+        font-size: 1.5rem;
+    }
+    
+    .hero-slide-btn {
+        padding: 0.7rem 1.5rem;
+        font-size: 0.9rem;
+    }
+    
+    .hero-slide-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .kendea-hero-slider .carousel-control-prev,
+    .kendea-hero-slider .carousel-control-next {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .kendea-hero-slider .carousel-control-prev {
+        left: 0.5rem;
+    }
+    
+    .kendea-hero-slider .carousel-control-next {
+        right: 0.5rem;
+    }
+    
+    /* Navigation */
+    .navbar-brand .brand-text {
+        font-size: 1.25rem;
+    }
+    
+    .navbar-nav {
+        padding: 1rem 0;
+    }
+    
+    .nav-item {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Section titles */
+    .section-title {
+        font-size: 1.75rem;
+    }
+    
+    .page-header h1 {
+        font-size: 2rem;
+    }
+    
+    /* Category tabs */
+    .category-tabs {
+        padding-bottom: 0.5rem;
+    }
+    
+    .category-tab {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+    
+    /* Activity cards */
+    .activity-card-title {
+        font-size: 1rem;
+    }
+    
+    .activity-card-price {
+        font-size: 0.9rem;
+    }
+    
+    /* Destinations grid */
+    .destinations-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+    
+    .destination-circle {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .destination-name {
+        font-size: 0.9rem;
+    }
+    
+    /* CTA Section */
+    .cta-title {
+        font-size: 1.75rem;
+    }
+    
+    .cta-subtitle {
+        font-size: 1rem;
+    }
+    
+    /* Footer */
+    .footer-container {
+        padding: 2rem 0;
+    }
+    
+    .footer-container h5 {
+        font-size: 1.1rem;
+    }
+    
+    /* About step icons */
+    .about-step-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.25rem;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .kendea-hero-slider .carousel-item {
+        height: 450px;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 2.25rem;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .destination-circle {
+        width: 120px;
+        height: 120px;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .kendea-hero-slider .carousel-item {
+        height: 500px;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 2.5rem;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 992px) {
+    .kendea-hero-slider .carousel-item {
+        height: 600px;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 3rem;
+    }
+    
+    .destinations-grid {
+        grid-template-columns: repeat(7, 1fr);
+    }
+}
+
+/* Landscape orientation specific */
+@media (max-height: 600px) and (orientation: landscape) {
+    .kendea-hero-slider .carousel-item {
+        height: 100vh;
+        max-height: 500px;
+    }
+    
+    .hero-slide-content {
+        padding: 0 1rem;
+    }
+    
+    .hero-slide-content h1 {
+        font-size: 2rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .hero-slide-content p {
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Container adjustments for mobile */
+@media (max-width: 575.98px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    /* Make modals full width on mobile */
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+    
+    /* Stack buttons on mobile */
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .modal-footer button {
+        width: 100%;
+    }
+    
+    /* Make tables responsive */
+    .table-responsive {
+        overflow-x: auto;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+    /* Larger touch targets */
+    .btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .nav-link {
+        padding: 0.75rem 1rem;
+    }
+    
+    /* Remove hover effects on touch devices */
+    .activity-card:hover .activity-card-image img {
+        transform: none;
+    }
+    
+    .destination-item:hover {
+        transform: none;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    /* Optimize image rendering */
+    img {
+        image-rendering: -webkit-optimize-contrast;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    /* Future dark mode styles can go here */
+}
+
+/* Print styles */
+@media print {
+    .navbar,
+    .footer-container,
+    .kendea-hero-slider,
+    .btn,
+    .category-tabs {
+        display: none !important;
+    }
+    
+    .activity-card {
+        page-break-inside: avoid;
+    }
+}
