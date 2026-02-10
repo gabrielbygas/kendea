@@ -94,8 +94,103 @@
     {{-- AOS Animation JS --}}
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
+    {{-- Floating Action Buttons --}}
+    <div class="floating-buttons">
+        <button id="scroll-to-top" class="floating-btn" title="{{ __('Retour en haut') }}" style="display: none;">
+            <i class="bi bi-arrow-up"></i>
+        </button>
+        <a href="https://wa.me/971XXXXXXXXX" target="_blank" class="floating-btn whatsapp-btn" title="{{ __('Discuter sur WhatsApp') }}">
+            <i class="bi bi-whatsapp"></i>
+        </a>
+    </div>
+
+    <style>
+        .floating-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            z-index: 1000;
+        }
+
+        .floating-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            background-color: #FF6A00;
+            color: white;
+            font-size: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 106, 0, 0.4);
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .floating-btn:hover {
+            background-color: #ff8534;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(255, 106, 0, 0.5);
+            color: white;
+        }
+
+        .floating-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .whatsapp-btn {
+            background-color: #25D366;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+        }
+
+        .whatsapp-btn:hover {
+            background-color: #20BA5A;
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .floating-buttons {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .floating-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+    </style>
+
     {{-- Custom JS --}}
     <script src="{{ asset('js/app.js') }}"></script>
+
+    <script>
+        // Scroll to Top functionality
+        $(document).ready(function() {
+            const scrollBtn = $('#scroll-to-top');
+            
+            // Show/Hide button on scroll
+            $(window).scroll(function() {
+                if ($(this).scrollTop() > 300) {
+                    scrollBtn.fadeIn();
+                } else {
+                    scrollBtn.fadeOut();
+                }
+            });
+            
+            // Scroll to top on click
+            scrollBtn.click(function() {
+                $('html, body').animate({ scrollTop: 0 }, 600);
+                return false;
+            });
+        });
+    </script>
 
     @stack('scripts')
 
