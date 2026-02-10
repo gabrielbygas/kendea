@@ -6,23 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
     {{-- SEO Meta Tags --}}
-    <meta name="description" content="Réservez vos activités à Dubaï facilement. Safari dans le désert, attractions aquatiques, visites culturelles et plus encore. Service de qualité pour la communauté congolaise.">
-    <meta name="keywords" content="Dubai, activités, réservation, safari désert, Burj Khalifa, attractions, Congo, RDC, voyage, Dubaï">
-    <meta name="author" content="Dubai Activities">
+    <meta name="description" content="Réservez vos activités facilement avec KENDEA. Safari dans le désert, attractions aquatiques, visites culturelles et plus encore. Service de qualité.">
+    <meta name="keywords" content="activités, réservation, safari désert, Burj Khalifa, attractions, voyage, KENDEA">
+    <meta name="author" content="KENDEA">
     <meta name="robots" content="index, follow">
 
     {{-- Open Graph / Facebook --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="{{ url('/') }}">
-    <meta property="og:title" content="Dubai Activities - Réservation d'Activités à Dubaï">
-    <meta property="og:description" content="Découvrez et réservez les meilleures activités à Dubaï. Service adapté pour la communauté congolaise.">
+    <meta property="og:title" content="KENDEA - Réservation d'Activités">
+    <meta property="og:description" content="Découvrez et réservez les meilleures activités avec KENDEA. Service de qualité garanti.">
     <meta property="og:image" content="{{ asset('images/og-image.jpg') }}">
 
     {{-- Twitter --}}
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="{{ url('/') }}">
-    <meta property="twitter:title" content="Dubai Activities - Réservation d'Activités à Dubaï">
-    <meta property="twitter:description" content="Découvrez et réservez les meilleures activités à Dubaï.">
+    <meta property="twitter:title" content="KENDEA - Réservation d'Activités">
+    <meta property="twitter:description" content="Découvrez et réservez les meilleures activités avec KENDEA.">
     <meta property="twitter:image" content="{{ asset('images/twitter-image.jpg') }}">
 
     {{-- Canonical URL --}}
@@ -31,7 +31,7 @@
     {{-- CSRF Token --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>@yield("title", "Dubai Activities - Réservation d'Activités à Dubaï")</title>
+    <title>@yield("title", "KENDEA - Réservation d'Activités")</title>
 
     {{-- Preconnect for performance --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -101,7 +101,7 @@
     {
       "@@context": "https://schema.org",
       "@@type": "TravelAgency",
-      "name": "Dubai Activities",
+      "name": "KENDEA",
       "description": "Réservation d'activités à Dubaï",
       "url": "{{ url('/') }}",
       "address": {

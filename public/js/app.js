@@ -1,5 +1,5 @@
 // Modified by Claude
-// Dubai Activities SPA - Main JavaScript
+// KENDEA SPA - Main JavaScript
 
 // Global variables
 let selectedActivities = [];

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dubai Activities - Réservez vos Activités à Dubaï')
+@section('title', 'KENDEA - Réservez vos Activités')
 
 @section('content')
 {{-- Modified by Claude --}}

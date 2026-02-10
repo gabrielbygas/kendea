@@ -1,20 +1,29 @@
 <?php
-// Modified by Claude
+// Modified by Antigravity
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CommandeController;
 
-// Main page (SPA entry point)
-Route::get('/', [ActivityController::class, 'index'])->name('home');
+// Language switch
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['fr', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+
+// Homepage
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// Activities page
+Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 
 // API routes for AJAX
 Route::prefix('api')->group(function () {
-    // Activities
     Route::get('/activities', [ActivityController::class, 'getActivities'])->name('api.activities');
     Route::get('/activities/{id}', [ActivityController::class, 'show'])->name('api.activities.show');
-
-    // Orders
     Route::post('/commandes', [CommandeController::class, 'store'])->name('api.commandes.store');
 });
 
