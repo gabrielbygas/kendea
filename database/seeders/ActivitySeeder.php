@@ -8,16 +8,14 @@ use App\Models\Activity;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Str;
 
-class CategoryActivitySeeder extends Seeder
+class ActivitySeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * Creates 5 categories with 5 activities each (25 total)
      */
     public function run(): void
     {
-        // Define 5 categories with specific activities
-        $categoriesData = [
+        $activitiesData = [
             'Aventures dans le Désert' => [
                 'Safari en 4x4' => [
                     'prix' => 150.00,
@@ -180,14 +178,13 @@ class CategoryActivitySeeder extends Seeder
             ],
         ];
 
-        foreach ($categoriesData as $categoryName => $activities) {
-            // Create category
-            $category = Category::create([
-                'nom' => $categoryName,
-                'slug' => Str::slug($categoryName),
-            ]);
+        foreach ($activitiesData as $categoryName => $activities) {
+            $category = Category::where('nom', $categoryName)->first();
+            
+            if (!$category) {
+                continue;
+            }
 
-            // Create 5 activities for each category
             foreach ($activities as $activityName => $data) {
                 $slug = Str::slug($activityName);
 
