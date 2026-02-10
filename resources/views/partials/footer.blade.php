@@ -3,7 +3,10 @@
     <div class="container">
         <div class="row">
             <div class="col-md-4 mb-4">
-                <h5 style="color: #FF6A00;">KENDEA</h5>
+                <div class="d-flex align-items-center mb-3">
+                    <img src="{{ asset('images/kendea-logo.png') }}" alt="KENDEA Logo" width="60" height="60" class="me-2">
+                    <h5 class="mb-0" style="color: #FF6A00;">KENDEA</h5>
+                </div>
                 <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}</p>
             </div>
             <div class="col-md-4 mb-4">
