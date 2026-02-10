@@ -101,8 +101,10 @@ class ActivityController extends Controller
                 return [
                     'id' => $activity->id,
                     'nom' => $activity->nom,
+                    'nom_en' => $activity->nom_en,
                     'slug' => $activity->slug,
-                    'lieu' => $activity->lieu,
+                    'location' => $activity->location,
+                    'location_en' => $activity->location_en,
                     'prix' => $activity->prix,
                     'notes' => $activity->notes,
                     'first_image' => $activity->first_image,

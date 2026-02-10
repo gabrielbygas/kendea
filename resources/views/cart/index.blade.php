@@ -216,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <strong>${activity.nom}</strong>
                                 <br>
                                 <small class="text-muted">
-                                    <i class="bi bi-geo-alt"></i> ${activity.lieu}
+                                    <i class="bi bi-geo-alt"></i> ${activity.location || activity.location_en || 'Dubai'}
                                 </small>
                             </div>
                         </div>
