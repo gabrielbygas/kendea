@@ -171,3 +171,16 @@
 </div>
 
 @endsection
+
+@push('scripts')
+<script src="{{ asset('js/activities.js') }}"></script>
+<script>
+    // Initialize activities manager
+    document.addEventListener('DOMContentLoaded', function() {
+        if (typeof ActivitiesManager !== 'undefined') {
+            const cart = window.cartManager || new Cart();
+            new ActivitiesManager(cart);
+        }
+    });
+</script>
+@endpush
