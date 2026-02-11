@@ -5,19 +5,8 @@
 @section('content')
 {{-- Modified by Claude --}}
 
-{{-- Hero Section --}}
-<section id="accueil" class="hero-section" data-aos="fade-in">
-    <div class="hero-overlay"></div>
-    <div class="container hero-content">
-        <h1 class="display-3 fw-bold text-white mb-4" data-aos="fade-up">{{ __('Découvrez Dubaï') }}</h1>
-        <p class="lead text-white mb-4" data-aos="fade-up" data-aos-delay="100">
-            {{ __('Les meilleures activités et expériences pour votre séjour à Dubaï') }}
-        </p>
-        <a href="#activites" class="btn btn-primary btn-lg" data-aos="fade-up" data-aos-delay="200">
-            {{ __('Voir les Activités') }} <i class="bi bi-arrow-down"></i>
-        </a>
-    </div>
-</section>
+{{-- Hero Slider Section --}}
+@include('partials.hero-slider')
 
 
 

@@ -34,4 +34,25 @@ class Category extends Model
     {
         return $this->hasMany(Activity::class, 'categorie_id');
     }
+    
+    /**
+     * Get emoji icon for category
+     */
+    public function getEmojiAttribute()
+    {
+        $emojiMap = [
+            'Monuments Emblématiques et Architecture Moderne' => '🏙️',
+            'Aventures dans le Désert' => '🏜️',
+            'Parcs à Thèmes et Attractions Familiales' => '🎢',
+            'Nature et Sports d\'Aventure' => '🏔️',
+            'Culture et Exploration Historique' => '🕌',
+            'Gastronomie, Shopping et Vie Nocturne' => '🛍️',
+            'Croisières et Activités Nautiques' => '🚢',
+            'Festivals, Événements et Activités Saisonnières' => '🎉',
+            'Expériences de Luxe et Bien-être' => '💎',
+            'Sports Extrêmes et Sensations Fortes' => '🪂',
+        ];
+        
+        return $emojiMap[$this->nom] ?? '🎯';
+    }
 }

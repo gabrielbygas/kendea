@@ -15,7 +15,14 @@ class ActivityController extends Controller
     public function index()
     {
         $categories = Category::with('activities')->get();
-        return view('activities.index', compact('categories'));
+        
+        // Get top 5 activities for hero slider (best rated or featured)
+        $topActivities = Activity::with('category')
+            ->orderBy('notes', 'desc')
+            ->take(5)
+            ->get();
+        
+        return view('activities.index', compact('categories', 'topActivities'));
     }
 
     /**

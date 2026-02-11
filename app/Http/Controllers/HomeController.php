@@ -15,11 +15,18 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::all();
+        
+        // Get top 5 activities for hero slider (best rated)
+        $topActivities = Activity::with('category')
+            ->orderBy('notes', 'desc')
+            ->take(5)
+            ->get();
+            
         $featuredActivities = Activity::with('category')
             ->orderBy('notes', 'desc')
             ->limit(8)
             ->get();
 
-        return view('home.index', compact('categories', 'featuredActivities'));
+        return view('home.index', compact('categories', 'topActivities', 'featuredActivities'));
     }
 }

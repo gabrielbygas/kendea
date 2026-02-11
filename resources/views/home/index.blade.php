@@ -6,69 +6,7 @@
 @section('content')
 
     {{-- Hero Slider Section --}}
-    <div class="kendea-hero-slider">
-        <div id="heroSlider" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="0" class="active"></button>
-                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="1"></button>
-                <button type="button" data-bs-target="#heroSlider" data-bs-slide-to="2"></button>
-            </div>
-
-            <div class="carousel-inner">
-                <div class="carousel-item active">
-                    <div class="hero-slide-wrapper">
-                        <img src="{{ asset('storage/activities/sheikh-zayed-grand-mosque/image-1.jpg') }}" alt="{{ __('Abu Dhabi City Tour') }}">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <h1>{{ __('Abu Dhabi City Tour with Grand Mosque') }}</h1>
-                            <p>{{ __('Explore the capital of UAE including the magnificent Sheikh Zayed Grand Mosque and Emirates Palace') }}</p>
-                            <div class="hero-slide-actions">
-                                <span class="hero-slide-price">AED 199</span>
-                                <a href="{{ route('activities.index') }}" class="hero-slide-btn">{{ __('Book Now') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="hero-slide-wrapper">
-                        <img src="{{ asset('storage/activities/skydive-dubai-palm-dropzone/image-1.jpg') }}" alt="{{ __('Skydive Dubai') }}">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <h1>{{ __('Skydive Dubai - Palm Dropzone') }}</h1>
-                            <p>{{ __('The most famous skydive in the world with spectacular views') }}</p>
-                            <div class="hero-slide-actions">
-                                <span class="hero-slide-price">AED 2,200</span>
-                                <a href="{{ route('activities.index') }}" class="hero-slide-btn">{{ __('Book Now') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="carousel-item">
-                    <div class="hero-slide-wrapper">
-                        <img src="{{ asset('storage/activities/burj-khalifa-sommet/image-1.jpg') }}" alt="{{ __('Burj Khalifa') }}">
-                        <div class="hero-slide-overlay"></div>
-                        <div class="hero-slide-content">
-                            <h1>{{ __('Burj Khalifa At The Top') }}</h1>
-                            <p>{{ __('Visit the world\'s tallest building and enjoy breathtaking 360-degree views') }}</p>
-                            <div class="hero-slide-actions">
-                                <span class="hero-slide-price">AED 399</span>
-                                <a href="{{ route('activities.index') }}" class="hero-slide-btn">{{ __('Book Now') }}</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button class="carousel-control-prev" type="button" data-bs-target="#heroSlider" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon"></span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#heroSlider" data-bs-slide="next">
-                <span class="carousel-control-next-icon"></span>
-            </button>
-        </div>
-    </div>
+    @include('partials.hero-slider')
 
     {{-- About Section --}}
     <section id="about" class="about-section py-5 mt-5">
