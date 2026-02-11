@@ -24,7 +24,7 @@
                         
                         <h2 class="slide-title">{{ $activity->nom }}</h2>
                         
-                        <p class="slide-description">{{ Str::limit($activity->description, 150) }}</p>
+                        <p class="slide-description">{{ __(Str::limit($activity->description, 150)) }}</p>
                         
                         <div class="slide-info">
                             @if($activity->duree)
