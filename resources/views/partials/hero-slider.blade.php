@@ -20,7 +20,7 @@
                             {{ $activity->category->emoji ?? '🎯' }}
                         </div>
                         
-                        <span class="slide-badge">{{ $activity->category->nom ?? 'Activité' }}</span>
+                        <span class="slide-badge">{{ __($activity->category->nom ?? 'Activité') }}</span>
                         
                         <h2 class="slide-title">{{ $activity->nom }}</h2>
                         

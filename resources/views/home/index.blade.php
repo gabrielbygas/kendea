@@ -8,6 +8,30 @@
     {{-- Hero Slider Section --}}
     @include('partials.hero-slider')
 
+    {{-- Custom Styles for Explore Button --}}
+    <style>
+        .btn-explore-activities {
+            background-color: white;
+            color: #FF6A00;
+            font-weight: 600;
+            border: 2px solid #FF6A00;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-explore-activities:hover {
+            background-color: #F5F5F5;
+            color: #FF6A00;
+            border-color: #FF6A00;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 106, 0, 0.3);
+        }
+        
+        .btn-explore-activities:active {
+            transform: translateY(0);
+            background-color: #EEEEEE;
+        }
+    </style>
+
     {{-- About Section --}}
     <section id="about" class="about-section py-5 mt-5">
         <div class="container">
@@ -246,8 +270,8 @@
             <p class="cta-subtitle" data-aos="fade-up" data-aos-delay="100">
                 {{ __('Join thousands of explorers discovering the best of UAE with KENDEA') }}
             </p>
-            <a href="{{ route('activities.index') }}" class="btn btn-lg mt-3" data-aos="fade-up"
-                data-aos-delay="200" style="background-color: white; color: #FF6A00; font-weight: 600; border: 2px solid #FF6A00;">
+            <a href="{{ route('activities.index') }}" class="btn btn-explore-activities btn-lg mt-3" data-aos="fade-up"
+                data-aos-delay="200">
                 {{ __('Explore All Activities') }}
             </a>
         </div>
