@@ -62,9 +62,9 @@
                     </select>
                 </div>
                 <div class="col-12 col-md-6 col-lg-3 text-end">
-                    <button class="btn btn-success w-100 w-lg-auto" id="voir-panier-btn">
+                    <a href="{{ route('cart.index') }}" class="btn btn-success w-100 w-lg-auto">
                         <i class="bi bi-cart-check"></i> {{ __('Voir le Panier') }} (<span id="panier-count-inline">0</span>)
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
