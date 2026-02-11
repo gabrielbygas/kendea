@@ -126,14 +126,12 @@
         width: 100%;
         height: 600px;
         opacity: 0;
-        transform: scale(0.95);
-        transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        transition: opacity 0.8s ease-in-out;
         pointer-events: none;
     }
 
     .hero-slide.active {
         opacity: 1;
-        transform: scale(1);
         pointer-events: auto;
     }
 
