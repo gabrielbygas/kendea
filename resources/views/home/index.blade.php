@@ -105,44 +105,48 @@
     <section id="activites" class="py-5 bg-light">
         <div class="container">
             <h2 class="section-title text-center mb-5" data-aos="fade-up">{{ __('Activités les Mieux Notées') }}</h2>
-            
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" data-aos="fade-up" data-aos-delay="200">
-                @foreach($featuredActivities as $activity)
-                <div class="col">
-                    <div class="card h-100 activity-card shadow-sm">
-                        <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img" alt="{{ $activity->nom }}">
-                        <div class="card-body">
-                            <span class="badge bg-secondary mb-2">
-                                {{ App::getLocale() == 'en' ? ($activity->category->nom_en ?? $activity->category->nom) : $activity->category->nom }}
-                            </span>
-                            <h5 class="card-title">{{ $activity->nom }}</h5>
-                            <p class="card-text text-muted small">
-                                <i class="bi bi-geo-alt"></i> {{ $activity->city }}
-                            </p>
-                            <div class="rating mb-3">
-                                @for($i = 1; $i <= 5; $i++)
-                                    @if($i <= floor($activity->notes))
-                                        <i class="bi bi-star-fill text-warning"></i>
-                                    @elseif($i - $activity->notes < 1 && $i - $activity->notes > 0)
-                                        <i class="bi bi-star-half text-warning"></i>
-                                    @else
-                                        <i class="bi bi-star text-warning"></i>
-                                    @endif
-                                @endfor
-                                <span class="ms-1">({{ number_format($activity->notes, 1) }})</span>
-                            </div>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <p class="card-text fw-bold fs-5 mb-0" style="color: #FF6A00;">{{ number_format($activity->prix, 2) }} AED</p>
-                                <a href="{{ route('activities.index') }}" class="btn btn-sm text-white" style="background-color: #FF6A00;">
-                                    {{ __('Book Now') }}
-                                </a>
+
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4" data-aos="fade-up"
+                data-aos-delay="200">
+                @foreach ($featuredActivities as $activity)
+                    <div class="col">
+                        <div class="card h-100 activity-card shadow-sm">
+                            <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img"
+                                alt="{{ $activity->nom }}">
+                            <div class="card-body">
+                                <span class="badge bg-secondary mb-2">
+                                    {{ App::getLocale() == 'en' ? $activity->category->nom_en ?? $activity->category->nom : $activity->category->nom }}
+                                </span>
+                                <h5 class="card-title">{{ $activity->nom }}</h5>
+                                <p class="card-text text-muted small">
+                                    <i class="bi bi-geo-alt"></i> {{ $activity->city }}
+                                </p>
+                                <div class="rating mb-3">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        @if ($i <= floor($activity->notes))
+                                            <i class="bi bi-star-fill text-warning"></i>
+                                        @elseif($i - $activity->notes < 1 && $i - $activity->notes > 0)
+                                            <i class="bi bi-star-half text-warning"></i>
+                                        @else
+                                            <i class="bi bi-star text-warning"></i>
+                                        @endif
+                                    @endfor
+                                    <span class="ms-1">({{ number_format($activity->notes, 1) }})</span>
+                                </div>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <p class="card-text fw-bold fs-5 mb-0" style="color: #FF6A00;">
+                                        {{ number_format($activity->prix, 2) }} AED</p>
+                                    <a href="{{ route('activities.index') }}" class="btn btn-sm text-white"
+                                        style="background-color: #FF6A00;">
+                                        {{ __('Book Now') }}
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
-            
+
             <div class="text-center mt-5" data-aos="fade-up">
                 <a href="{{ route('activities.index') }}" class="btn btn-primary btn-lg">
                     {{ __('Voir Toutes les Activités') }} <i class="bi bi-arrow-right"></i>
@@ -242,8 +246,8 @@
             <p class="cta-subtitle" data-aos="fade-up" data-aos-delay="100">
                 {{ __('Join thousands of explorers discovering the best of UAE with KENDEA') }}
             </p>
-            <a href="{{ route('activities.index') }}" class="btn btn-light btn-lg mt-3" data-aos="fade-up"
-                data-aos-delay="200">
+            <a href="{{ route('activities.index') }}" class="btn btn-lg mt-3" data-aos="fade-up"
+                data-aos-delay="200" style="background-color: white; color: #FF6A00; font-weight: 600; border: 2px solid #FF6A00;">
                 {{ __('Explore All Activities') }}
             </a>
         </div>
