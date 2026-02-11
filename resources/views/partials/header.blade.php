@@ -38,7 +38,7 @@
                 </li>
                 
                 <li class="nav-item position-relative">
-                    <a class="nav-link btn btn-primary text-white ms-2 px-3" href="{{ route('cart.index') }}">
+                    <a class="nav-link btn btn-primary text-white important ms-2 px-3" href="{{ route('cart.index') }}">
                         <i class="bi bi-cart3"></i> {{ __('Panier') }}
                     </a>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="panier-count">

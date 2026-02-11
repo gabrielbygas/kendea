@@ -7,11 +7,13 @@ class ActivitiesManager {
         this.currentCategory = '';
         this.currentEmirate = '';
         this.currentSort = 'nom_asc';
+        this.totalActivities = 0; // Store total count
         this.init();
     }
 
     init() {
         this.attachEventListeners();
+        this.loadTotalCount(); // Load total first
         this.loadActivities();
     }
 
@@ -86,12 +88,16 @@ class ActivitiesManager {
 
             if (activities.length === 0) {
                 if (noActivities) noActivities.classList.remove('d-none');
+                this.updateResultsCounter(0, 0);
                 return;
             }
 
             activities.forEach(activity => {
                 grid.appendChild(this.createActivityCard(activity));
             });
+
+            // Update results counter
+            this.updateResultsCounter(activities.length, this.totalActivities);
 
             // Update cart UI after loading
             this.cart.updateUI();
@@ -100,7 +106,29 @@ class ActivitiesManager {
             console.error('Error loading activities:', error);
             if (loading) loading.style.display = 'none';
             if (noActivities) noActivities.classList.remove('d-none');
+            this.updateResultsCounter(0, this.totalActivities);
         }
+    }
+
+    async loadTotalCount() {
+        try {
+            const response = await fetch('/api/activities');
+            if (response.ok) {
+                const allActivities = await response.json();
+                this.totalActivities = allActivities.length;
+            }
+        } catch (error) {
+            console.error('Error loading total count:', error);
+            this.totalActivities = 0;
+        }
+    }
+
+    updateResultsCounter(visible, total) {
+        const visibleCount = document.getElementById('visible-count');
+        const totalCount = document.getElementById('total-count');
+        
+        if (visibleCount) visibleCount.textContent = visible;
+        if (totalCount) totalCount.textContent = total;
     }
 
     createActivityCard(activity) {

@@ -83,6 +83,13 @@
                 <i class="bi bi-inbox" style="font-size: 3rem; color: var(--color-gray-400);"></i>
                 <p class="text-muted mt-3">{{ __('Aucune activité trouvée') }}</p>
             </div>
+            
+            {{-- Results Counter --}}
+            <div id="results-counter" class="text-center mt-4">
+                <small class="text-muted">
+                    <span id="visible-count">0</span> {{ __('résultat(s) sur') }} <span id="total-count">0</span>
+                </small>
+            </div>
         </div>
 
         {{-- Total Price Display --}}

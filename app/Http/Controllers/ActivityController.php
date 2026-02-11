@@ -26,8 +26,13 @@ class ActivityController extends Controller
         $query = Activity::with('category');
 
         // Apply category filter if provided
-        if ($request->has('category') && $request->category != '') {
-            $query->where('categorie_id', $request->category);
+        if ($request->has('category_id') && $request->category_id != '') {
+            $query->where('categorie_id', $request->category_id);
+        }
+
+        // Apply emirate filter if provided
+        if ($request->has('emirate') && $request->emirate != '') {
+            $query->where('emirate', $request->emirate);
         }
 
         // Apply emirate filter if provided
@@ -58,10 +63,15 @@ class ActivityController extends Controller
         }
 
         $activities = $query->get();
+        
+        // Get total count without filters for display
+        $total = Activity::count();
 
         return response()->json([
             'success' => true,
-            'activities' => $activities
+            'activities' => $activities,
+            'total' => $total,
+            'filtered' => $activities->count()
         ]);
     }
 

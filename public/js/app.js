@@ -5,6 +5,7 @@
 let selectedActivities = [];
 let totalPrice = 0;
 let currentCategory = '';
+let currentEmirate = '';
 let currentSort = 'nom_asc';
 const WHATSAPP_NUMBER = '+971582032582'; // TODO: Replace with actual WhatsApp number
 
@@ -60,6 +61,7 @@ function loadActivities() {
         method: 'GET',
         data: {
             category_id: currentCategory,
+            emirate: currentEmirate,
             sort: currentSort
         },
         success: function(response) {
@@ -67,8 +69,10 @@ function loadActivities() {
 
             if (response.activities && response.activities.length > 0) {
                 renderActivities(response.activities);
+                updateResultsCounter(response.filtered || response.activities.length, response.total || response.activities.length);
             } else {
                 $('#no-activities').removeClass('d-none');
+                updateResultsCounter(0, response.total || 0);
             }
         },
         error: function() {
@@ -142,6 +146,12 @@ function setupEventListeners() {
     // Category filter
     $('#category-select').on('change', function() {
         currentCategory = $(this).val();
+        loadActivities();
+    });
+
+    // Emirate filter
+    $('#emirate-select').on('change', function() {
+        currentEmirate = $(this).val();
         loadActivities();
     });
 
@@ -535,4 +545,12 @@ function scrollToElement(selector) {
             scrollTop: target.offset().top - 80
         }, 800);
     }
+}
+
+/**
+ * Update results counter
+ */
+function updateResultsCounter(filtered, total) {
+    document.getElementById('visible-count').textContent = filtered;
+    document.getElementById('total-count').textContent = total;
 }
