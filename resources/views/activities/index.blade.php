@@ -27,20 +27,20 @@
         <h2 class="section-title text-center mb-5" data-aos="fade-up">{{ __('Nos Activités') }}</h2>
 
         {{-- Filters and Cart --}}
-        <div class="sort-filter mb-4 d-flex flex-column flex-md-row justify-content-between align-items-center gap-3" data-aos="fade-up" data-aos-delay="100">
-            <div class="d-flex flex-wrap gap-3 align-items-center">
-                <div>
-                    <label for="category-select" class="me-2">{{ __('Catégorie:') }}</label>
-                    <select id="category-select" class="form-select d-inline-block w-auto">
+        <div class="sort-filter mb-4" data-aos="fade-up" data-aos-delay="100">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label for="category-select" class="form-label">{{ __('Catégorie:') }}</label>
+                    <select id="category-select" class="form-select">
                         <option value="">{{ __('Toutes') }}</option>
                         @foreach($categories as $category)
                             <option value="{{ $category->id }}">{{ __($category->nom) }}</option>
                         @endforeach
                     </select>
                 </div>
-                <div>
-                    <label for="emirate-select" class="me-2">{{ __('Émirat:') }}</label>
-                    <select id="emirate-select" class="form-select d-inline-block w-auto">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label for="emirate-select" class="form-label">{{ __('Émirat:') }}</label>
+                    <select id="emirate-select" class="form-select">
                         <option value="">{{ __('Tous') }}</option>
                         <option value="Abu Dhabi">Abu Dhabi</option>
                         <option value="Ajman">Ajman</option>
@@ -51,9 +51,9 @@
                         <option value="Umm Al Quwain">Umm Al Quwain</option>
                     </select>
                 </div>
-                <div>
-                    <label for="sort-select" class="me-2">{{ __('Trier par:') }}</label>
-                    <select id="sort-select" class="form-select d-inline-block w-auto">
+                <div class="col-12 col-md-6 col-lg-3">
+                    <label for="sort-select" class="form-label">{{ __('Trier par:') }}</label>
+                    <select id="sort-select" class="form-select">
                         <option value="nom_asc">{{ __('Nom (A-Z)') }}</option>
                         <option value="nom_desc">{{ __('Nom (Z-A)') }}</option>
                         <option value="prix_asc">{{ __('Prix (Croissant)') }}</option>
@@ -61,11 +61,11 @@
                         <option value="notes_desc">{{ __('Notes (Meilleures)') }}</option>
                     </select>
                 </div>
-            </div>
-            <div>
-                <button class="btn btn-success" id="voir-panier-btn">
-                    <i class="bi bi-cart-check"></i> {{ __('Voir le Panier') }} (<span id="panier-count-inline">0</span>)
-                </button>
+                <div class="col-12 col-md-6 col-lg-3 text-end">
+                    <button class="btn btn-success w-100 w-lg-auto" id="voir-panier-btn">
+                        <i class="bi bi-cart-check"></i> {{ __('Voir le Panier') }} (<span id="panier-count-inline">0</span>)
+                    </button>
+                </div>
             </div>
         </div>
 
