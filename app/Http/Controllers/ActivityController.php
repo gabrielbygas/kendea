@@ -16,10 +16,11 @@ class ActivityController extends Controller
     {
         $categories = Category::with('activities')->get();
         
-        // Get top 5 activities for hero slider (best rated or featured)
+        // Get top 5 most popular UAE activities (one per category)
+        // IDs: Burj Khalifa, Desert Safari, Aquaventure, Louvre, Dhow Cruise
         $topActivities = Activity::with('category')
-            ->orderBy('notes', 'desc')
-            ->take(5)
+            ->whereIn('id', [1, 6, 11, 21, 31])
+            ->orderByRaw('FIELD(id, 1, 6, 11, 21, 31)')
             ->get();
         
         return view('activities.index', compact('categories', 'topActivities'));
