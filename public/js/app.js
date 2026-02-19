@@ -88,6 +88,11 @@ function loadActivities() {
 function renderActivities(activities) {
     const grid = $('#activities-grid');
     grid.empty();
+    
+    const isEnglish = window.appLocale === 'en';
+    const addToCartText = isEnglish ? 'Add to Cart' : 'Ajouter au Panier';
+    const addedText = isEnglish ? 'Added' : 'Ajouté';
+    const viewDetailsText = isEnglish ? 'View' : 'Voir';
 
     activities.forEach(activity => {
         const firstImage = activity.images && activity.images.length > 0
@@ -96,6 +101,8 @@ function renderActivities(activities) {
 
         const isSelected = selectedActivities.some(a => a.id === activity.id);
         const selectedClass = isSelected ? 'selected' : '';
+        const buttonText = isSelected ? addedText : addToCartText;
+        const buttonIcon = isSelected ? 'bi-check-circle' : 'bi-cart-plus';
 
         const stars = generateStars(activity.notes);
 
@@ -104,12 +111,9 @@ function renderActivities(activities) {
                 <div class="activity-card ${selectedClass}" data-id="${activity.id}" data-prix="${activity.prix}">
                     <div class="activity-card-image">
                         <img src="/${firstImage}" alt="${activity.nom}" loading="lazy">
-                        <div class="activity-card-checkbox">
-                            <input type="checkbox" class="activite-checkbox form-check-input"
-                                   id="activite-${activity.id}"
-                                   value="${activity.id}"
-                                   ${isSelected ? 'checked' : ''}>
-                        </div>
+                        <button class="btn btn-sm btn-outline-light voir-details-image" data-id="${activity.id}">
+                            <i class="bi bi-eye"></i> ${viewDetailsText}
+                        </button>
                     </div>
                     <div class="activity-card-body">
                         <h5 class="activity-card-title">${activity.nom}</h5>
@@ -123,8 +127,8 @@ function renderActivities(activities) {
                             <div class="activity-card-price">
                                 <strong>${parseFloat(activity.prix).toFixed(2)} AED</strong>
                             </div>
-                            <button class="btn btn-sm btn-outline-primary voir-details" data-id="${activity.id}">
-                                <i class="bi bi-eye"></i>
+                            <button class="btn btn-sm btn-primary add-to-cart-btn" data-id="${activity.id}">
+                                <i class="bi ${buttonIcon}"></i> ${buttonText}
                             </button>
                         </div>
                     </div>
@@ -195,41 +199,39 @@ function setupEventListeners() {
  * Attach listeners to activity cards
  */
 function attachActivityListeners() {
-    // Checkbox change
-    $('.activite-checkbox').off('change').on('change', function() {
-        const activityId = parseInt($(this).val());
+    // Add to cart button
+    $('.add-to-cart-btn').off('click').on('click', function(e) {
+        e.stopPropagation();
+        const activityId = parseInt($(this).data('id'));
         const activityCard = $(this).closest('.activity-card');
         const activityPrice = parseFloat(activityCard.data('prix'));
 
-        if ($(this).is(':checked')) {
+        const isSelected = selectedActivities.some(a => a.id === activityId);
+
+        if (isSelected) {
+            // Remove from selection
+            selectedActivities = selectedActivities.filter(a => a.id !== activityId);
+            activityCard.removeClass('selected');
+            $(this).html('<i class="bi bi-cart-plus"></i> ' + (window.appLocale === 'en' ? 'Add to Cart' : 'Ajouter au Panier'));
+        } else {
             // Add to selection
             selectedActivities.push({
                 id: activityId,
                 prix: activityPrice
             });
             activityCard.addClass('selected');
-        } else {
-            // Remove from selection
-            selectedActivities = selectedActivities.filter(a => a.id !== activityId);
-            activityCard.removeClass('selected');
+            $(this).html('<i class="bi bi-check-circle"></i> ' + (window.appLocale === 'en' ? 'Added' : 'Ajouté'));
         }
 
         updateTotalPrice();
         updateCartCount();
     });
 
-    // View details button
-    $('.voir-details').off('click').on('click', function() {
+    // View details button (on image)
+    $('.voir-details-image').off('click').on('click', function(e) {
+        e.stopPropagation();
         const activityId = $(this).data('id');
         loadActivityDetails(activityId);
-    });
-
-    // Card click (except on buttons/checkboxes)
-    $('.activity-card').off('click').on('click', function(e) {
-        if (!$(e.target).is('input, button, .voir-details, .bi-eye')) {
-            const checkbox = $(this).find('.activite-checkbox');
-            checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
-        }
     });
 }
 
@@ -489,8 +491,8 @@ function resetOrderForm() {
     totalPrice = 0;
     updateTotalPrice();
     updateCartCount();
-    $('.activite-checkbox').prop('checked', false);
-    $('.activite-card').removeClass('selected');
+    $('.activity-card').removeClass('selected');
+    $('.add-to-cart-btn').html('<i class="bi bi-cart-plus"></i> ' + (window.appLocale === 'en' ? 'Add to Cart' : 'Ajouter au Panier'));
 }
 
 /**

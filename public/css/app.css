@@ -501,32 +501,28 @@ img {
     transform: scale(1.1);
 }
 
-.activity-card-checkbox {
+/* View details button on image */
+.voir-details-image {
     position: absolute;
-    top: 12px;
+    bottom: 12px;
     right: 12px;
     z-index: 10;
-    background-color: var(--color-white);
-    width: 32px;
-    height: 32px;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: var(--color-primary) !important;
+    border: 1px solid var(--color-white) !important;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.875rem;
     border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
     box-shadow: var(--shadow-md);
     transition: all var(--transition-fast);
+    backdrop-filter: blur(4px);
 }
 
-.activity-card-checkbox:hover {
-    transform: scale(1.1);
-}
-
-.activity-card-checkbox input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    cursor: pointer;
-    accent-color: var(--color-primary);
-    margin: 0;
+.voir-details-image:hover {
+    background-color: var(--color-primary) !important;
+    color: var(--color-white) !important;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
 }
 
 .activity-card-body {
@@ -588,6 +584,36 @@ img {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-primary);
+}
+
+/* Add to cart button */
+.add-to-cart-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+}
+
+.add-to-cart-btn:hover {
+    background-color: var(--color-primary-dark);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.activity-card.selected .add-to-cart-btn {
+    background-color: var(--color-success);
+}
+
+.activity-card.selected .add-to-cart-btn:hover {
+    background-color: #218838;
 }
 
 .activity-card-footer .voir-details {

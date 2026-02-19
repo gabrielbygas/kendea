@@ -171,6 +171,10 @@
     </style>
 
     {{-- Custom JS --}}
+    <script>
+        // Pass locale to JavaScript globally
+        window.appLocale = '{{ app()->getLocale() }}';
+    </script>
     <script src="{{ asset('js/app.js') }}"></script>
 
     <script>
