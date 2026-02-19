@@ -169,5 +169,12 @@
   "Ajouté au Panier": "Added to Cart",
   "Informations": "Information",
   "Description": "Description",
-  "Détails de l'Activité": "Activity Details"
+  "Détails de l'Activité": "Activity Details",
+  "Envoi en cours...": "Sending...",
+  "Une erreur est survenue. Veuillez réessayer.": "An error occurred. Please try again.",
+  "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.": "Your message has been sent successfully. We will respond to you as soon as possible.",
+  "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.": "An error occurred while sending the message. Please try again.",
+  "Message": "Message",
+  "Horaires": "Hours",
+  "Lundi - Dimanche: 9h00 - 21h00": "Monday - Sunday: 9:00 AM - 9:00 PM"
 }

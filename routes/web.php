@@ -34,6 +34,7 @@ Route::get('/about', [AboutController::class, 'index'])->name('about');
 
 // Contact page
 Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+Route::post('/contact', [ContactController::class, 'send'])->name('contact.send');
 
 // Cart page
 Route::get('/cart', [ActivityController::class, 'cart'])->name('cart.index');

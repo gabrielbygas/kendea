@@ -31,22 +31,92 @@
         </div>
         <div class="col-lg-6">
             <h2>{{ __('Envoyez-nous un message') }}</h2>
-            <form class="mt-4">
+            <form id="contact-form" class="mt-4">
+                @csrf
                 <div class="mb-3">
                     <label class="form-label">{{ __('Nom') }}</label>
-                    <input type="text" class="form-control" required>
+                    <input type="text" name="name" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">{{ __('Email') }}</label>
-                    <input type="email" class="form-control" required>
+                    <input type="email" name="email" class="form-control" required>
                 </div>
                 <div class="mb-3">
                     <label class="form-label">{{ __('Message') }}</label>
-                    <textarea class="form-control" rows="5" required></textarea>
+                    <textarea name="message" class="form-control" rows="5" required></textarea>
                 </div>
-                <button type="submit" class="btn btn-primary">{{ __('Envoyer') }}</button>
+                <button type="submit" class="btn btn-primary" id="submit-btn">
+                    <span id="submit-text">{{ __('Envoyer') }}</span>
+                    <span id="submit-spinner" class="d-none">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        {{ __('Envoi en cours...') }}
+                    </span>
+                </button>
             </form>
         </div>
     </div>
 </div>
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $('#contact-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        const form = $(this);
+        const submitBtn = $('#submit-btn');
+        const submitText = $('#submit-text');
+        const submitSpinner = $('#submit-spinner');
+        
+        // Disable button and show spinner
+        submitBtn.prop('disabled', true);
+        submitText.addClass('d-none');
+        submitSpinner.removeClass('d-none');
+        
+        $.ajax({
+            url: '{{ route("contact.send") }}',
+            method: 'POST',
+            data: form.serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            success: function(response) {
+                if (response.success) {
+                    // Show success message
+                    if (typeof showToast === 'function') {
+                        showToast(response.message, 'success');
+                    } else {
+                        alert(response.message);
+                    }
+                    
+                    // Reset form
+                    form[0].reset();
+                }
+            },
+            error: function(xhr) {
+                let errorMsg = '{{ __("Une erreur est survenue. Veuillez réessayer.") }}';
+                
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                    // Show validation errors
+                    const errors = xhr.responseJSON.errors;
+                    errorMsg = Object.values(errors).flat().join('\n');
+                }
+                
+                if (typeof showToast === 'function') {
+                    showToast(errorMsg, 'error');
+                } else {
+                    alert(errorMsg);
+                }
+            },
+            complete: function() {
+                // Re-enable button and hide spinner
+                submitBtn.prop('disabled', false);
+                submitText.removeClass('d-none');
+                submitSpinner.addClass('d-none');
+            }
+        });
+    });
+});
+</script>
+@endpush
 @endsection

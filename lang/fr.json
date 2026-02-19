@@ -335,5 +335,12 @@
   "Ajouté au Panier": "Ajouté au Panier",
   "Informations": "Informations",
   "Description": "Description",
-  "Détails de l'Activité": "Détails de l'Activité"
+  "Détails de l'Activité": "Détails de l'Activité",
+  "Envoi en cours...": "Envoi en cours...",
+  "Une erreur est survenue. Veuillez réessayer.": "Une erreur est survenue. Veuillez réessayer.",
+  "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.": "Votre message a été envoyé avec succès. Nous vous répondrons dans les plus brefs délais.",
+  "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.": "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+  "Message": "Message",
+  "Horaires": "Horaires",
+  "Lundi - Dimanche: 9h00 - 21h00": "Lundi - Dimanche: 9h00 - 21h00"
 }
