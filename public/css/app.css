@@ -842,6 +842,7 @@ img {
 
 .btn-primary:hover {
     background: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary) 100%);
+    color: var(--color-white) !important;
     transform: translateY(-2px);
     box-shadow: var(--shadow-md);
 }

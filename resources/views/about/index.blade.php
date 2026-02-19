@@ -5,7 +5,7 @@
 @section('content')
 <div class="page-header py-5" style="background: linear-gradient(135deg, #FF6A00 0%, #E55F00 100%);">
     <div class="container text-center text-white">
-        <h1 class="display-4 fw-bold">{{ __('About Us') }}</h1>
+        <h1 class="display-4 fw-bold" style="color: white !important;">{{ __('About Us') }}</h1>
         <p class="lead">{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables') }}</p>
     </div>
 </div>
