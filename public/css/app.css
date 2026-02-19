@@ -573,8 +573,8 @@ img {
 
 .activity-card-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    gap: var(--spacing-sm);
     margin-top: auto;
     padding-top: var(--spacing-sm);
     border-top: 1px solid var(--color-gray-200);
@@ -584,6 +584,7 @@ img {
     font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-primary);
+    flex: 5;
 }
 
 /* Add to cart button */
@@ -598,8 +599,11 @@ img {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     white-space: nowrap;
+    flex: 5;
+    width: 100%;
 }
 
 .add-to-cart-btn:hover {
