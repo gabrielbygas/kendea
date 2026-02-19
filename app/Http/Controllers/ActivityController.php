@@ -43,11 +43,6 @@ class ActivityController extends Controller
             $query->where('emirate', $request->emirate);
         }
 
-        // Apply emirate filter if provided
-        if ($request->has('emirate') && $request->emirate != '') {
-            $query->where('emirat', $request->emirate);
-        }
-
         // Apply sorting
         $sort = $request->get('sort', 'nom_asc');
         switch ($sort) {
