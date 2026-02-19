@@ -213,6 +213,10 @@ function attachActivityListeners() {
             selectedActivities = selectedActivities.filter(a => a.id !== activityId);
             activityCard.removeClass('selected');
             $(this).html('<i class="bi bi-cart-plus"></i> ' + (window.appLocale === 'en' ? 'Add to Cart' : 'Ajouter au Panier'));
+            
+            // Show removed notification
+            const removedMsg = window.appLocale === 'en' ? 'Activity removed from cart' : 'Activité retirée du panier';
+            showToast(removedMsg, 'info');
         } else {
             // Add to selection
             selectedActivities.push({
@@ -221,6 +225,10 @@ function attachActivityListeners() {
             });
             activityCard.addClass('selected');
             $(this).html('<i class="bi bi-check-circle"></i> ' + (window.appLocale === 'en' ? 'Added' : 'Ajouté'));
+            
+            // Show added notification
+            const addedMsg = window.appLocale === 'en' ? 'Activity added to cart!' : 'Activité ajoutée au panier !';
+            showToast(addedMsg, 'success');
         }
 
         updateTotalPrice();
