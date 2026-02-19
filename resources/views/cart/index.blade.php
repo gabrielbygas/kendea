@@ -284,6 +284,12 @@ document.addEventListener('DOMContentLoaded', function() {
         let cart = JSON.parse(localStorage.getItem('kendea_cart') || '[]');
         cart = cart.filter(item => item.id !== activityId);
         localStorage.setItem('kendea_cart', JSON.stringify(cart));
+        
+        // Update header cart count by reloading from localStorage
+        if (typeof loadCartFromStorage === 'function') {
+            loadCartFromStorage();
+        }
+        
         loadCart();
     }
 
