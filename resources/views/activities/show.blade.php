@@ -233,6 +233,7 @@
 
 .booking-card {
     top: 100px;
+    z-index: 100;
 }
 
 .booking-card .card {
