@@ -47,10 +47,9 @@
                                 <p class="price-label">{{ __('À partir de') }}</p>
                                 <p class="price-value">{{ number_format($activity->prix, 0) }} AED</p>
                             </div>
-                            <button onclick="handleActivityBooking({{ $activity->id }})" 
-                                    class="cta-button">
+                            <a href="{{ route('activity.show', $activity->slug) }}" class="cta-button">
                                 {{ __('Réserver') }} →
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -273,6 +272,7 @@
     }
 
     .cta-button {
+        display: inline-block;
         padding: 0.75rem 2rem;
         background: linear-gradient(135deg, #FF6A00 0%, #E55F00 100%);
         color: #FFFFFF;
@@ -283,12 +283,14 @@
         cursor: pointer;
         box-shadow: 0 10px 25px rgba(255, 106, 0, 0.3);
         transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        text-decoration: none;
     }
 
     .cta-button:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 35px rgba(255, 106, 0, 0.5);
         background: linear-gradient(135deg, #FF8533 0%, #FF6A00 100%);
+        color: #FFFFFF;
     }
 
     .cta-button:active {

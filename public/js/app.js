@@ -111,9 +111,9 @@ function renderActivities(activities) {
                 <div class="activity-card ${selectedClass}" data-id="${activity.id}" data-prix="${activity.prix}">
                     <div class="activity-card-image">
                         <img src="/${firstImage}" alt="${activity.nom}" loading="lazy">
-                        <button class="btn btn-sm btn-outline-light voir-details-image" data-id="${activity.id}">
+                        <a href="/activity/${activity.slug}" class="btn btn-sm btn-outline-light voir-details-image">
                             <i class="bi bi-eye"></i> ${viewDetailsText}
-                        </button>
+                        </a>
                     </div>
                     <div class="activity-card-body">
                         <h5 class="activity-card-title">${activity.nom}</h5>
@@ -225,13 +225,6 @@ function attachActivityListeners() {
 
         updateTotalPrice();
         updateCartCount();
-    });
-
-    // View details button (on image)
-    $('.voir-details-image').off('click').on('click', function(e) {
-        e.stopPropagation();
-        const activityId = $(this).data('id');
-        loadActivityDetails(activityId);
     });
 }
 

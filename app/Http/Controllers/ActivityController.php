@@ -88,6 +88,15 @@ class ActivityController extends Controller
     }
 
     /**
+     * Show activity detail page
+     */
+    public function showPage($slug)
+    {
+        $activity = Activity::with('category')->where('slug', $slug)->firstOrFail();
+        return view('activities.show', compact('activity'));
+    }
+
+    /**
      * Generate XML sitemap
      */
     public function sitemap()

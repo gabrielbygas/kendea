@@ -23,6 +23,9 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 // Activities page
 Route::get('/activities', [ActivityController::class, 'index'])->name('activities.index');
 
+// Activity detail page
+Route::get('/activity/{slug}', [ActivityController::class, 'showPage'])->name('activity.show');
+
 // Blog page
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 
