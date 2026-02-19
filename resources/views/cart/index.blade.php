@@ -190,11 +190,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function showEmptyCart() {
         document.getElementById('cart-loading').style.display = 'none';
         document.getElementById('cart-empty').style.display = 'block';
+        document.getElementById('cart-content').style.display = 'none';
     }
 
     function displayCart(activities, cart) {
         document.getElementById('cart-loading').style.display = 'none';
         document.getElementById('cart-content').style.display = 'block';
+        document.getElementById('cart-empty').style.display = 'none';
 
         const cartItemsContainer = document.getElementById('cart-items');
         let totalPrice = 0;
