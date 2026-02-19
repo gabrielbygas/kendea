@@ -89,7 +89,7 @@
     <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="activityDetailsModalLabel">Détails de l'Activité</h5>
+                <h5 class="modal-title" id="activityDetailsModalLabel">{{ __('Détails de l\'Activité') }}</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" id="activity-details-content">
@@ -102,6 +102,10 @@
 @endsection
 
 @push('scripts')
+<script>
+    // Pass locale to JavaScript
+    window.appLocale = '{{ app()->getLocale() }}';
+</script>
 <script src="{{ asset('js/activities.js') }}"></script>
 <script>
     // Initialize activities manager

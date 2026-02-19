@@ -316,46 +316,55 @@ function loadActivityDetails(activityId) {
  */
 function displayActivityDetails(activity) {
     const starsHtml = generateStars(activity.notes);
+    const isEnglish = window.appLocale === 'en';
 
     let imagesHtml = '<div id="activityCarousel" class="carousel slide" data-bs-ride="carousel">';
     imagesHtml += '<div class="carousel-inner">';
 
     activity.images.forEach((image, index) => {
         const activeClass = index === 0 ? 'active' : '';
+        const altText = isEnglish ? activity.nom_en : activity.nom;
         imagesHtml += `
             <div class="carousel-item ${activeClass}">
-                <img src="/${image}" class="d-block w-100 rounded" alt="${activity.nom}" loading="lazy" style="max-height: 400px; object-fit: cover;">
+                <img src="/${image}" class="d-block w-100 rounded" alt="${altText}" loading="lazy" style="max-height: 400px; object-fit: cover;">
             </div>
         `;
     });
 
     imagesHtml += '</div>';
     if (activity.images.length > 1) {
+        const prevText = isEnglish ? 'Previous' : 'Précédent';
+        const nextText = isEnglish ? 'Next' : 'Suivant';
         imagesHtml += `
             <button class="carousel-control-prev" type="button" data-bs-target="#activityCarousel" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Précédent</span>
+                <span class="visually-hidden">${prevText}</span>
             </button>
             <button class="carousel-control-next" type="button" data-bs-target="#activityCarousel" data-bs-slide="next">
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Suivant</span>
+                <span class="visually-hidden">${nextText}</span>
             </button>
         `;
     }
     imagesHtml += '</div>';
 
+    const activityName = isEnglish ? activity.nom_en : activity.nom;
+    const categoryName = isEnglish ? (activity.category.nom_en || activity.category.nom) : activity.category.nom;
+    const location = isEnglish ? (activity.location_en || activity.location) : activity.location;
+    const description = isEnglish ? activity.description_en : activity.description;
+
     const detailsHtml = `
         ${imagesHtml}
         <div class="activity-details-content mt-4">
-            <h3>${activity.nom}</h3>
+            <h3>${activityName}</h3>
             <div class="mb-3">
-                <span class="badge bg-primary">${activity.category.nom}</span>
-                <span class="ms-2"><i class="bi bi-geo-alt"></i> ${activity.location}</span>
+                <span class="badge bg-primary">${categoryName}</span>
+                <span class="ms-2"><i class="bi bi-geo-alt"></i> ${location}</span>
             </div>
             <div class="mb-3">
                 ${starsHtml} <span class="ms-2">(${activity.notes} / 5.0)</span>
             </div>
-            <p class="lead">${activity.description}</p>
+            <p class="lead">${description}</p>
             <div class="price-tag mt-4 p-3 bg-light rounded">
                 <h4 class="text-primary mb-0">${parseFloat(activity.prix).toFixed(2)} AED</h4>
             </div>
