@@ -341,8 +341,14 @@
                             }
                         });
                         
-                        // Open WhatsApp in new tab
-                        window.open(result.whatsapp_url, '_blank');
+                        // Open WhatsApp using a temporary link (bypasses popup blocker)
+                        const whatsappLink = document.createElement('a');
+                        whatsappLink.href = result.whatsapp_url;
+                        whatsappLink.target = '_blank';
+                        whatsappLink.rel = 'noopener noreferrer';
+                        document.body.appendChild(whatsappLink);
+                        whatsappLink.click();
+                        document.body.removeChild(whatsappLink);
                         
                         // Store success message in session storage
                         const locale = '{{ app()->getLocale() }}';
@@ -351,8 +357,10 @@
                             : 'Merci pour votre commande ! Nous vous contacterons bientôt via WhatsApp.';
                         sessionStorage.setItem('orderSuccess', thankYouMessage);
                         
-                        // Redirect to activities page
-                        window.location.href = '{{ route("activities.index") }}';
+                        // Wait a bit to ensure WhatsApp tab opens, then redirect
+                        setTimeout(() => {
+                            window.location.href = '{{ route("activities.index") }}';
+                        }, 1500);
                     } else {
                         submitBtn.disabled = false;
                         submitBtn.innerHTML = originalBtnHtml;
