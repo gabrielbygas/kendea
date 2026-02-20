@@ -159,19 +159,26 @@ class ActivityController extends Controller
      */
     public function cart()
     {
-        // Get cart from session (array of activity IDs)
-        $cartIds = session('cart', []);
+        // Get cart from session (now ['id' => ['quantity' => X]])
+        $cart = session('cart', []);
+        $cartIds = array_keys($cart);
         
         // Fetch activities details
         $activities = Activity::with('category')
             ->whereIn('id', $cartIds)
             ->get()
-            ->keyBy('id'); // Key by ID to maintain order
+            ->keyBy('id');
         
-        // Reorder activities to match cart order
+        // Build cart items with quantity
         $cartActivities = collect($cartIds)
-            ->map(fn($id) => $activities->get($id))
-            ->filter(); // Remove null values if activity was deleted
+            ->map(function($id) use ($activities, $cart) {
+                $activity = $activities->get($id);
+                if ($activity) {
+                    $activity->quantity = $cart[$id]['quantity'] ?? 1;
+                }
+                return $activity;
+            })
+            ->filter(); // Remove null values
         
         return view('cart.index', compact('cartActivities'));
     }
@@ -182,6 +189,7 @@ class ActivityController extends Controller
     public function addToCart(Request $request)
     {
         $activityId = $request->input('activity_id');
+        $quantity = $request->input('quantity', 1); // Default 1 guest
         
         // Verify activity exists
         $activity = Activity::find($activityId);
@@ -189,12 +197,34 @@ class ActivityController extends Controller
             return response()->json(['success' => false, 'message' => 'Activity not found'], 404);
         }
         
-        // Get current cart
+        // Get current cart (now stores ['id' => ['quantity' => X]])
         $cart = session('cart', []);
         
-        // Add if not already in cart
-        if (!in_array($activityId, $cart)) {
-            $cart[] = $activityId;
+        // Add or update quantity
+        if (!isset($cart[$activityId])) {
+            $cart[$activityId] = ['quantity' => max(1, (int)$quantity)];
+        }
+        
+        session(['cart' => $cart]);
+        
+        return response()->json([
+            'success' => true,
+            'count' => count($cart)
+        ]);
+    }
+    
+    /**
+     * Update cart item quantity
+     */
+    public function updateCartQuantity(Request $request)
+    {
+        $activityId = $request->input('activity_id');
+        $quantity = max(1, (int)$request->input('quantity', 1));
+        
+        $cart = session('cart', []);
+        
+        if (isset($cart[$activityId])) {
+            $cart[$activityId]['quantity'] = $quantity;
             session(['cart' => $cart]);
         }
         
@@ -212,7 +242,7 @@ class ActivityController extends Controller
         $activityId = $request->input('activity_id');
         
         $cart = session('cart', []);
-        $cart = array_values(array_diff($cart, [$activityId]));
+        unset($cart[$activityId]);
         session(['cart' => $cart]);
         
         return response()->json([

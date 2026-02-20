@@ -84,13 +84,29 @@ class SessionCart {
     }
     
     showAlert(message, type = 'success') {
+        // Get translation based on current locale
+        const locale = window.appLocale || 'fr';
+        const translations = {
+            fr: {
+                success: 'Activité ajoutée au panier avec succès !',
+                error: 'Erreur lors de l\'ajout au panier'
+            },
+            en: {
+                success: 'Activity successfully added to cart!',
+                error: 'Error adding to cart'
+            }
+        };
+        
+        // Use provided message or get translation
+        const finalMessage = message || (type === 'success' ? translations[locale].success : translations[locale].error);
+        
         // Create Bootstrap alert
         const alertDiv = document.createElement('div');
         alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
         alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
         alertDiv.innerHTML = `
             <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
-            ${message}
+            ${finalMessage}
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
         `;
         

@@ -19,8 +19,8 @@ $(document).ready(function() {
         offset: 100
     });
 
-    // Load cart from localStorage
-    loadCartFromStorage();
+    // Load cart from localStorage - DISABLED: Now using session-cart.js
+    // loadCartFromStorage();
 
     // Load activities
     loadActivities();
@@ -280,9 +280,11 @@ function updateTotalPrice() {
 }
 
 /**
- * Update cart count in header
+ * Update cart count in header - DISABLED: Now using session-cart.js
  */
 function updateCartCount() {
+    // DISABLED - session-cart.js handles this now
+    /*
     const count = selectedActivities.length;
     $('#panier-count, #panier-count-inline').text(count);
 
@@ -291,6 +293,7 @@ function updateCartCount() {
     } else {
         $('#panier-count').hide();
     }
+    */
 }
 
 /**

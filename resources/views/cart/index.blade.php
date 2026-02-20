@@ -27,7 +27,7 @@
                                              alt="{{ $activity->nom }}"
                                              onerror="this.src='{{ asset('images/default.jpg') }}'">
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-5">
                                         <h6 class="mb-1">
                                             <a href="{{ route('activity.show', $activity->slug) }}" class="text-decoration-none text-dark">
                                                 {{ $activity->nom }}
@@ -41,9 +41,23 @@
                                         <small class="text-muted">
                                             <i class="bi bi-geo-alt"></i> {{ $activity->city ?? $activity->emirate }}
                                         </small>
+                                        <br>
+                                        <div class="mt-2">
+                                            <label class="small text-muted">{{ __('Nombre d\'invités') }}:</label>
+                                            <input type="number" 
+                                                   class="form-control form-control-sm d-inline-block quantity-input" 
+                                                   style="width: 80px;" 
+                                                   min="1" 
+                                                   max="50" 
+                                                   value="{{ $activity->quantity }}"
+                                                   data-activity-id="{{ $activity->id }}"
+                                                   data-price="{{ $activity->prix }}">
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 text-center">
-                                        <strong style="color: #FF6A00;">{{ number_format($activity->prix, 2) }} AED</strong>
+                                    <div class="col-md-3 text-center">
+                                        <div class="small text-muted">{{ __('Prix unitaire') }}</div>
+                                        <div style="color: #FF6A00;">{{ number_format($activity->prix, 2) }} AED</div>
+                                        <div class="mt-1 fw-bold">{{ __('Total') }}: <span class="item-total">{{ number_format($activity->prix * $activity->quantity, 2) }}</span> AED</div>
                                     </div>
                                     <div class="col-md-2 text-end">
                                         <button type="button" class="btn btn-sm btn-outline-danger btn-remove-item" 
@@ -71,10 +85,15 @@
                             <strong>{{ $cartActivities->count() }}</strong>
                         </div>
                         
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>{{ __('Total invités') }}:</span>
+                            <strong id="total-guests">{{ $cartActivities->sum('quantity') }}</strong>
+                        </div>
+                        
                         <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                             <strong>{{ __('Total') }}:</strong>
-                            <strong style="color: #FF6A00; font-size: 1.5rem;">
-                                {{ number_format($cartActivities->sum('prix'), 2) }} AED
+                            <strong style="color: #FF6A00; font-size: 1.5rem;" id="grand-total">
+                                {{ number_format($cartActivities->sum(fn($a) => $a->prix * $a->quantity), 2) }} AED
                             </strong>
                         </div>
 
@@ -187,6 +206,53 @@
     document.addEventListener('DOMContentLoaded', function() {
         let activityIdToRemove = null;
         const confirmRemoveModal = new bootstrap.Modal(document.getElementById('confirmRemoveModal'));
+        
+        // Handle quantity change
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('change', async function() {
+                const activityId = this.dataset.activityId;
+                const quantity = parseInt(this.value) || 1;
+                const price = parseFloat(this.dataset.price);
+                
+                // Update item total
+                const itemTotal = this.closest('.cart-item').querySelector('.item-total');
+                itemTotal.textContent = (price * quantity).toFixed(2);
+                
+                // Update server
+                try {
+                    await fetch('{{ route("api.cart.update-quantity") }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        credentials: 'same-origin',
+                        body: JSON.stringify({ activity_id: activityId, quantity: quantity })
+                    });
+                    
+                    // Recalculate totals
+                    updateTotals();
+                } catch (error) {
+                    console.error('Error updating quantity:', error);
+                }
+            });
+        });
+        
+        // Recalculate totals
+        function updateTotals() {
+            let totalGuests = 0;
+            let grandTotal = 0;
+            
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                const quantity = parseInt(input.value) || 1;
+                const price = parseFloat(input.dataset.price);
+                totalGuests += quantity;
+                grandTotal += price * quantity;
+            });
+            
+            document.getElementById('total-guests').textContent = totalGuests;
+            document.getElementById('grand-total').textContent = grandTotal.toFixed(2) + ' AED';
+        }
         
         // Handle remove button clicks
         document.querySelectorAll('.btn-remove-item').forEach(btn => {

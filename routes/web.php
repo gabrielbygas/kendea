@@ -53,6 +53,7 @@ Route::prefix('api')->group(function () {
     // Cart API
     Route::post('/cart/add', [ActivityController::class, 'addToCart'])->name('api.cart.add');
     Route::post('/cart/remove', [ActivityController::class, 'removeFromCart'])->name('api.cart.remove');
+    Route::post('/cart/update-quantity', [ActivityController::class, 'updateCartQuantity'])->name('api.cart.update-quantity');
     Route::get('/cart/count', [ActivityController::class, 'getCartCount'])->name('api.cart.count');
 });
 

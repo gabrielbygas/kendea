@@ -185,5 +185,8 @@
   "activité(s) dans cette catégorie": "activity(ies) in this category",
   "Confirmer la suppression": "Confirm Removal",
   "Retirer": "Remove",
-  "Erreur lors de la suppression": "Error removing item"
+  "Erreur lors de la suppression": "Error removing item",
+  "Nombre d'invités": "Number of guests",
+  "Prix unitaire": "Unit price",
+  "Total invités": "Total guests"
 }
