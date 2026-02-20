@@ -63,11 +63,19 @@
                     @foreach($activities as $activity)
                         <div class="col">
                             <div class="card h-100 activity-card shadow-sm d-flex flex-column" data-activity-id="{{ $activity->id }}">
-                                <a href="{{ route('activity.show', $activity->slug) }}">
-                                    <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img" 
-                                         alt="{{ $activity->nom }}" 
-                                         onerror="this.src='{{ asset('images/default.jpg') }}'">
-                                </a>
+                                <div class="position-relative">
+                                    <a href="{{ route('activity.show', $activity->slug) }}">
+                                        <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img" 
+                                             alt="{{ $activity->nom }}" 
+                                             onerror="this.src='{{ asset('images/default.jpg') }}'">
+                                    </a>
+                                    <a href="{{ route('activity.show', $activity->slug) }}" 
+                                       class="btn btn-sm btn-light position-absolute rounded-circle shadow-sm"
+                                       style="bottom: 10px; right: 10px; width: 35px; height: 35px; padding: 0; display: flex; align-items: center; justify-content: center;"
+                                       title="{{ __('Voir détails') }}">
+                                        <i class="bi bi-eye-fill" style="font-size: 1rem;"></i>
+                                    </a>
+                                </div>
                                 <div class="card-body d-flex flex-column">
                                     <span class="badge bg-secondary mb-2">
                                         {{ App::getLocale() == 'en' ? ($activity->category->nom_en ?? $activity->category->nom) : $activity->category->nom }}
