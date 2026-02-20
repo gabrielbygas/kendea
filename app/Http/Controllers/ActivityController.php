@@ -159,8 +159,22 @@ class ActivityController extends Controller
      */
     public function cart()
     {
-        // Get cart from session (now ['id' => ['quantity' => X]])
+        // Get cart from session
         $cart = session('cart', []);
+        
+        // MIGRATION: Convert old format [1, 2, 3] to new format {'1': {'quantity': 1}}
+        if (!empty($cart) && isset($cart[0])) {
+            // Old format detected (indexed array)
+            $newCart = [];
+            foreach ($cart as $activityId) {
+                if (is_numeric($activityId)) {
+                    $newCart[$activityId] = ['quantity' => 1];
+                }
+            }
+            $cart = $newCart;
+            session(['cart' => $cart]);
+        }
+        
         $cartIds = array_keys($cart);
         
         // Fetch activities details
@@ -258,6 +272,15 @@ class ActivityController extends Controller
     {
         $cart = session('cart', []);
         return response()->json(['count' => count($cart)]);
+    }
+    
+    /**
+     * Clear cart
+     */
+    public function clearCart()
+    {
+        session()->forget('cart');
+        return response()->json(['success' => true, 'count' => 0]);
     }
 
     /**

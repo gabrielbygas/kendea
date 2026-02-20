@@ -55,6 +55,7 @@ Route::prefix('api')->group(function () {
     Route::post('/cart/remove', [ActivityController::class, 'removeFromCart'])->name('api.cart.remove');
     Route::post('/cart/update-quantity', [ActivityController::class, 'updateCartQuantity'])->name('api.cart.update-quantity');
     Route::get('/cart/count', [ActivityController::class, 'getCartCount'])->name('api.cart.count');
+    Route::post('/cart/clear', [ActivityController::class, 'clearCart'])->name('api.cart.clear');
 });
 
 // SEO routes
