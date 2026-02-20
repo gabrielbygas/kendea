@@ -10,43 +10,46 @@
     </h1>
 
     @if($cartActivities->count() > 0)
-        <div class="row">
-            <div class="col-lg-8">
+        <div class="row g-4">
+            <div class="col-12 col-lg-8">
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">
+                        <h5 class="card-title mb-4 fs-6 fs-md-5">
                             <i class="bi bi-list-check"></i> {{ __('Activités sélectionnées') }}
                         </h5>
                         
                         @foreach($cartActivities as $activity)
                             <div class="cart-item border-bottom pb-3 mb-3" data-activity-id="{{ $activity->id }}">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2">
+                                <div class="row g-3 align-items-start">
+                                    {{-- Image --}}
+                                    <div class="col-4 col-md-2">
                                         <img src="{{ asset($activity->first_image) }}" 
                                              class="img-fluid rounded" 
                                              alt="{{ $activity->nom }}"
                                              onerror="this.src='{{ asset('images/default.jpg') }}'">
                                     </div>
-                                    <div class="col-md-5">
-                                        <h6 class="mb-1">
+                                    
+                                    {{-- Activity Details --}}
+                                    <div class="col-8 col-md-5">
+                                        <h6 class="mb-1 fs-6">
                                             <a href="{{ route('activity.show', $activity->slug) }}" class="text-decoration-none text-dark">
                                                 {{ $activity->nom }}
                                             </a>
                                         </h6>
-                                        <small class="text-muted">
+                                        <small class="text-muted d-block">
                                             <i class="bi bi-tag"></i> 
                                             {{ App::getLocale() == 'en' ? ($activity->category->nom_en ?? $activity->category->nom) : $activity->category->nom }}
                                         </small>
-                                        <br>
-                                        <small class="text-muted">
+                                        <small class="text-muted d-block">
                                             <i class="bi bi-geo-alt"></i> {{ $activity->city ?? $activity->emirate }}
                                         </small>
-                                        <br>
+                                        
+                                        {{-- Quantity input --}}
                                         <div class="mt-2">
-                                            <label class="small text-muted">{{ __('Nombre d\'invités') }}:</label>
+                                            <label class="small text-muted d-block d-md-inline">{{ __('Nombre d\'invités') }}:</label>
                                             <input type="number" 
-                                                   class="form-control form-control-sm d-inline-block quantity-input" 
-                                                   style="width: 80px;" 
+                                                   class="form-control form-control-sm quantity-input" 
+                                                   style="width: 80px; display: inline-block;" 
                                                    min="1" 
                                                    max="50" 
                                                    value="{{ $activity->quantity }}"
@@ -54,16 +57,27 @@
                                                    data-price="{{ $activity->prix }}">
                                         </div>
                                     </div>
-                                    <div class="col-md-3 text-center">
-                                        <div class="small text-muted">{{ __('Prix unitaire') }}</div>
-                                        <div style="color: #FF6A00;">{{ number_format($activity->prix, 2) }} AED</div>
-                                        <div class="mt-1 fw-bold">{{ __('Total') }}: <span class="item-total">{{ number_format($activity->prix * $activity->quantity, 2) }}</span> AED</div>
+                                    
+                                    {{-- Price Section - Full width on mobile --}}
+                                    <div class="col-8 col-md-3 order-3 order-md-2">
+                                        <div class="d-flex flex-column flex-md-column text-start text-md-center">
+                                            <div class="small text-muted">{{ __('Prix unitaire') }}</div>
+                                            <div class="text-primary" style="color: #FF6A00 !important;">
+                                                {{ number_format($activity->prix, 2) }} AED
+                                            </div>
+                                            <div class="mt-1 fw-bold">
+                                                {{ __('Total') }}: <span class="item-total">{{ number_format($activity->prix * $activity->quantity, 2) }}</span> AED
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-2 text-end">
+                                    
+                                    {{-- Remove button --}}
+                                    <div class="col-4 col-md-2 text-end order-2 order-md-3">
                                         <button type="button" class="btn btn-sm btn-outline-danger btn-remove-item" 
                                                 data-activity-id="{{ $activity->id }}"
                                                 data-activity-name="{{ $activity->nom }}">
                                             <i class="bi bi-trash"></i>
+                                            <span class="d-none d-md-inline ms-1">{{ __('Retirer') }}</span>
                                         </button>
                                     </div>
                                 </div>
@@ -73,35 +87,35 @@
                 </div>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-12 col-lg-4">
                 <div class="card shadow-sm sticky-top" style="top: 100px;">
                     <div class="card-body">
-                        <h5 class="card-title mb-4">
+                        <h5 class="card-title mb-4 fs-6 fs-md-5">
                             <i class="bi bi-receipt"></i> {{ __('Résumé de la Commande') }}
                         </h5>
                         
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex justify-content-between mb-2 small">
                             <span>{{ __('Total activités') }}:</span>
                             <strong>{{ $cartActivities->count() }}</strong>
                         </div>
                         
-                        <div class="d-flex justify-content-between mb-2">
+                        <div class="d-flex justify-content-between mb-2 small">
                             <span>{{ __('Total invités') }}:</span>
                             <strong id="total-guests">{{ $cartActivities->sum('quantity') }}</strong>
                         </div>
                         
                         <div class="d-flex justify-content-between mb-3 pb-3 border-bottom">
                             <strong>{{ __('Total') }}:</strong>
-                            <strong style="color: #FF6A00; font-size: 1.5rem;" id="grand-total">
+                            <strong class="fs-4 fs-md-3" style="color: #FF6A00;" id="grand-total">
                                 {{ number_format($cartActivities->sum(fn($a) => $a->prix * $a->quantity), 2) }} AED
                             </strong>
                         </div>
 
-                        <button type="button" class="btn btn-success w-100 mb-2" data-bs-toggle="modal" data-bs-target="#orderModal">
+                        <button type="button" class="btn btn-success w-100 mb-2 btn-sm btn-md-md" data-bs-toggle="modal" data-bs-target="#orderModal">
                             <i class="bi bi-check-circle"></i> {{ __('Passer la commande') }}
                         </button>
                         
-                        <a href="{{ route('activities.index') }}" class="btn btn-outline-primary w-100">
+                        <a href="{{ route('activities.index') }}" class="btn btn-outline-primary w-100 btn-sm btn-md-md">
                             <i class="bi bi-arrow-left"></i> {{ __('Continuer mes achats') }}
                         </a>
                     </div>
@@ -122,10 +136,10 @@
 
 {{-- Order Modal --}}
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="orderModalLabel">
+                <h5 class="modal-title fs-6 fs-md-5" id="orderModalLabel">
                     <i class="bi bi-clipboard-check"></i> {{ __('Finaliser votre Commande') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Fermer') }}"></button>
@@ -134,40 +148,40 @@
                 @csrf
                 <div class="modal-body">
                     <div class="row g-3">
-                        <div class="col-md-6">
-                            <label for="prenom" class="form-label">{{ __('Prénom') }} *</label>
-                            <input type="text" class="form-control" id="prenom" name="prenom" required>
+                        <div class="col-12 col-md-6">
+                            <label for="prenom" class="form-label small">{{ __('Prénom') }} *</label>
+                            <input type="text" class="form-control form-control-sm" id="prenom" name="prenom" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="nom" class="form-label">{{ __('Nom') }} *</label>
-                            <input type="text" class="form-control" id="nom" name="nom" required>
+                        <div class="col-12 col-md-6">
+                            <label for="nom" class="form-label small">{{ __('Nom') }} *</label>
+                            <input type="text" class="form-control form-control-sm" id="nom" name="nom" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="email" class="form-label">{{ __('Email') }} *</label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                        <div class="col-12 col-md-6">
+                            <label for="email" class="form-label small">{{ __('Email') }} *</label>
+                            <input type="email" class="form-control form-control-sm" id="email" name="email" required>
                         </div>
-                        <div class="col-md-6">
-                            <label for="telephone" class="form-label">{{ __('Téléphone WhatsApp') }} *</label>
-                            <input type="tel" class="form-control" id="telephone" name="telephone" required 
+                        <div class="col-12 col-md-6">
+                            <label for="telephone" class="form-label small">{{ __('Téléphone WhatsApp') }} *</label>
+                            <input type="tel" class="form-control form-control-sm" id="telephone" name="telephone" required 
                                    placeholder="+971 XX XXX XXXX">
                         </div>
                         <div class="col-12">
-                            <label for="datetime" class="form-label">{{ __('Date et Heure souhaitée') }}</label>
-                            <input type="datetime-local" class="form-control" id="datetime" name="datetime">
+                            <label for="datetime" class="form-label small">{{ __('Date et Heure souhaitée') }}</label>
+                            <input type="datetime-local" class="form-control form-control-sm" id="datetime" name="datetime">
                         </div>
                         <div class="col-12">
-                            <label for="message" class="form-label">{{ __('Message ou demandes spéciales') }}</label>
-                            <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+                            <label for="message" class="form-label small">{{ __('Message ou demandes spéciales') }}</label>
+                            <textarea class="form-control form-control-sm" id="message" name="message" rows="3"></textarea>
                         </div>
                         <input type="hidden" name="activities" id="activities-input" value="{{ $cartActivities->pluck('id')->toJson() }}">
                     </div>
-                    <div class="alert alert-info mt-3">
+                    <div class="alert alert-info mt-3 small">
                         <i class="bi bi-info-circle"></i> {{ __('Votre commande sera confirmée via WhatsApp.') }}
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
-                    <button type="submit" class="btn btn-success">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
+                    <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-whatsapp"></i> {{ __('Confirmer via WhatsApp') }}
                     </button>
                 </div>
