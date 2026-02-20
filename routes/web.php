@@ -49,6 +49,11 @@ Route::prefix('api')->group(function () {
     Route::get('/activities/{id}', [ActivityController::class, 'show'])->name('api.activities.show');
     Route::post('/activities/bulk', [ActivityController::class, 'getBulk'])->name('api.activities.bulk');
     Route::post('/commandes', [CommandeController::class, 'store'])->name('api.commandes.store');
+    
+    // Cart API
+    Route::post('/cart/add', [ActivityController::class, 'addToCart'])->name('api.cart.add');
+    Route::post('/cart/remove', [ActivityController::class, 'removeFromCart'])->name('api.cart.remove');
+    Route::get('/cart/count', [ActivityController::class, 'getCartCount'])->name('api.cart.count');
 });
 
 // SEO routes

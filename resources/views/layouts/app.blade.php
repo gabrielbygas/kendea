@@ -176,6 +176,7 @@
         window.appLocale = '{{ app()->getLocale() }}';
     </script>
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/session-cart.js') }}"></script>
 
     <script>
         // Scroll to Top functionality

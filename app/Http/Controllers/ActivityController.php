@@ -154,9 +154,80 @@ class ActivityController extends Controller
     /**
      * Display cart page
      */
+    /**
+     * Display cart page with items from session
+     */
     public function cart()
     {
-        return view('cart.index');
+        // Get cart from session (array of activity IDs)
+        $cartIds = session('cart', []);
+        
+        // Fetch activities details
+        $activities = Activity::with('category')
+            ->whereIn('id', $cartIds)
+            ->get()
+            ->keyBy('id'); // Key by ID to maintain order
+        
+        // Reorder activities to match cart order
+        $cartActivities = collect($cartIds)
+            ->map(fn($id) => $activities->get($id))
+            ->filter(); // Remove null values if activity was deleted
+        
+        return view('cart.index', compact('cartActivities'));
+    }
+    
+    /**
+     * Add activity to cart
+     */
+    public function addToCart(Request $request)
+    {
+        $activityId = $request->input('activity_id');
+        
+        // Verify activity exists
+        $activity = Activity::find($activityId);
+        if (!$activity) {
+            return response()->json(['success' => false, 'message' => 'Activity not found'], 404);
+        }
+        
+        // Get current cart
+        $cart = session('cart', []);
+        
+        // Add if not already in cart
+        if (!in_array($activityId, $cart)) {
+            $cart[] = $activityId;
+            session(['cart' => $cart]);
+        }
+        
+        return response()->json([
+            'success' => true,
+            'count' => count($cart)
+        ]);
+    }
+    
+    /**
+     * Remove activity from cart
+     */
+    public function removeFromCart(Request $request)
+    {
+        $activityId = $request->input('activity_id');
+        
+        $cart = session('cart', []);
+        $cart = array_values(array_diff($cart, [$activityId]));
+        session(['cart' => $cart]);
+        
+        return response()->json([
+            'success' => true,
+            'count' => count($cart)
+        ]);
+    }
+    
+    /**
+     * Get cart count
+     */
+    public function getCartCount()
+    {
+        $cart = session('cart', []);
+        return response()->json(['count' => count($cart)]);
     }
 
     /**
