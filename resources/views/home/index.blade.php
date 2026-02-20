@@ -100,11 +100,11 @@
     <section id="categories" class="category-tabs-section">
         <div class="container">
             <div class="category-tabs">
-                <button class="category-tab active" data-category="all">
+                <a href="{{ route('activities.index') }}" class="category-tab">
                     <i class="bi bi-grid-3x3-gap"></i> {{ __('All Activities') }}
-                </button>
+                </a>
                 @foreach ($categories as $category)
-                    <button class="category-tab" data-category="{{ $category->id }}">
+                    <a href="{{ route('category.show', $category->id) }}" class="category-tab">
                         @if ($category->nom == 'Desert Safari')
                             <i class="bi bi-sunset"></i>
                         @elseif($category->nom == 'Water Sports')
@@ -118,8 +118,8 @@
                         @else
                             <i class="bi bi-star"></i>
                         @endif
-                        {{ $category->nom }}
-                    </button>
+                        {{ App::getLocale() == 'en' ? ($category->nom_en ?? $category->nom) : $category->nom }}
+                    </a>
                 @endforeach
             </div>
         </div>
@@ -279,22 +279,3 @@
         </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        // Category tabs functionality
-        document.querySelectorAll('.category-tab').forEach(tab => {
-            tab.addEventListener('click', function() {
-                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
-                this.classList.add('active');
-
-                const category = this.dataset.category;
-                if (category === 'all') {
-                    window.location.href = '{{ route('activities.index') }}';
-                } else {
-                    window.location.href = '{{ route('activities.index') }}?category=' + category;
-                }
-            });
-        });
-    </script>
-@endpush

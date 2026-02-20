@@ -8,6 +8,7 @@ use App\Http\Controllers\CommandeController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\CategoryController;
 
 // Language switch
 Route::get('/lang/{locale}', function ($locale) {
@@ -25,6 +26,9 @@ Route::get('/activities', [ActivityController::class, 'index'])->name('activitie
 
 // Activity detail page
 Route::get('/activity/{slug}', [ActivityController::class, 'showPage'])->name('activity.show');
+
+// Category page
+Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
 
 // Blog page
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');

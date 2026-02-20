@@ -2,11 +2,12 @@
 // Activities Management Module
 
 class ActivitiesManager {
-    constructor(cart) {
+    constructor(cart, options = {}) {
         this.cart = cart;
-        this.currentCategory = '';
+        this.currentCategory = options.categoryId || '';
         this.currentEmirate = '';
         this.currentSort = 'nom_asc';
+        console.log('[ActivitiesManager] Initialized with categoryId:', this.currentCategory);
         this.init();
     }
 
@@ -77,10 +78,16 @@ class ActivitiesManager {
             if (this.currentEmirate) params.append('emirate', this.currentEmirate);
             params.append('sort', this.currentSort);
 
-            const response = await fetch(`/api/activities?${params.toString()}`);
+            const url = `/api/activities?${params.toString()}`;
+            console.log('[ActivitiesManager] Fetching:', url);
+            
+            const response = await fetch(url);
             if (!response.ok) throw new Error('Failed to fetch activities');
 
-            const activities = await response.json();
+            const data = await response.json();
+            const activities = data.activities || data; // Support both formats
+            
+            console.log('[ActivitiesManager] Loaded activities:', activities.length, 'Category filter:', this.currentCategory);
 
             if (loading) loading.style.display = 'none';
 
@@ -234,5 +241,3 @@ class ActivitiesManager {
         }
     }
 }
-
-export default ActivitiesManager;

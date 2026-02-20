@@ -33,9 +33,11 @@ class ActivityController extends Controller
     {
         $query = Activity::with('category');
 
-        // Apply category filter if provided
+        // Apply category filter if provided (accepts both 'category_id' and 'category')
         if ($request->has('category_id') && $request->category_id != '') {
             $query->where('categorie_id', $request->category_id);
+        } elseif ($request->has('category') && $request->category != '') {
+            $query->where('categorie_id', $request->category);
         }
 
         // Apply emirate filter if provided
