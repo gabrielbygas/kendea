@@ -74,8 +74,10 @@ class SessionCart {
     }
 }
 
-// Initialize global cart
-window.sessionCart = new SessionCart();
+// Initialize global cart when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    window.sessionCart = new SessionCart();
+});
 
 // Add to cart button handler
 document.addEventListener('click', async function(e) {

@@ -41,8 +41,11 @@
                     <a class="nav-link btn btn-primary text-white important ms-2 px-3" href="{{ route('cart.index') }}">
                         <i class="bi bi-cart3"></i> {{ __('Panier') }}
                     </a>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="panier-count">
-                        0
+                    @php
+                        $cartCount = count(session('cart', []));
+                    @endphp
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger {{ $cartCount > 0 ? '' : 'd-none' }}" id="panier-count">
+                        {{ $cartCount }}
                         <span class="visually-hidden">{{ __('activités dans le panier') }}</span>
                     </span>
                 </li>
