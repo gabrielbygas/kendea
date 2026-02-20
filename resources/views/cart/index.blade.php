@@ -306,46 +306,64 @@
         // Handle order form submission
         const orderForm = document.getElementById('order-form');
         if (orderForm) {
-            orderForm.addEventListener('submit', function(e) {
+            orderForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 
-                const formData = new FormData(this);
-                const data = Object.fromEntries(formData);
-                data.activities = JSON.parse(data.activities);
+                // Disable submit button and show loading
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnHtml = submitBtn.innerHTML;
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>{{ __("Traitement...") }}';
                 
-                fetch(this.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify(data)
-                })
-                .then(response => response.json())
-                .then(result => {
+                try {
+                    const formData = new FormData(this);
+                    const data = Object.fromEntries(formData);
+                    data.activities = JSON.parse(data.activities);
+                    
+                    const response = await fetch(this.action, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    const result = await response.json();
+                    
                     if (result.success) {
-                        // Clear cart from session
-                        @foreach($cartActivities as $activity)
-                            fetch('{{ route("api.cart.remove") }}', {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                                body: JSON.stringify({ activity_id: {{ $activity->id }} })
-                            });
-                        @endforeach
+                        // Clear entire cart in one request
+                        await fetch('{{ route("api.cart.clear") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        });
                         
-                        // Redirect to WhatsApp
-                        window.location.href = result.whatsapp_url;
+                        // Open WhatsApp in new tab
+                        window.open(result.whatsapp_url, '_blank');
+                        
+                        // Store success message in session storage
+                        const locale = '{{ app()->getLocale() }}';
+                        const thankYouMessage = locale === 'en' 
+                            ? 'Thank you for your order! We will contact you shortly via WhatsApp.'
+                            : 'Merci pour votre commande ! Nous vous contacterons bientôt via WhatsApp.';
+                        sessionStorage.setItem('orderSuccess', thankYouMessage);
+                        
+                        // Redirect to activities page
+                        window.location.href = '{{ route("activities.index") }}';
                     } else {
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = originalBtnHtml;
                         alert('{{ __("Erreur lors de la création de la commande") }}');
                     }
-                })
-                .catch(error => {
+                } catch (error) {
                     console.error('Error:', error);
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalBtnHtml;
                     alert('{{ __("Erreur lors de la création de la commande") }}');
-                });
+                }
             });
         }
     });

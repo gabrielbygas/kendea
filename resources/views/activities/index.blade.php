@@ -142,4 +142,35 @@
 
 @endsection
 
+@push('scripts')
+<script>
+    // Check for order success message
+    document.addEventListener('DOMContentLoaded', function() {
+        const successMessage = sessionStorage.getItem('orderSuccess');
+        if (successMessage) {
+            // Clear the message
+            sessionStorage.removeItem('orderSuccess');
+            
+            // Show success alert
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+            alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 350px; max-width: 500px;';
+            alertDiv.innerHTML = `
+                <i class="bi bi-check-circle-fill me-2"></i>
+                <strong>${successMessage}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            document.body.appendChild(alertDiv);
+            
+            // Auto-dismiss after 8 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 8000);
+        }
+    });
+</script>
+@endpush
+
 {{-- No additional scripts needed - session-cart.js is loaded globally --}}
