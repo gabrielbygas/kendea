@@ -3,12 +3,26 @@
 
 class SessionCart {
     constructor() {
-        this.loadCount();
+        // Only load count from API if not already set via SSR
+        const badge = document.getElementById('panier-count');
+        if (badge) {
+            const currentCount = parseInt(badge.textContent.trim()) || 0;
+            if (currentCount === 0) {
+                // Badge shows 0, verify with API
+                this.loadCount();
+            }
+            // If count > 0, it's already correct from SSR, don't overwrite
+        } else {
+            // No badge element, just load
+            this.loadCount();
+        }
     }
     
     async loadCount() {
         try {
-            const response = await fetch('/api/cart/count');
+            const response = await fetch('/api/cart/count', {
+                credentials: 'same-origin'
+            });
             const data = await response.json();
             this.updateUI(data.count);
         } catch (error) {
@@ -24,6 +38,7 @@ class SessionCart {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
+                credentials: 'same-origin',
                 body: JSON.stringify({ activity_id: activityId })
             });
             
@@ -47,6 +62,7 @@ class SessionCart {
                     'Content-Type': 'application/json',
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
                 },
+                credentials: 'same-origin',
                 body: JSON.stringify({ activity_id: activityId })
             });
             
@@ -64,7 +80,15 @@ class SessionCart {
     
     updateUI(count) {
         document.querySelectorAll('#panier-count, #panier-count-inline').forEach(el => {
-            el.textContent = count;
+            // Update only the count number, preserving inner HTML structure
+            const firstTextNode = Array.from(el.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
+            if (firstTextNode) {
+                firstTextNode.textContent = count;
+            } else {
+                // Fallback: just update the first part
+                el.firstChild.textContent = count;
+            }
+            
             if (count > 0) {
                 el.classList.remove('d-none');
             } else {
