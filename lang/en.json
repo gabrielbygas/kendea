@@ -182,5 +182,8 @@
   "Ajouter au Panier": "Add to Cart",
   "Déjà dans le Panier": "Already in Cart",
   "Ajouté !": "Added!",
-  "activité(s) dans cette catégorie": "activity(ies) in this category"
+  "activité(s) dans cette catégorie": "activity(ies) in this category",
+  "Confirmer la suppression": "Confirm Removal",
+  "Retirer": "Remove",
+  "Erreur lors de la suppression": "Error removing item"
 }

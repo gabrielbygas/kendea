@@ -3,31 +3,9 @@
 
 class SessionCart {
     constructor() {
-        // Only load count from API if not already set via SSR
-        const badge = document.getElementById('panier-count');
-        if (badge) {
-            const currentCount = parseInt(badge.textContent.trim()) || 0;
-            if (currentCount === 0) {
-                // Badge shows 0, verify with API
-                this.loadCount();
-            }
-            // If count > 0, it's already correct from SSR, don't overwrite
-        } else {
-            // No badge element, just load
-            this.loadCount();
-        }
-    }
-    
-    async loadCount() {
-        try {
-            const response = await fetch('/api/cart/count', {
-                credentials: 'same-origin'
-            });
-            const data = await response.json();
-            this.updateUI(data.count);
-        } catch (error) {
-            console.error('Error loading cart count:', error);
-        }
+        // Don't load count on init - trust the SSR value in the HTML
+        // Only update when user adds/removes items
+        console.log('[SessionCart] Initialized - using SSR count from HTML');
     }
     
     async add(activityId) {
@@ -45,11 +23,16 @@ class SessionCart {
             const data = await response.json();
             if (data.success) {
                 this.updateUI(data.count);
+                
+                // Show success alert
+                this.showAlert('Activité ajoutée au panier avec succès !', 'success');
+                
                 return true;
             }
             return false;
         } catch (error) {
             console.error('Error adding to cart:', error);
+            this.showAlert('Erreur lors de l\'ajout au panier', 'error');
             return false;
         }
     }
@@ -79,22 +62,45 @@ class SessionCart {
     }
     
     updateUI(count) {
+        console.log('[SessionCart] Updating UI with count:', count);
+        
         document.querySelectorAll('#panier-count, #panier-count-inline').forEach(el => {
-            // Update only the count number, preserving inner HTML structure
-            const firstTextNode = Array.from(el.childNodes).find(node => node.nodeType === Node.TEXT_NODE);
-            if (firstTextNode) {
-                firstTextNode.textContent = count;
-            } else {
-                // Fallback: just update the first part
+            // Find the text node (first child if it's text)
+            if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
                 el.firstChild.textContent = count;
+            } else {
+                // Create text node if doesn't exist
+                const textNode = document.createTextNode(count);
+                el.insertBefore(textNode, el.firstChild);
             }
             
+            // Show/hide badge
             if (count > 0) {
                 el.classList.remove('d-none');
             } else {
                 el.classList.add('d-none');
             }
         });
+    }
+    
+    showAlert(message, type = 'success') {
+        // Create Bootstrap alert
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            <i class="bi bi-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        
+        document.body.appendChild(alertDiv);
+        
+        // Auto-dismiss after 3 seconds
+        setTimeout(() => {
+            alertDiv.classList.remove('show');
+            setTimeout(() => alertDiv.remove(), 150);
+        }, 3000);
     }
 }
 

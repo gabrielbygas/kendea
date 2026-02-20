@@ -46,13 +46,11 @@
                                         <strong style="color: #FF6A00;">{{ number_format($activity->prix, 2) }} AED</strong>
                                     </div>
                                     <div class="col-md-2 text-end">
-                                        <form action="{{ route('cart.index') }}" method="GET" class="d-inline remove-form">
-                                            <input type="hidden" name="remove" value="{{ $activity->id }}">
-                                            <button type="submit" class="btn btn-sm btn-outline-danger" 
-                                                    onclick="return confirm('{{ __('Êtes-vous sûr de vouloir retirer cette activité du panier ?') }}')">
-                                                <i class="bi bi-trash"></i>
-                                            </button>
-                                        </form>
+                                        <button type="button" class="btn btn-sm btn-outline-danger btn-remove-item" 
+                                                data-activity-id="{{ $activity->id }}"
+                                                data-activity-name="{{ $activity->nom }}">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -158,75 +156,118 @@
         </div>
     </div>
 </div>
+
+{{-- Confirm Remove Modal --}}
+<div class="modal fade" id="confirmRemoveModal" tabindex="-1" aria-labelledby="confirmRemoveModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmRemoveModalLabel">
+                    <i class="bi bi-exclamation-triangle text-warning"></i> {{ __('Confirmer la suppression') }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Fermer') }}"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ __('Êtes-vous sûr de vouloir retirer cette activité du panier ?') }}</p>
+                <p class="text-muted mb-0"><strong id="activity-name-to-remove"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
+                <button type="button" class="btn btn-danger" id="confirm-remove-btn">
+                    <i class="bi bi-trash"></i> {{ __('Retirer') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('scripts')
 <script>
-    // Handle remove from cart
     document.addEventListener('DOMContentLoaded', function() {
-        // Check if there's a remove parameter in URL
-        const urlParams = new URLSearchParams(window.location.search);
-        const removeId = urlParams.get('remove');
+        let activityIdToRemove = null;
+        const confirmRemoveModal = new bootstrap.Modal(document.getElementById('confirmRemoveModal'));
         
-        if (removeId) {
-            // Remove from session via AJAX
-            fetch('{{ route("api.cart.remove") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify({ activity_id: removeId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                // Reload page without remove parameter
-                window.location.href = '{{ route("cart.index") }}';
-            });
-        }
-        
-        // Handle order form submission
-        document.getElementById('order-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            const data = Object.fromEntries(formData);
-            data.activities = JSON.parse(data.activities);
-            
-            fetch(this.action, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(result => {
-                if (result.success) {
-                    // Clear cart from session
-                    @foreach($cartActivities as $activity)
-                        fetch('{{ route("api.cart.remove") }}', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                            body: JSON.stringify({ activity_id: {{ $activity->id }} })
-                        });
-                    @endforeach
-                    
-                    // Redirect to WhatsApp
-                    window.location.href = result.whatsapp_url;
-                } else {
-                    alert('{{ __("Erreur lors de la création de la commande") }}');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('{{ __("Erreur lors de la création de la commande") }}');
+        // Handle remove button clicks
+        document.querySelectorAll('.btn-remove-item').forEach(btn => {
+            btn.addEventListener('click', function() {
+                activityIdToRemove = this.dataset.activityId;
+                document.getElementById('activity-name-to-remove').textContent = this.dataset.activityName;
+                confirmRemoveModal.show();
             });
         });
+        
+        // Handle confirm remove
+        document.getElementById('confirm-remove-btn').addEventListener('click', async function() {
+            if (!activityIdToRemove) return;
+            
+            try {
+                const response = await fetch('{{ route("api.cart.remove") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    credentials: 'same-origin',
+                    body: JSON.stringify({ activity_id: activityIdToRemove })
+                });
+                
+                const data = await response.json();
+                if (data.success) {
+                    // Reload page to show updated cart
+                    window.location.reload();
+                }
+            } catch (error) {
+                console.error('Error removing item:', error);
+                alert('{{ __("Erreur lors de la suppression") }}');
+            }
+        });
+        
+        // Handle order form submission
+        const orderForm = document.getElementById('order-form');
+        if (orderForm) {
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                data.activities = JSON.parse(data.activities);
+                
+                fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success) {
+                        // Clear cart from session
+                        @foreach($cartActivities as $activity)
+                            fetch('{{ route("api.cart.remove") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ activity_id: {{ $activity->id }} })
+                            });
+                        @endforeach
+                        
+                        // Redirect to WhatsApp
+                        window.location.href = result.whatsapp_url;
+                    } else {
+                        alert('{{ __("Erreur lors de la création de la commande") }}');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('{{ __("Erreur lors de la création de la commande") }}');
+                });
+            });
+        }
     });
 </script>
 @endpush
