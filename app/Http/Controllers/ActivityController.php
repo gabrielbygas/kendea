@@ -12,18 +12,60 @@ class ActivityController extends Controller
     /**
      * Display main view with categories
      */
-    public function index()
+    /**
+     * Display activities with optional filters
+     */
+    public function index(Request $request)
     {
-        $categories = Category::with('activities')->get();
+        $categories = Category::all();
         
-        // Get top 5 most popular UAE activities (one per category)
-        // IDs: Burj Khalifa, Desert Safari, Aquaventure, Louvre, Dhow Cruise
+        // Build query
+        $query = Activity::with('category');
+        
+        // Apply filters from request
+        if ($request->filled('category')) {
+            $query->where('categorie_id', $request->category);
+        }
+        
+        if ($request->filled('emirate')) {
+            $query->where('emirate', $request->emirate);
+        }
+        
+        // Apply sorting
+        $sort = $request->get('sort', 'nom_asc');
+        switch ($sort) {
+            case 'nom_desc':
+                $query->orderBy('nom', 'desc');
+                break;
+            case 'prix_asc':
+                $query->orderBy('prix', 'asc');
+                break;
+            case 'prix_desc':
+                $query->orderBy('prix', 'desc');
+                break;
+            case 'notes_desc':
+                $query->orderBy('notes', 'desc');
+                break;
+            default:
+                $query->orderBy('nom', 'asc');
+        }
+        
+        $activities = $query->get();
+        
+        // Get top activities for hero slider
         $topActivities = Activity::with('category')
             ->whereIn('id', [1, 6, 11, 21, 31])
             ->orderByRaw('FIELD(id, 1, 6, 11, 21, 31)')
             ->get();
         
-        return view('activities.index', compact('categories', 'topActivities'));
+        // Get filter values for form persistence
+        $filters = [
+            'category' => $request->get('category', ''),
+            'emirate' => $request->get('emirate', ''),
+            'sort' => $sort
+        ];
+        
+        return view('activities.index', compact('categories', 'activities', 'filters', 'topActivities'));
     }
 
     /**
