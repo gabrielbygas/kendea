@@ -134,14 +134,16 @@
                 data-aos-delay="200">
                 @foreach ($featuredActivities as $activity)
                     <div class="col">
-                        <div class="card h-100 activity-card shadow-sm">
-                            <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img"
-                                alt="{{ $activity->nom }}">
-                            <div class="card-body">
+                        <div class="card h-100 activity-card shadow-sm d-flex flex-column">
+                            <a href="{{ route('activity.show', $activity->slug) }}">
+                                <img src="{{ asset($activity->first_image) }}" class="card-img-top activity-img"
+                                    alt="{{ $activity->nom }}">
+                            </a>
+                            <div class="card-body d-flex flex-column">
                                 <span class="badge bg-secondary mb-2">
                                     {{ App::getLocale() == 'en' ? $activity->category->nom_en ?? $activity->category->nom : $activity->category->nom }}
                                 </span>
-                                <h5 class="card-title">{{ $activity->nom }}</h5>
+                                <h5 class="card-title"><a href="{{ route('activity.show', $activity->slug) }}" class="text-decoration-none text-dark">{{ $activity->nom }}</a></h5>
                                 <p class="card-text text-muted small">
                                     <i class="bi bi-geo-alt"></i> {{ $activity->city }}
                                 </p>
@@ -157,10 +159,10 @@
                                     @endfor
                                     <span class="ms-1">({{ number_format($activity->notes, 1) }})</span>
                                 </div>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <p class="card-text fw-bold fs-5 mb-0" style="color: #FF6A00;">
+                                <div class="text-center mt-auto">
+                                    <p class="card-text fw-bold fs-5 mb-2" style="color: #FF6A00;">
                                         {{ number_format($activity->prix, 2) }} AED</p>
-                                    <a href="{{ route('activities.index') }}" class="btn btn-sm text-white"
+                                    <a href="{{ route('activity.show', $activity->slug) }}" class="btn btn-sm text-white"
                                         style="background-color: #FF6A00;">
                                         {{ __('Book Now') }}
                                     </a>
