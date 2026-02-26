@@ -16,11 +16,10 @@ class HomeController extends Controller
     {
         $categories = Category::all();
         
-        // Get top 5 most popular UAE activities (one per category)
-        // IDs: Burj Khalifa, Desert Safari, Aquaventure, Louvre, Dhow Cruise
+        // Get top 5 activities for hero slider (by rating)
         $topActivities = Activity::with('category')
-            ->whereIn('id', [1, 6, 11, 21, 31])
-            ->orderByRaw('FIELD(id, 1, 6, 11, 21, 31)')
+            ->orderBy('notes', 'desc')
+            ->limit(5)
             ->get();
             
         $featuredActivities = Activity::with('category')

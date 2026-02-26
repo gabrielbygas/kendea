@@ -52,10 +52,10 @@ class ActivityController extends Controller
         
         $activities = $query->get();
         
-        // Get top activities for hero slider
+        // Get top 5 activities for hero slider (by rating)
         $topActivities = Activity::with('category')
-            ->whereIn('id', [1, 6, 11, 21, 31])
-            ->orderByRaw('FIELD(id, 1, 6, 11, 21, 31)')
+            ->orderBy('notes', 'desc')
+            ->limit(5)
             ->get();
         
         // Get filter values for form persistence
