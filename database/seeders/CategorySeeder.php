@@ -14,25 +14,65 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = [
-            ['nom' => 'Monuments Emblématiques et Architecture Moderne', 'nom_en' => 'Iconic Landmarks & Modern Architecture'],
-            ['nom' => 'Aventures dans le Désert', 'nom_en' => 'Desert Adventures'],
-            ['nom' => 'Parcs à Thèmes et Attractions Familiales', 'nom_en' => 'Theme Parks & Family Attractions'],
-            ['nom' => 'Nature et Sports d\'Aventure', 'nom_en' => 'Nature & Adventure Sports'],
-            ['nom' => 'Culture et Exploration Historique', 'nom_en' => 'Culture & Historical Exploration'],
-            ['nom' => 'Gastronomie, Shopping et Vie Nocturne', 'nom_en' => 'Dining, Shopping & Nightlife'],
-            ['nom' => 'Croisières et Activités Nautiques', 'nom_en' => 'Cruises & Water Activities'],
-            ['nom' => 'Festivals, Événements et Activités Saisonnières', 'nom_en' => 'Festivals, Events & Seasonal Activities'],
-            ['nom' => 'Expériences de Luxe et Bien-être', 'nom_en' => 'Luxury Experiences & Wellness'],
-            ['nom' => 'Sports Extrêmes et Sensations Fortes', 'nom_en' => 'Extreme Sports & Thrills'],
-        ];
+        // Parse CSV and extract unique categories
+        $csvFile = database_path('../docs/kendea_activity_list.csv');
+        
+        if (!file_exists($csvFile)) {
+            $this->command->error('CSV file not found: ' . $csvFile);
+            return;
+        }
 
-        foreach ($categories as $category) {
-            Category::create([
-                'nom' => $category['nom'],
-                'nom_en' => $category['nom_en'],
-                'slug' => Str::slug($category['nom']),
-            ]);
+        $handle = fopen($csvFile, 'r');
+        
+        // Skip first empty line
+        fgetcsv($handle);
+        
+        // Read headerpu
+        fgetcsv($handle);
+        
+        $categoryMapping = [];
+        
+        while (($row = fgetcsv($handle)) !== false) {
+            // Skip empty rows
+            if (empty($row[5])) {
+                continue;
+            }
+            
+            $categorySlug = $row[5];
+            
+            // Build category mapping from CSV data
+            if (!isset($categoryMapping[$categorySlug])) {
+                $categoryMapping[$categorySlug] = true;
+            }
+        }
+        
+        fclose($handle);
+        
+        // Define proper French and English names for each category
+        $categoryNames = [
+            'attraction' => ['nom' => 'Attractions', 'nom_en' => 'Attractions'],
+            'adventure' => ['nom' => 'Aventure', 'nom_en' => 'Adventure'],
+            'desert-adventure' => ['nom' => 'Aventure Désert', 'nom_en' => 'Desert Adventure'],
+            'waterpark' => ['nom' => 'Parcs Aquatiques', 'nom_en' => 'Water Parks'],
+            'aquarium' => ['nom' => 'Aquariums', 'nom_en' => 'Aquariums'],
+            'theme-park' => ['nom' => 'Parcs à Thème', 'nom_en' => 'Theme Parks'],
+            'wildlife-park' => ['nom' => 'Parcs Animaliers', 'nom_en' => 'Wildlife Parks'],
+            'zoo' => ['nom' => 'Zoos', 'nom_en' => 'Zoos'],
+            'show' => ['nom' => 'Spectacles', 'nom_en' => 'Shows'],
+            'cruise' => ['nom' => 'Croisières', 'nom_en' => 'Cruises'],
+            'nature-park' => ['nom' => 'Parcs Naturels', 'nom_en' => 'Nature Parks'],
+            'immersive-experience' => ['nom' => 'Expériences Immersives', 'nom_en' => 'Immersive Experiences'],
+        ];
+        
+        // Create categories that exist in CSV
+        foreach (array_keys($categoryMapping) as $slug) {
+            if (isset($categoryNames[$slug])) {
+                Category::create([
+                    'nom' => $categoryNames[$slug]['nom'],
+                    'nom_en' => $categoryNames[$slug]['nom_en'],
+                    'slug' => Str::slug($categoryNames[$slug]['nom']),
+                ]);
+            }
         }
     }
 }
