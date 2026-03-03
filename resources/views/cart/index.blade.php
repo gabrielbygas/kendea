@@ -281,6 +281,9 @@
         document.getElementById('confirm-remove-btn').addEventListener('click', async function() {
             if (!activityIdToRemove) return;
             
+            // Close modal immediately
+            confirmRemoveModal.hide();
+            
             try {
                 const response = await fetch('{{ route("api.cart.remove") }}', {
                     method: 'POST',
@@ -289,13 +292,19 @@
                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
                     },
                     credentials: 'same-origin',
-                    body: JSON.stringify({ activity_id: activityIdToRemove })
+                    body: JSON.stringify({ activity_id: parseInt(activityIdToRemove) })
                 });
+                
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
                 
                 const data = await response.json();
                 if (data.success) {
                     // Reload page to show updated cart
                     window.location.reload();
+                } else {
+                    throw new Error(data.message || 'Failed to remove item');
                 }
             } catch (error) {
                 console.error('Error removing item:', error);

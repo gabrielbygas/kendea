@@ -253,15 +253,29 @@ class ActivityController extends Controller
      */
     public function removeFromCart(Request $request)
     {
-        $activityId = $request->input('activity_id');
+        $request->validate([
+            'activity_id' => 'required|integer'
+        ]);
+        
+        $activityId = (int) $request->input('activity_id');
         
         $cart = session('cart', []);
-        unset($cart[$activityId]);
+        
+        // Remove by key (could be string or int)
+        if (isset($cart[$activityId])) {
+            unset($cart[$activityId]);
+        }
+        // Also try string key for safety
+        if (isset($cart[(string)$activityId])) {
+            unset($cart[(string)$activityId]);
+        }
+        
         session(['cart' => $cart]);
         
         return response()->json([
             'success' => true,
-            'count' => count($cart)
+            'count' => count($cart),
+            'message' => 'Activity removed from cart'
         ]);
     }
     
