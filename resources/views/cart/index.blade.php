@@ -329,6 +329,13 @@
                     const data = Object.fromEntries(formData);
                     data.activities = JSON.parse(data.activities);
                     
+                    // Collect quantities for each activity
+                    const quantities = {};
+                    document.querySelectorAll('.quantity-input').forEach(input => {
+                        quantities[input.dataset.activityId] = parseInt(input.value) || 1;
+                    });
+                    data.activities_quantities = quantities;
+                    
                     const response = await fetch(this.action, {
                         method: 'POST',
                         headers: {

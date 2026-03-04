@@ -151,8 +151,18 @@
                 <div class="activity-item">
                     <div class="activity-name">{{ $activity->nom }}</div>
                     <div style="color: #666; margin-top: 5px;">
-                        <strong>Prix :</strong> {{ number_format($activity->prix, 2) }} AED
+                        @if(isset($commande->activities_quantities[$activity->id]))
+                            <strong>👥 Invités :</strong> {{ $commande->activities_quantities[$activity->id] }} personne(s)
+                        @endif
                     </div>
+                    <div style="color: #666; margin-top: 5px;">
+                        <strong>Prix unitaire :</strong> {{ number_format($activity->prix, 2) }} AED
+                    </div>
+                    @if(isset($commande->activities_quantities[$activity->id]))
+                        <div style="color: #666; margin-top: 5px;">
+                            <strong>Sous-total :</strong> {{ number_format($activity->prix * $commande->activities_quantities[$activity->id], 2) }} AED
+                        </div>
+                    @endif
                     @if($activity->location)
                         <div style="color: #666; margin-top: 5px;">
                             📍 {{ $activity->location }}

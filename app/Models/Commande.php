@@ -13,6 +13,7 @@ class Commande extends Model
     protected $fillable = [
         'client_id',
         'activities',
+        'activities_quantities',
         'datetime',
         'montant_total',
         'statut'
@@ -20,6 +21,7 @@ class Commande extends Model
 
     protected $casts = [
         'activities' => 'array',
+        'activities_quantities' => 'array',
         'datetime' => 'datetime',
         'montant_total' => 'decimal:2'
     ];

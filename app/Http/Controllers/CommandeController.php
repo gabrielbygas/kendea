@@ -27,6 +27,8 @@ class CommandeController extends Controller
             'telephone' => 'required|string|max:20',
             'activities' => 'required|array|min:1',
             'activities.*' => 'integer|exists:activities,id',
+            'activities_quantities' => 'required|array',
+            'activities_quantities.*' => 'integer|min:1|max:50',
             'datetime' => 'required|string',
             'message' => 'nullable|string|max:1000',
         ]);
@@ -53,12 +55,19 @@ class CommandeController extends Controller
 
             // Get activity details and calculate total
             $activities = Activity::whereIn('id', $request->activities)->get();
-            $montantTotal = $activities->sum('prix');
+            $activitiesQuantities = $request->activities_quantities;
+            
+            $montantTotal = 0;
+            foreach ($activities as $activity) {
+                $quantity = $activitiesQuantities[$activity->id] ?? 1;
+                $montantTotal += $activity->prix * $quantity;
+            }
 
             // Create order
             $commande = Commande::create([
                 'client_id' => $client->id,
                 'activities' => $request->activities,
+                'activities_quantities' => $activitiesQuantities,
                 'datetime' => $request->datetime ?? now(),
                 'montant_total' => $montantTotal,
                 'statut' => 'en_attente',
@@ -73,7 +82,10 @@ class CommandeController extends Controller
             $message .= "🎯 *Activités commandées:*\n";
 
             foreach ($activities as $index => $activity) {
-                $message .= ($index + 1) . ". {$activity->nom} - " . number_format($activity->prix, 2) . " AED\n";
+                $quantity = $activitiesQuantities[$activity->id] ?? 1;
+                $subtotal = $activity->prix * $quantity;
+                $message .= ($index + 1) . ". {$activity->nom}\n";
+                $message .= "   👥 {$quantity} invité(s) × " . number_format($activity->prix, 2) . " AED = " . number_format($subtotal, 2) . " AED\n";
             }
 
             $message .= "\n💰 *Total:* " . number_format($montantTotal, 2) . " AED\n";

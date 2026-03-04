@@ -102,7 +102,14 @@
         @foreach ($activities as $activity)
             <div class="activity-item">
                 <div class="activity-name">{{ $activity->nom }}</div>
-                <div class="activity-price">Prix : {{ number_format($activity->prix, 2) }} AED</div>
+                <div class="activity-price">
+                    @if (isset($commande->activities_quantities[$activity->id]))
+                        <strong>👥 {{ $commande->activities_quantities[$activity->id] }} invité(s)</strong> × {{ number_format($activity->prix, 2) }} AED 
+                        = {{ number_format($activity->prix * $commande->activities_quantities[$activity->id], 2) }} AED
+                    @else
+                        Prix : {{ number_format($activity->prix, 2) }} AED
+                    @endif
+                </div>
                 @if ($activity->location)
                     <div style="color: #666; margin-top: 5px;">📍 {{ $activity->location }}</div>
                 @endif
