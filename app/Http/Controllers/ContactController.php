@@ -21,10 +21,9 @@ class ContactController extends Controller
             'message' => 'required|string|max:2000',
         ]);
 
-        // Send email to admin
+        // Send email
         try {
-            Mail::to(config('mail.from.address'))
-                ->send(new ContactFormMail($validated));
+            Mail::send(new ContactFormMail($validated));
             
             return response()->json([
                 'success' => true,

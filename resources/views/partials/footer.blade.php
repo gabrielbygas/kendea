@@ -5,13 +5,16 @@
         text-decoration: none;
         transition: color 0.3s ease;
     }
+
     .footer-container .footer-link:hover {
         color: #FF6A00 !important;
     }
+
     .footer-container .social-link {
         color: #f8f9fa !important;
         transition: color 0.3s ease;
     }
+
     .footer-container .social-link:hover {
         color: #FF6A00 !important;
     }
@@ -23,7 +26,8 @@
                 <div class="d-flex align-items-center mb-3">
                     <img src="{{ asset('images/kendea-logo-footer.png') }}" alt="KENDEA Logo" width="160" height="160">
                 </div>
-                <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}</p>
+                <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}
+                </p>
             </div>
             <div class="col-md-4 mb-4">
                 <h5>{{ __('Liens Rapides') }}</h5>
@@ -37,7 +41,7 @@
             <div class="col-md-4 mb-4">
                 <h5>{{ __('Contact') }}</h5>
                 <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 XX XXX XXXX</p>
-                <p><i class="bi bi-envelope"></i> {{ __('Email') }}: info@kendea.ae</p>
+                <p><i class="bi bi-envelope"></i> {{ __('Email') }}: contact@kendeatravel.com</p>
                 <div class="social-icons mt-3">
                     <a href="#" class="social-link me-3"><i class="bi bi-facebook fs-4"></i></a>
                     <a href="#" class="social-link me-3"><i class="bi bi-instagram fs-4"></i></a>

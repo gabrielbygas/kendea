@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 class OrderConfirmation extends Mailable
@@ -35,6 +36,8 @@ class OrderConfirmation extends Mailable
     {
         return new Envelope(
             subject: 'Confirmation de votre réservation - KendeaTravel',
+            to: [new Address($this->client->email)],
+            replyTo: ['admin@kendeatravel.com'],
         );
     }
 

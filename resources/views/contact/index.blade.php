@@ -17,11 +17,11 @@
             <div class="contact-info mt-4">
                 <div class="mb-4">
                     <h5><i class="bi bi-whatsapp text-success me-2"></i> WhatsApp</h5>
-                    <p class="text-muted">+971 XX XXX XXXX</p>
+                    <p class="text-muted">+971 582032582</p>
                 </div>
                 <div class="mb-4">
                     <h5><i class="bi bi-envelope text-primary me-2"></i> Email</h5>
-                    <p class="text-muted">info@kendea.ae</p>
+                    <p class="text-muted">contact@kendeatravel.com</p>
                 </div>
                 <div class="mb-4">
                     <h5><i class="bi bi-clock text-primary me-2"></i> {{ __('Horaires') }}</h5>

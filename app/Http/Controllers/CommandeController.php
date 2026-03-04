@@ -71,29 +71,29 @@ class CommandeController extends Controller
             $message .= "📧 *Email:* {$client->email}\n";
             $message .= "📱 *Téléphone:* {$client->phone}\n\n";
             $message .= "🎯 *Activités commandées:*\n";
-            
+
             foreach ($activities as $index => $activity) {
                 $message .= ($index + 1) . ". {$activity->nom} - " . number_format($activity->prix, 2) . " AED\n";
             }
-            
+
             $message .= "\n💰 *Total:* " . number_format($montantTotal, 2) . " AED\n";
-            
+
             if ($request->datetime) {
                 $message .= "📅 *Date souhaitée:* {$request->datetime}\n";
             }
-            
+
             if ($request->message) {
                 $message .= "\n💬 *Message:* {$request->message}\n";
             }
-            
+
             $message .= "\n🆔 *Commande #:* {$commande->id}";
 
             $whatsappUrl = "https://wa.me/{$whatsappNumber}?text=" . urlencode($message);
 
-            // Send emails (optional - can be removed if not needed)
+            // Send emails
             try {
-                Mail::to($client->email)->send(new OrderConfirmation($commande, $client, $activities));
-                Mail::to('web@gabrielkalala.com')->send(new OrderNotificationAdmin($commande, $client, $activities));
+                Mail::send(new OrderConfirmation($commande, $client, $activities));
+                Mail::send(new OrderNotificationAdmin($commande, $client, $activities));
             } catch (\Exception $mailError) {
                 // Continue even if email fails
                 \Log::warning('Email sending failed: ' . $mailError->getMessage());
@@ -107,7 +107,6 @@ class CommandeController extends Controller
                 'whatsapp_url' => $whatsappUrl,
                 'commande_id' => $commande->id,
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
 

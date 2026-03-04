@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Address;
 use Illuminate\Queue\SerializesModels;
 
 class OrderNotificationAdmin extends Mailable
@@ -35,6 +36,7 @@ class OrderNotificationAdmin extends Mailable
     {
         return new Envelope(
             subject: 'Nouvelle commande reçue - KendeaTravel #' . $this->commande->id,
+            to: [new Address('admin@kendeatravel.com')],
         );
     }
 
