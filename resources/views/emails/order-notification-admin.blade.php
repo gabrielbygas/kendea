@@ -92,7 +92,7 @@
 <body>
     <div class="header">
         <h1>🔔 Nouvelle commande reçue</h1>
-        <p>Dubai Activities - Administration</p>
+        <p>KendeaTravel - Administration</p>
     </div>
 
     <div class="content">
@@ -192,7 +192,7 @@
     </div>
 
     <div class="footer">
-        <p style="margin: 0;">&copy; {{ date('Y') }} Dubai Activities - Administration</p>
+        <p style="margin: 0;">&copy; {{ date('Y') }} KendeaTravel - Administration</p>
         <p style="margin: 5px 0 0 0; font-size: 12px;">Notification automatique du système</p>
     </div>
 </body>

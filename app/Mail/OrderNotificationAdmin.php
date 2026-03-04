@@ -34,7 +34,7 @@ class OrderNotificationAdmin extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Nouvelle commande reçue - Dubai Activities #' . $this->commande->id,
+            subject: 'Nouvelle commande reçue - KendeaTravel #' . $this->commande->id,
         );
     }
 

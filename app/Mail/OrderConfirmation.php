@@ -34,7 +34,7 @@ class OrderConfirmation extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Confirmation de votre réservation - Dubai Activities',
+            subject: 'Confirmation de votre réservation - KendeaTravel',
         );
     }
 

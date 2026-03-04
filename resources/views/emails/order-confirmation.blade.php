@@ -71,7 +71,7 @@
 <body>
     <div class="header">
         <h1>🎉 Confirmation de réservation</h1>
-        <p>Dubai Activities</p>
+        <p>KendeaTravel</p>
     </div>
 
     <div class="content">
@@ -112,7 +112,7 @@
         </div>
 
         <p style="margin-top: 20px;">
-            Merci d'avoir choisi <strong>Dubai Activities</strong> pour vos activités à Dubaï !
+            Merci d'avoir choisi <strong>KendeaTravel</strong> pour vos activités à Dubaï !
         </p>
 
         <p style="color: #666; font-size: 14px; margin-top: 30px;">
@@ -122,7 +122,7 @@
     </div>
 
     <div class="footer">
-        <p style="margin: 0;">&copy; {{ date('Y') }} Dubai Activities. Tous droits réservés.</p>
+        <p style="margin: 0;">&copy; {{ date('Y') }} KendeaTravel. Tous droits réservés.</p>
         <p style="margin: 5px 0 0 0; font-size: 12px;">Votre partenaire pour des expériences inoubliables à Dubaï</p>
     </div>
 </body>
