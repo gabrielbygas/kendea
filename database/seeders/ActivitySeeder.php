@@ -103,6 +103,12 @@ class ActivitySeeder extends Seeder
             // Get real location or use default
             $locationData = $locationMapping[$nomSlug] ?? ['location' => 'Dubai', 'emirate' => 'Dubai'];
 
+            // Try to find matching image
+            $imagePath = "images/{$nomSlug}.jpg";
+            $images = file_exists(public_path($imagePath)) 
+                ? [$imagePath] 
+                : ['images/default.jpg'];
+
             // Create activity
             Activity::create([
                 'nom' => ucwords(str_replace('-', ' ', $nomSlug)),
@@ -115,7 +121,7 @@ class ActivitySeeder extends Seeder
                 'emirate' => $locationData['emirate'],
                 'notes' => rand(40, 50) / 10, // Random rating between 4.0 and 5.0
                 'categorie_id' => $category->id,
-                'images' => ['images/default.jpg'], // Using default image
+                'images' => $images,
             ]);
         }
 
