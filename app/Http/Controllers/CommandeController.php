@@ -27,7 +27,7 @@ class CommandeController extends Controller
             'telephone' => 'required|string|max:20',
             'activities' => 'required|array|min:1',
             'activities.*' => 'integer|exists:activities,id',
-            'datetime' => 'nullable|string',
+            'datetime' => 'required|string',
             'message' => 'nullable|string|max:1000',
         ]);
 

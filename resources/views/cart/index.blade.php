@@ -166,8 +166,8 @@
                                    placeholder="+971 XX XXX XXXX">
                         </div>
                         <div class="col-12">
-                            <label for="datetime" class="form-label small">{{ __('Date et Heure souhaitée') }}</label>
-                            <input type="datetime-local" class="form-control form-control-sm" id="datetime" name="datetime">
+                            <label for="datetime" class="form-label small">{{ __('Date et Heure souhaitée') }} *</label>
+                            <input type="datetime-local" class="form-control form-control-sm" id="datetime" name="datetime" required>
                         </div>
                         <div class="col-12">
                             <label for="message" class="form-label small">{{ __('Message ou demandes spéciales') }}</label>
