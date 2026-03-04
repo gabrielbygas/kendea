@@ -7,5 +7,18 @@
 *.php diff=php
 
 /.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+/.claude export-ignore
+/docs export-ignore
+/tests export-ignore
+.editorconfig export-ignore
+.env.example export-ignore
+.env.production.example export-ignore
+.gitattributes export-ignore
+.gitignore export-ignore
+CLAUDE.md export-ignore
+phpunit.xml export-ignore
+DEPLOYMENT_COMMANDS.sh export-ignore
+PRODUCTION_CHECKLIST.md export-ignore
+README_DEPLOYMENT.md export-ignore
+SECURITY_CHECKLIST.md export-ignore
+*.zip export-ignore

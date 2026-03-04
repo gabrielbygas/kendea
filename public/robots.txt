@@ -1,30 +1,17 @@
-# Modified by Claude
-# robots.txt for Dubai Activities
-
 User-agent: *
 Allow: /
 
-# Disallow admin and API endpoints
-Disallow: /api/
-Disallow: /admin/
+# Sitemap
+Sitemap: https://www.kendeatravel.com/sitemap.xml
+
+# Disallow admin and private areas
+Disallow: /admin
 Disallow: /storage/
 
-# Allow public images
-Allow: /images/
-Allow: /storage/activities/
-
-# Sitemap location
-Sitemap: http://localhost/sitemap.xml
-
-# Crawl delay (optional - adjust if needed)
-Crawl-delay: 1
-
-# Specific bot instructions
-User-agent: Googlebot
+# Allow important pages
 Allow: /
-
-User-agent: Bingbot
-Allow: /
-
-User-agent: Slurp
-Allow: /
+Allow: /activities
+Allow: /activity/
+Allow: /about
+Allow: /contact
+Allow: /blog
