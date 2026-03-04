@@ -1,11 +1,13 @@
 # 🏝️ Dubai Activities Booking Platform
 
-A modern, high-performance Laravel 12 application for booking Dubai activities and experiences. Features a responsive single-page application (SPA) with real-time search, category filtering, and seamless WhatsApp integration for instant booking confirmations.
+A modern, high-performance Laravel 12 application for booking Dubai activities and experiences. Features a responsive single-page application (SPA) with real-time search, category filtering, email notifications, and seamless WhatsApp integration for instant booking confirmations.
 
 ## ✨ Features
 
 - **🔍 Advanced Search & Filtering**: Real-time activity search with category-based filtering using DataTables
+- **📧 Email Notifications**: Automated confirmation emails for customers and admin notifications for new orders
 - **📱 WhatsApp Integration**: Instant booking confirmations via WhatsApp
+- **📬 Contact Form**: Multi-recipient contact form with CC functionality
 - **🖼️ Rich Media Gallery**: Multi-image support for each activity with fallback handling
 - **⭐ Rating System**: Decimal-precision rating display (0.0-5.0) with visual star ratings
 - **🛒 Shopping Cart**: Client-side cart management for multiple activity bookings
@@ -22,6 +24,7 @@ A modern, high-performance Laravel 12 application for booking Dubai activities a
 - **Build Tool**: Vite with hot-reload
 - **Image Processing**: Intervention Image
 - **Animations**: AOS (Animate On Scroll)
+- **Email**: Laravel Mail with SMTP/Log drivers
 
 ## 📋 Prerequisites
 
@@ -30,6 +33,7 @@ A modern, high-performance Laravel 12 application for booking Dubai activities a
 - Node.js >= 18
 - MySQL >= 8.0
 - Git
+- SMTP Server (for production emails)
 
 ## 🚀 Quick Start
 
@@ -69,6 +73,24 @@ DB_PASSWORD=your_password
 APP_TIMEZONE=Africa/Kinshasa
 APP_LOCALE=fr
 APP_FAKER_LOCALE=fr_FR
+
+# Email Configuration (Development)
+MAIL_MAILER=log
+MAIL_FROM_ADDRESS="admin@kendeatravel.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
+For production SMTP, uncomment and configure:
+
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=your-smtp-host.com
+MAIL_PORT=465
+MAIL_USERNAME=admin@kendeatravel.com
+MAIL_PASSWORD=your_password
+MAIL_ENCRYPTION=ssl
+MAIL_FROM_ADDRESS="admin@kendeatravel.com"
+MAIL_FROM_NAME="${APP_NAME}"
 ```
 
 ### 4. Seed Sample Data
@@ -99,28 +121,68 @@ This concurrently runs:
 dubai-activities/
 ├── app/
 │   ├── Http/Controllers/
-│   │   ├── ActivityController.php    # Main SPA controller
-│   │   └── CommandeController.php    # Order processing
+│   │   ├── ActivityController.php     # Main SPA controller
+│   │   ├── CommandeController.php     # Order processing
+│   │   └── ContactController.php      # Contact form handler
+│   ├── Mail/
+│   │   ├── ContactFormMail.php        # Contact form email
+│   │   ├── OrderConfirmation.php      # Customer confirmation
+│   │   └── OrderNotificationAdmin.php # Admin notification
 │   └── Models/
-│       ├── Activity.php               # Activity model with slug generation
-│       ├── Category.php               # Activity categories
-│       ├── Client.php                 # Customer information
-│       └── Commande.php               # Orders with activity arrays
+│       ├── Activity.php                # Activity model with slug generation
+│       ├── Category.php                # Activity categories
+│       ├── Client.php                  # Customer information
+│       └── Commande.php                # Orders with activity arrays
 ├── database/
-│   ├── migrations/                    # Database schema
+│   ├── migrations/                     # Database schema
 │   └── seeders/
-│       └── CategoryActivitySeeder.php # Sample data seeder
+│       └── CategoryActivitySeeder.php  # Sample data seeder
 ├── public/
-│   ├── js/app.js                      # Main frontend logic
-│   └── images/                        # Activity images storage
+│   ├── js/app.js                       # Main frontend logic
+│   └── images/                         # Activity images storage
 ├── resources/
 │   └── views/
-│       ├── activities/index.blade.php # Main SPA view
-│       ├── layouts/app.blade.php      # Base layout
-│       └── partials/                  # Reusable components
+│       ├── activities/index.blade.php  # Main SPA view
+│       ├── contact/index.blade.php     # Contact form
+│       ├── emails/                     # Email templates
+│       │   ├── contact.blade.php
+│       │   ├── order-confirmation.blade.php
+│       │   └── order-notification-admin.blade.php
+│       ├── layouts/app.blade.php       # Base layout
+│       └── partials/                   # Reusable components
 └── routes/
-    └── web.php                        # API routes
+    └── web.php                         # API routes
 ```
+
+## 📧 Email System
+
+The application uses Laravel's Mailable classes with recipient configuration built-in. All email addresses are managed within the Mailable classes themselves.
+
+### Email Types
+
+**1. ContactFormMail** - Contact form submissions
+- **To**: contact@kendeatravel.com
+- **CC**: admin@kendeatravel.com, david@kendeatravel.com
+- **Reply-To**: Customer's email (dynamic)
+
+**2. OrderConfirmation** - Customer booking confirmation
+- **To**: Customer's email (dynamic)
+- **Reply-To**: admin@kendeatravel.com
+
+**3. OrderNotificationAdmin** - New order notification
+- **To**: admin@kendeatravel.com
+
+### Email Configuration
+
+**Development Mode** (current):
+- Emails logged to `storage/logs/laravel.log`
+- Set `MAIL_MAILER=log` in `.env`
+
+**Production Mode**:
+- Uncomment SMTP configuration in `.env`
+- Run `php artisan config:clear` after changes
+
+See `CLAUDE.md` for detailed email configuration documentation.
 
 ## 🗄️ Database Schema
 
@@ -147,6 +209,8 @@ dubai-activities/
 - `client_id`: Foreign key to clients
 - `activities`: JSON array of activity IDs
 - `datetime`: Order timestamp (Carbon instance)
+- `montant_total`: Total order amount
+- `statut`: Order status
 
 ### Key Relationships
 
@@ -228,13 +292,24 @@ protected static function boot()
 }
 ```
 
+### Email Sending Pattern
+
+All emails use `Mail::send()` with recipients defined in Mailable classes:
+
+```php
+// Correct pattern - recipients in Mailable class
+Mail::send(new ContactFormMail($data));
+Mail::send(new OrderConfirmation($commande, $client, $activities));
+```
+
 ### WhatsApp Integration
 
 Orders redirect to WhatsApp with pre-filled booking details:
 
 ```javascript
 // public/js/app.js
-const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+const whatsappNumber = '+971582032582'; // KENDEA number
+const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 window.location.href = whatsappUrl;
 ```
 
@@ -256,6 +331,8 @@ public function getFirstImageAttribute()
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | GET | `/` | Main SPA page |
+| GET | `/contact` | Contact form page |
+| POST | `/contact` | Submit contact form |
 | GET | `/api/activities` | DataTables AJAX endpoint (server-side) |
 | GET | `/api/activities/{id}` | Single activity details (JSON) |
 | POST | `/api/commandes` | Create order, returns WhatsApp URL |
@@ -268,8 +345,15 @@ public function getFirstImageAttribute()
 Update in `/public/js/app.js`:
 
 ```javascript
-const WHATSAPP_NUMBER = '+971501234567'; // Replace with your number
+const WHATSAPP_NUMBER = '+971582032582'; // KENDEA number
 ```
+
+### Email Addresses
+
+Email recipients are configured in Mailable classes:
+- `app/Mail/ContactFormMail.php`
+- `app/Mail/OrderConfirmation.php`
+- `app/Mail/OrderNotificationAdmin.php`
 
 ### Locale & Timezone
 
@@ -301,6 +385,7 @@ Tests located in `tests/` directory using PHPUnit.
 - SQL injection prevention via Eloquent ORM
 - XSS protection with Blade templating
 - Environment variables for sensitive data
+- Email validation and sanitization
 
 ## 📈 Performance Optimization
 
@@ -328,6 +413,12 @@ Use Laravel Pint for consistent formatting:
 vendor/bin/pint
 ```
 
+## 📚 Documentation
+
+For detailed architecture and development guidelines, see:
+- **CLAUDE.md** - Complete technical documentation for developers
+- **HERO_SLIDER_README.md** - Hero slider component documentation
+
 ## 📄 License
 
 This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
@@ -341,8 +432,11 @@ This project is open-sourced software licensed under the [MIT license](https://o
 
 ## 📞 Support
 
-For support, email support@dubaiactivities.com or open an issue on GitHub.
+For support, contact:
+- **Email**: contact@kendeatravel.com
+- **Admin**: admin@kendeatravel.com
+- **WhatsApp**: +971582032582
 
 ---
 
-<p align="center">Made with ❤️ for Dubai Tourism</p>
+<p align="center">Made with ❤️ for Dubai Tourism by KENDEA Travel</p>
