@@ -163,7 +163,7 @@
                         <div class="col-12 col-md-6">
                             <label for="telephone" class="form-label small">{{ __('Téléphone WhatsApp') }} *</label>
                             <input type="tel" class="form-control form-control-sm" id="telephone" name="telephone" required 
-                                   placeholder="+971 XX XXX XXXX">
+                                   placeholder="+243 XX XXX XXXX">
                         </div>
                         <div class="col-12">
                             <label for="datetime" class="form-label small">{{ __('Date et Heure souhaitée') }} *</label>

@@ -40,7 +40,7 @@
             </div>
             <div class="col-md-4 mb-4">
                 <h5>{{ __('Contact') }}</h5>
-                <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 XX XXX XXXX</p>
+                <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 582032582</p>
                 <p><i class="bi bi-envelope"></i> {{ __('Email') }}: contact@kendeatravel.com</p>
                 <div class="social-icons mt-3">
                     <a href="#" class="social-link me-3"><i class="bi bi-facebook fs-4"></i></a>
