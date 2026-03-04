@@ -136,17 +136,17 @@
 
 {{-- Order Modal --}}
 <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="orderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-            <div class="modal-header">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header" style="flex-shrink: 0;">
                 <h5 class="modal-title fs-6 fs-md-5" id="orderModalLabel">
                     <i class="bi bi-clipboard-check"></i> {{ __('Finaliser votre Commande') }}
                 </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ __('Fermer') }}"></button>
             </div>
-            <form id="order-form" action="{{ route('api.commandes.store') }}" method="POST">
+            <form id="order-form" action="{{ route('api.commandes.store') }}" method="POST" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-body" style="overflow-y: auto; flex: 1;">
                     <div class="row g-3">
                         <div class="col-12 col-md-6">
                             <label for="prenom" class="form-label small">{{ __('Prénom') }} *</label>
@@ -175,11 +175,11 @@
                         </div>
                         <input type="hidden" name="activities" id="activities-input" value="{{ $cartActivities->pluck('id')->toJson() }}">
                     </div>
-                    <div class="alert alert-info mt-3 small">
+                    <div class="alert alert-info mt-3 small mb-0">
                         <i class="bi bi-info-circle"></i> {{ __('Votre commande sera confirmée via WhatsApp.') }}
                     </div>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="flex-shrink: 0;">
                     <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">{{ __('Annuler') }}</button>
                     <button type="submit" class="btn btn-success btn-sm">
                         <i class="bi bi-whatsapp"></i> {{ __('Confirmer via WhatsApp') }}
