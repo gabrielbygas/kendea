@@ -108,7 +108,7 @@
         <button id="scroll-to-top" class="floating-btn" title="{{ __('Retour en haut') }}" style="display: none;">
             <i class="bi bi-arrow-up"></i>
         </button>
-        <a href="https://wa.me/971XXXXXXXXX" target="_blank" class="floating-btn whatsapp-btn" title="{{ __('Discuter sur WhatsApp') }}">
+        <a href="https://wa.me/971582032582" target="_blank" class="floating-btn whatsapp-btn" title="{{ __('Discuter sur WhatsApp') }}">
             <i class="bi bi-whatsapp"></i>
         </a>
     </div>
