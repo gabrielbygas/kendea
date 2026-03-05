@@ -39,6 +39,6 @@ class Commande extends Model
      */
     public function getActivitiesDetails()
     {
-        return Activity::whereIn('id', $this->activities)->get();
+        return Activity::with('category')->whereIn('id', $this->activities)->get();
     }
 }

@@ -54,7 +54,7 @@ class CommandeController extends Controller
             );
 
             // Get activity details and calculate total
-            $activities = Activity::whereIn('id', $request->activities)->get();
+            $activities = Activity::with('category')->whereIn('id', $request->activities)->get();
             $activitiesQuantities = $request->activities_quantities;
             
             $montantTotal = 0;

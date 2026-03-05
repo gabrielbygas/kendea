@@ -145,7 +145,7 @@ class ActivityController extends Controller
      */
     public function sitemap()
     {
-        $activities = Activity::all();
+        $activities = Activity::with('category')->get();
         return response()
             ->view('sitemap', compact('activities'))
             ->header('Content-Type', 'application/xml');
