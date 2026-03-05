@@ -1,4 +1,4 @@
-# 🏝️ Dubai Activities Booking Platform
+# 🏝️ KENDEATRAVEL - Dubai Activities Booking Platform
 
 A modern, high-performance Laravel 12 application for booking Dubai and UAE activities and experiences. Built with server-side rendering, session-based cart system, bilingual support (French/English), email notifications, and seamless WhatsApp integration for instant booking confirmations.
 
