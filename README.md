@@ -1,30 +1,35 @@
 # 🏝️ Dubai Activities Booking Platform
 
-A modern, high-performance Laravel 12 application for booking Dubai activities and experiences. Features a responsive single-page application (SPA) with real-time search, category filtering, email notifications, and seamless WhatsApp integration for instant booking confirmations.
+A modern, high-performance Laravel 12 application for booking Dubai and UAE activities and experiences. Built with server-side rendering, session-based cart system, bilingual support (French/English), email notifications, and seamless WhatsApp integration for instant booking confirmations.
 
 ## ✨ Features
 
-- **🔍 Advanced Search & Filtering**: Real-time activity search with category-based filtering using DataTables
+- **🌍 Multi-Page Application**: Complete Laravel routing with dedicated pages for home, activities, categories, blog, about, contact, and cart
+- **🌐 Bilingual Support**: French and English language switching with persistent session state
+- **🔍 Advanced Filtering**: Server-side category, emirate, and sorting filters with instant results
+- **🛒 Session-Based Cart**: Secure server-side cart with quantity management per activity
 - **📧 Email Notifications**: Automated confirmation emails for customers and admin notifications for new orders
-- **📱 WhatsApp Integration**: Instant booking confirmations via WhatsApp
+- **📱 WhatsApp Integration**: Instant booking confirmations via WhatsApp with pre-filled order details
 - **📬 Contact Form**: Multi-recipient contact form with CC functionality
-- **🖼️ Rich Media Gallery**: Multi-image support for each activity with fallback handling
+- **🖼️ Rich Media Gallery**: Multi-image support for each activity with automatic fallback handling
 - **⭐ Rating System**: Decimal-precision rating display (0.0-5.0) with visual star ratings
-- **🛒 Shopping Cart**: Client-side cart management for multiple activity bookings
-- **🎨 Modern UI/UX**: Smooth animations with AOS library and responsive Bootstrap design
-- **🚀 High Performance**: Server-side pagination and processing with Yajra DataTables
+- **🎨 Modern UI/UX**: Smooth animations with AOS library and responsive Bootstrap 5 design
+- **🚀 High Performance**: Server-side rendering with optimized database queries and eager loading
 - **🔗 SEO Optimized**: Auto-generated XML sitemap and SEO-friendly URLs with slugs
+- **📍 Emirate Filtering**: Filter activities by UAE emirates (Dubai, Abu Dhabi, Sharjah, etc.)
 
 ## 🛠️ Tech Stack
 
 - **Backend**: Laravel 12 (PHP 8.2+)
 - **Database**: MySQL with optimized indexes
-- **Frontend**: jQuery, DataTables, Bootstrap Icons
-- **Styling**: Tailwind CSS 4.0
-- **Build Tool**: Vite with hot-reload
-- **Image Processing**: Intervention Image
+- **Frontend**: jQuery, Blade templating, Bootstrap Icons
+- **Styling**: Bootstrap 5.3.3 (loaded via CDN)
+- **Build Tool**: Vite
+- **Image Processing**: Intervention Image Laravel
 - **Animations**: AOS (Animate On Scroll)
 - **Email**: Laravel Mail with SMTP/Log drivers
+- **Session Management**: Laravel session for cart and locale
+- **DataTables**: Yajra DataTables (installed but not actively used in views)
 
 ## 📋 Prerequisites
 
@@ -40,8 +45,8 @@ A modern, high-performance Laravel 12 application for booking Dubai activities a
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/dubai-activities.git
-cd dubai-activities
+git clone https://github.com/yourusername/dubai-activities_antigravity.git
+cd dubai-activities_antigravity
 ```
 
 ### 2. One-Command Setup
@@ -118,40 +123,59 @@ This concurrently runs:
 ## 📁 Project Structure
 
 ```
-dubai-activities/
+dubai-activities_antigravity/
 ├── app/
 │   ├── Http/Controllers/
-│   │   ├── ActivityController.php     # Main SPA controller
-│   │   ├── CommandeController.php     # Order processing
-│   │   └── ContactController.php      # Contact form handler
+│   │   ├── HomeController.php          # Homepage with hero slider
+│   │   ├── ActivityController.php      # Activities listing & detail pages
+│   │   ├── CategoryController.php      # Category-specific pages
+│   │   ├── BlogController.php          # Blog section
+│   │   ├── AboutController.php         # About page
+│   │   ├── ContactController.php       # Contact form handler
+│   │   └── CommandeController.php      # Order processing & emails
 │   ├── Mail/
-│   │   ├── ContactFormMail.php        # Contact form email
-│   │   ├── OrderConfirmation.php      # Customer confirmation
-│   │   └── OrderNotificationAdmin.php # Admin notification
+│   │   ├── ContactFormMail.php         # Contact form email
+│   │   ├── OrderConfirmation.php       # Customer confirmation
+│   │   └── OrderNotificationAdmin.php  # Admin notification
 │   └── Models/
 │       ├── Activity.php                # Activity model with slug generation
 │       ├── Category.php                # Activity categories
 │       ├── Client.php                  # Customer information
-│       └── Commande.php                # Orders with activity arrays
+│       └── Commande.php                # Orders with activity quantities
 ├── database/
 │   ├── migrations/                     # Database schema
 │   └── seeders/
-│       └── CategoryActivitySeeder.php  # Sample data seeder
+│       ├── CategorySeeder.php          # UAE categories seeder
+│       └── ActivitySeeder.php          # Sample activities seeder
 ├── public/
-│   ├── js/app.js                       # Main frontend logic
+│   ├── js/
+│   │   ├── app.js                      # Main application logic
+│   │   ├── activities.js               # Activities filtering & AJAX
+│   │   ├── cart.js                     # Cart management
+│   │   └── session-cart.js             # Session cart utilities
 │   └── images/                         # Activity images storage
 ├── resources/
 │   └── views/
-│       ├── activities/index.blade.php  # Main SPA view
+│       ├── home/index.blade.php        # Homepage with hero slider
+│       ├── activities/
+│       │   ├── index.blade.php         # Activities listing page (SSR)
+│       │   └── show.blade.php          # Activity detail page
+│       ├── categories/show.blade.php   # Category detail page
+│       ├── blog/index.blade.php        # Blog page
+│       ├── about/index.blade.php       # About page
 │       ├── contact/index.blade.php     # Contact form
+│       ├── cart/index.blade.php        # Shopping cart page
 │       ├── emails/                     # Email templates
 │       │   ├── contact.blade.php
 │       │   ├── order-confirmation.blade.php
 │       │   └── order-notification-admin.blade.php
 │       ├── layouts/app.blade.php       # Base layout
 │       └── partials/                   # Reusable components
+│           ├── header.blade.php
+│           ├── footer.blade.php
+│           └── hero-slider.blade.php
 └── routes/
-    └── web.php                         # API routes
+    └── web.php                         # All routes (web + API)
 ```
 
 ## 📧 Email System
@@ -189,34 +213,48 @@ See `CLAUDE.md` for detailed email configuration documentation.
 ### Core Tables
 
 **categories**
-- Activity categories (e.g., Desert Safari, Water Parks, City Tours)
+- `id`: Primary key
+- `nom`: Category name (French)
+- `nom_en`: Category name (English)
+- Example: Desert Safari, Water Parks, City Tours, Adventure Sports
 
 **activities**
 - `id`: Primary key
-- `nom`: Activity name
+- `nom`: Activity name (French)
+- `nom_en`: Activity name (English)
 - `slug`: Auto-generated SEO-friendly URL (unique, indexed)
+- `description`: Activity description (French)
+- `description_en`: Activity description (English)
 - `images`: JSON array of image paths (up to 5)
 - `prix`: Decimal price (10,2)
 - `notes`: Decimal rating (2,1) from 0.0 to 5.0
-- `lieu`: Location
+- `location`: Location (French)
+- `location_en`: Location (English)
+- `emirate`: UAE emirate (Dubai, Abu Dhabi, Sharjah, etc.)
 - `categorie_id`: Foreign key to categories (indexed)
 
 **clients**
-- Customer information (name, email, phone)
+- `id`: Primary key
+- `prenom`: First name
+- `nom`: Last name
+- `email`: Email address (unique)
+- `telephone`: Phone number
 
 **commandes**
 - `id`: Order ID
 - `client_id`: Foreign key to clients
 - `activities`: JSON array of activity IDs
+- `activities_quantities`: JSON object with activity quantities `{"1": 2, "3": 4}`
 - `datetime`: Order timestamp (Carbon instance)
 - `montant_total`: Total order amount
 - `statut`: Order status
+- `message`: Optional customer message
 
 ### Key Relationships
 
-- Activity → Category (belongsTo)
-- Commande → Client (belongsTo)
-- Commande → Activities (manual via `getActivitiesDetails()`)
+- Activity → Category (belongsTo via `categorie_id`)
+- Commande → Client (belongsTo via `client_id`)
+- Commande → Activities (manual via `getActivitiesDetails()` method)
 
 ## 🔧 Development Commands
 
@@ -263,18 +301,69 @@ php artisan pail          # Real-time log monitoring
 
 ## 🎯 Key Features Implementation
 
-### Server-Side DataTables
+### Server-Side Rendering
 
-Activities use Yajra DataTables for efficient server-side pagination and filtering:
+Activities and categories use traditional Laravel server-side rendering with Blade templates:
 
 ```php
-// ActivityController::getActivities()
-return DataTables::of($query)
-    ->addColumn('checkbox', function ($activity) {
-        return '<input type="checkbox" class="activity-checkbox" value="'.$activity->id.'">';
-    })
-    ->rawColumns(['checkbox', 'image', 'details', 'actions'])
-    ->make(true);
+// ActivityController::index()
+public function index(Request $request)
+{
+    $query = Activity::with('category');
+    
+    // Apply filters
+    if ($request->filled('category')) {
+        $query->where('categorie_id', $request->category);
+    }
+    
+    $activities = $query->get();
+    return view('activities.index', compact('categories', 'activities', 'filters'));
+}
+```
+
+```blade
+{{-- activities/index.blade.php --}}
+@foreach($activities as $activity)
+    <div class="card activity-card">
+        <img src="{{ asset($activity->first_image) }}" alt="{{ $activity->nom }}">
+        <h5>{{ App::getLocale() == 'en' ? $activity->nom_en : $activity->nom }}</h5>
+    </div>
+@endforeach
+```
+
+### Session-Based Cart
+
+Cart data stored securely in Laravel sessions with quantity management:
+
+```php
+// Add to cart
+$cart = session('cart', []);
+$cart[$activityId] = ['quantity' => $quantity];
+session(['cart' => $cart]);
+
+// Get cart items
+$cartIds = array_keys(session('cart', []));
+$activities = Activity::whereIn('id', $cartIds)->get();
+```
+
+### Bilingual Support
+
+Language switching with session persistence:
+
+```php
+// Language switch route
+Route::get('/lang/{locale}', function ($locale) {
+    if (in_array($locale, ['fr', 'en'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
+```
+
+```blade
+{{-- Display bilingual content --}}
+<h3>{{ App::getLocale() == 'en' ? $activity->nom_en : $activity->nom }}</h3>
+<p>{{ App::getLocale() == 'en' ? $activity->description_en : $activity->description }}</p>
 ```
 
 ### Auto-Generated Slugs
@@ -307,8 +396,9 @@ Mail::send(new OrderConfirmation($commande, $client, $activities));
 Orders redirect to WhatsApp with pre-filled booking details:
 
 ```javascript
-// public/js/app.js
+// After order confirmation
 const whatsappNumber = '+971582032582'; // KENDEA number
+const message = `Bonjour KENDEA, je confirme ma réservation:\n${orderDetails}`;
 const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 window.location.href = whatsappUrl;
 ```
@@ -326,23 +416,55 @@ public function getFirstImageAttribute()
 }
 ```
 
+```blade
+{{-- Blade template with fallback --}}
+<img src="{{ asset($activity->first_image) }}" 
+     alt="{{ $activity->nom }}"
+     onerror="this.src='{{ asset('images/default.jpg') }}'">
+```
+
 ## 🌐 API Endpoints
+
+### Web Routes (Server-Side Rendered)
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/` | Main SPA page |
+| GET | `/` | Homepage with hero slider |
+| GET | `/activities` | Activities listing page (SSR) |
+| GET | `/activity/{slug}` | Single activity detail page |
+| GET | `/category/{id}` | Category-specific activities page |
+| GET | `/blog` | Blog section |
+| GET | `/about` | About page |
 | GET | `/contact` | Contact form page |
 | POST | `/contact` | Submit contact form |
-| GET | `/api/activities` | DataTables AJAX endpoint (server-side) |
+| GET | `/cart` | Shopping cart page |
+| GET | `/lang/{locale}` | Switch language (fr/en) |
+
+### API Routes (AJAX/JSON)
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/api/activities` | Get activities with filters (JSON) |
 | GET | `/api/activities/{id}` | Single activity details (JSON) |
-| POST | `/api/commandes` | Create order, returns WhatsApp URL |
-| GET | `/sitemap.xml` | SEO sitemap |
+| POST | `/api/activities/bulk` | Get multiple activities by IDs |
+| POST | `/api/commandes` | Create order, send emails, return WhatsApp URL |
+| POST | `/api/cart/add` | Add activity to session cart |
+| POST | `/api/cart/remove` | Remove activity from cart |
+| POST | `/api/cart/update-quantity` | Update activity quantity |
+| GET | `/api/cart/count` | Get cart items count |
+| POST | `/api/cart/clear` | Clear entire cart |
+
+### SEO Routes
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/sitemap.xml` | XML sitemap for search engines |
 
 ## ⚙️ Configuration
 
 ### WhatsApp Number
 
-Update in `/public/js/app.js`:
+Update in your JavaScript files (e.g., `/public/js/cart.js`):
 
 ```javascript
 const WHATSAPP_NUMBER = '+971582032582'; // KENDEA number
@@ -357,13 +479,15 @@ Email recipients are configured in Mailable classes:
 
 ### Locale & Timezone
 
-Already configured in `.env`:
+Configured in `.env`:
 
 ```env
 APP_TIMEZONE=Africa/Kinshasa
 APP_LOCALE=fr
 APP_FAKER_LOCALE=fr_FR
 ```
+
+Users can switch between French and English using the language switcher in the header. Their preference is stored in the session.
 
 ### Image Storage
 
@@ -389,11 +513,13 @@ Tests located in `tests/` directory using PHPUnit.
 
 ## 📈 Performance Optimization
 
-- **Database Indexes**: Optimized on slug, prix, notes, categorie_id
-- **Server-Side Processing**: No foreach loops on large datasets
-- **Eager Loading**: Prevent N+1 queries with `with('category')`
-- **Asset Pipeline**: Vite for optimized builds with code splitting
-- **Image Optimization**: Use Intervention Image for processing
+- **Database Indexes**: Optimized on `slug`, `prix`, `notes`, `categorie_id`, and `emirate`
+- **Server-Side Rendering**: Traditional SSR with Blade templates (no heavy client-side framework)
+- **Eager Loading**: Prevent N+1 queries with `Activity::with('category')`
+- **Session-Based Cart**: Secure server-side cart storage instead of localStorage
+- **Asset Pipeline**: Vite for optimized builds with code splitting and hot-reload
+- **Image Optimization**: Use Intervention Image for processing and fallback images
+- **Query Optimization**: Filtered queries at database level, not in-memory filtering
 
 ## 🤝 Contributing
 
@@ -416,8 +542,8 @@ vendor/bin/pint
 ## 📚 Documentation
 
 For detailed architecture and development guidelines, see:
-- **CLAUDE.md** - Complete technical documentation for developers
-- **HERO_SLIDER_README.md** - Hero slider component documentation
+- **CLAUDE.md** - Complete technical documentation for developers (AI assistant guidance)
+- **HERO_SLIDER_README.md** - Hero slider component documentation (if exists)
 
 ## 📄 License
 
@@ -425,10 +551,11 @@ This project is open-sourced software licensed under the [MIT license](https://o
 
 ## 🙏 Acknowledgments
 
-- Built with [Laravel](https://laravel.com)
-- DataTables by [Yajra](https://github.com/yajra/laravel-datatables)
-- Image processing by [Intervention Image](https://image.intervention.io)
+- Built with [Laravel 12](https://laravel.com)
+- Styled with [Bootstrap 5](https://getbootstrap.com)
+- Image processing by [Intervention Image Laravel](https://image.intervention.io)
 - Animations by [AOS](https://michalsnik.github.io/aos/)
+- Icons by [Bootstrap Icons](https://icons.getbootstrap.com)
 
 ## 📞 Support
 
