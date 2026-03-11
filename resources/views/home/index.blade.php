@@ -32,70 +32,6 @@
         }
     </style>
 
-    {{-- About Section --}}
-    <section id="about" class="about-section py-5 mt-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
-                    <h2 class="section-title mb-4">{{ __('Bienvenue chez KENDEA') }}</h2>
-                    <p class="text-muted">
-                        {{ __('KENDEA est votre destination pour des expériences inoubliables. De ses paysages impressionnants à ses activités variées, nous offrons une expérience unique pour chaque visiteur.') }}
-                    </p>
-                    <p class="text-muted">
-                        {{ __('Que vous recherchiez l\'aventure, la détente, ou l\'exploration culturelle, KENDEA a tout pour vous séduire.') }}
-                    </p>
-                    <ul class="list-unstyled mt-4">
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
-                            {{ __('Plus de 300 jours de soleil par an') }}</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
-                            {{ __('Attractions mondiales de renommée') }}</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
-                            {{ __('Expériences luxueuses et abordables') }}</li>
-                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
-                            {{ __('Accueil chaleureux et multiculturel') }}</li>
-                    </ul>
-                </div>
-                <div class="col-lg-6" data-aos="fade-left">
-                    <div class="p-4 bg-white rounded shadow-lg">
-                        <h4 class="mb-3">{{ __('Pourquoi Réserver avec Nous ?') }}</h4>
-                        <p class="text-muted">
-                            {{ __('Notre plateforme simplifie votre réservation d\'activités. En quelques clics, sélectionnez vos activités préférées et confirmez via WhatsApp.') }}
-                        </p>
-                        <div class="mt-4">
-                            <div class="d-flex align-items-start mb-3">
-                                <div
-                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
-                                    1</div>
-                                <div>
-                                    <h6 class="mb-1">{{ __('Choisissez vos Activités') }}</h6>
-                                    <small class="text-muted">{{ __('Parcourez notre catalogue') }}</small>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-start mb-3">
-                                <div
-                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
-                                    2</div>
-                                <div>
-                                    <h6 class="mb-1">{{ __('Remplissez vos Informations') }}</h6>
-                                    <small class="text-muted">{{ __('Entrez vos coordonnées') }}</small>
-                                </div>
-                            </div>
-                            <div class="d-flex align-items-start">
-                                <div
-                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
-                                    3</div>
-                                <div>
-                                    <h6 class="mb-1">{{ __('Confirmez via WhatsApp') }}</h6>
-                                    <small class="text-muted">{{ __('Recevez une confirmation instantanée') }}</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
     {{-- Category Tabs Section --}}
     <section id="categories" class="category-tabs-section">
         <div class="container">
@@ -185,6 +121,70 @@
                 <a href="{{ route('activities.index') }}" class="btn btn-primary btn-lg">
                     {{ __('Voir Toutes les Activités') }} <i class="bi bi-arrow-right"></i>
                 </a>
+            </div>
+        </div>
+    </section>
+
+    {{-- About Section --}}
+    <section id="about" class="about-section py-5 mt-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0" data-aos="fade-right">
+                    <h2 class="section-title mb-4">{{ __('Bienvenue chez KENDEA') }}</h2>
+                    <p class="text-muted">
+                        {{ __('KENDEA est votre destination pour des expériences inoubliables. De ses paysages impressionnants à ses activités variées, nous offrons une expérience unique pour chaque visiteur.') }}
+                    </p>
+                    <p class="text-muted">
+                        {{ __('Que vous recherchiez l\'aventure, la détente, ou l\'exploration culturelle, KENDEA a tout pour vous séduire.') }}
+                    </p>
+                    <ul class="list-unstyled mt-4">
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
+                            {{ __('Plus de 300 jours de soleil par an') }}</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
+                            {{ __('Attractions mondiales de renommée') }}</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
+                            {{ __('Expériences luxueuses et abordables') }}</li>
+                        <li class="mb-2"><i class="bi bi-check-circle-fill text-primary"></i>
+                            {{ __('Accueil chaleureux et multiculturel') }}</li>
+                    </ul>
+                </div>
+                <div class="col-lg-6" data-aos="fade-left">
+                    <div class="p-4 bg-white rounded shadow-lg">
+                        <h4 class="mb-3">{{ __('Pourquoi Réserver avec Nous ?') }}</h4>
+                        <p class="text-muted">
+                            {{ __('Notre plateforme simplifie votre réservation d\'activités. En quelques clics, sélectionnez vos activités préférées et confirmez via WhatsApp.') }}
+                        </p>
+                        <div class="mt-4">
+                            <div class="d-flex align-items-start mb-3">
+                                <div
+                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
+                                    1</div>
+                                <div>
+                                    <h6 class="mb-1">{{ __('Choisissez vos Activités') }}</h6>
+                                    <small class="text-muted">{{ __('Parcourez notre catalogue') }}</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start mb-3">
+                                <div
+                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
+                                    2</div>
+                                <div>
+                                    <h6 class="mb-1">{{ __('Remplissez vos Informations') }}</h6>
+                                    <small class="text-muted">{{ __('Entrez vos coordonnées') }}</small>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-start">
+                                <div
+                                    class="about-step-icon bg-primary text-white rounded-circle me-3 d-flex align-items-center justify-content-center">
+                                    3</div>
+                                <div>
+                                    <h6 class="mb-1">{{ __('Confirmez via WhatsApp') }}</h6>
+                                    <small class="text-muted">{{ __('Recevez une confirmation instantanée') }}</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
