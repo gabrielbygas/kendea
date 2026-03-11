@@ -462,21 +462,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Single Activity Order Form Handler
+    // Single Activity Order Form Handler (matches cart pattern)
     const singleOrderForm = document.getElementById('single-activity-order-form');
     if (singleOrderForm) {
         singleOrderForm.addEventListener('submit', async function(e) {
             e.preventDefault();
-            
-            // Get quantity from guest input
-            const quantity = parseInt(guestQuantityInput.value) || 1;
-            const activityId = '{{ $activity->id }}';
-            
-            // Set quantities in hidden input
-            const quantitiesInput = document.getElementById('single-activities-quantities-input');
-            const quantities = {};
-            quantities[activityId] = quantity;
-            quantitiesInput.value = JSON.stringify(quantities);
             
             // Disable submit button and show loading
             const submitBtn = this.querySelector('button[type="submit"]');
@@ -486,10 +476,22 @@ document.addEventListener('DOMContentLoaded', function() {
             submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + loadingText;
             
             try {
+                // Use FormData like cart does
                 const formData = new FormData(this);
                 const data = Object.fromEntries(formData);
                 data.activities = JSON.parse(data.activities);
-                data.activities_quantities = JSON.parse(data.activities_quantities);
+                
+                // Get quantity from guest input
+                const quantity = parseInt(guestQuantityInput.value) || 1;
+                const activityId = parseInt('{{ $activity->id }}');
+                
+                // Build quantities object like cart does
+                const quantities = {};
+                quantities[activityId] = quantity;
+                data.activities_quantities = quantities;
+                
+                // Debug log
+                console.log('Submitting order data:', data);
                 
                 const response = await fetch(this.action, {
                     method: 'POST',
@@ -512,7 +514,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
                             },
                             credentials: 'same-origin',
-                            body: JSON.stringify({ activity_id: parseInt(activityId) })
+                            body: JSON.stringify({ activity_id: activityId })
                         });
                     } catch (error) {
                         console.log('Activity was not in cart or error removing:', error);
@@ -613,8 +615,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             <label for="single_message" class="form-label small">{{ app()->getLocale() === 'en' ? 'Special Requests' : 'Message ou demandes spéciales' }}</label>
                             <textarea class="form-control form-control-sm" id="single_message" name="message" rows="3"></textarea>
                         </div>
-                        <input type="hidden" name="activities" id="single-activities-input" value='[{{ $activity->id }}]'>
-                        <input type="hidden" name="activities_quantities" id="single-activities-quantities-input" value="">
+                        <input type="hidden" name="activities" id="single-activities-input" value='{{ json_encode([$activity->id]) }}'>
                     </div>
                     <div class="alert alert-info mt-3 small mb-0">
                         <i class="bi bi-info-circle"></i> {{ app()->getLocale() === 'en' ? 'Your order will be confirmed via WhatsApp.' : 'Votre commande sera confirmée via WhatsApp.' }}

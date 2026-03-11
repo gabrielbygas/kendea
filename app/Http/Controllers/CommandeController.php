@@ -20,6 +20,7 @@ class CommandeController extends Controller
      */
     public function store(Request $request)
     {
+        // Laravel solution: Use $request->all() which works with json() middleware
         $validator = Validator::make($request->all(), [
             'prenom' => 'required|string|max:255',
             'nom' => 'required|string|max:255',
