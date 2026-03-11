@@ -45,6 +45,8 @@
                 <div class="social-icons mt-3">
                     <a href="#" class="social-link me-3"><i class="bi bi-facebook fs-4"></i></a>
                     <a href="#" class="social-link me-3"><i class="bi bi-instagram fs-4"></i></a>
+                    <a href="#" class="social-link me-3"><i class="bi bi-tiktok fs-4"></i></a>
+                    <a href="#" class="social-link me-3"><i class="bi bi-youtube fs-4"></i></a>
                     <a href="#" class="social-link"><i class="bi bi-whatsapp fs-4"></i></a>
                 </div>
             </div>
