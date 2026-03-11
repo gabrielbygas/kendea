@@ -467,7 +467,7 @@ public function getFirstImageAttribute()
 Update in your JavaScript files (e.g., `/public/js/cart.js`):
 
 ```javascript
-const WHATSAPP_NUMBER = '+971582032582'; // KENDEA number
+const WHATSAPP_NUMBER = '971582032582'; // KENDEA number
 ```
 
 ### Email Addresses

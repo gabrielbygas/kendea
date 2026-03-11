@@ -7,7 +7,7 @@ let totalPrice = 0;
 let currentCategory = '';
 let currentEmirate = '';
 let currentSort = 'nom_asc';
-const WHATSAPP_NUMBER = '+971582032582'; // TODO: Replace with actual WhatsApp number
+const WHATSAPP_NUMBER = '971582032582'; // TODO: Replace with actual WhatsApp number
 
 // Document ready
 $(document).ready(function() {

@@ -74,7 +74,7 @@ class CommandeController extends Controller
             ]);
 
             // Generate WhatsApp message
-            $whatsappNumber = '+971582032582'; // KENDEA WhatsApp number
+            $whatsappNumber = '971582032582'; // KENDEA WhatsApp number
             $message = "🎉 *Nouvelle Commande KENDEA*\n\n";
             $message .= "👤 *Client:* {$client->prenom} {$client->nom}\n";
             $message .= "📧 *Email:* {$client->email}\n";
