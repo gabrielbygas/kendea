@@ -58,11 +58,10 @@
                 <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 582032582</p>
                 <p><i class="bi bi-envelope"></i> {{ __('Email') }}: contact@kendeatravel.com</p>
                 <div class="social-icons mt-3">
-                    <a href="#" class="social-link me-3"><i class="bi bi-facebook fs-4"></i></a>
-                    <a href="#" class="social-link me-3"><i class="bi bi-instagram fs-4"></i></a>
-                    <a href="#" class="social-link me-3"><i class="bi bi-tiktok fs-4"></i></a>
-                    <a href="#" class="social-link me-3"><i class="bi bi-youtube fs-4"></i></a>
-                    <a href="#" class="social-link"><i class="bi bi-whatsapp fs-4"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61587222960189" target="_blank" rel="noopener noreferrer" class="social-link me-3"><i class="bi bi-facebook fs-4"></i></a>
+                    <a href="https://www.instagram.com/kendea243/" target="_blank" rel="noopener noreferrer" class="social-link me-3"><i class="bi bi-instagram fs-4"></i></a>
+                    <a href="https://www.tiktok.com/@kendea03" target="_blank" rel="noopener noreferrer" class="social-link me-3"><i class="bi bi-tiktok fs-4"></i></a>
+                    <a href="https://wa.me/971582032582" target="_blank" rel="noopener noreferrer" class="social-link"><i class="bi bi-whatsapp fs-4"></i></a>
                 </div>
             </div>
         </div>
