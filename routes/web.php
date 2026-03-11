@@ -9,6 +9,9 @@ use App\Http\Controllers\BlogController;
 use App\Http\Controllers\AboutController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PrivacyController;
+use App\Http\Controllers\TermsController;
+use App\Http\Controllers\ReturnPolicyController;
 
 // Language switch
 Route::get('/lang/{locale}', function ($locale) {
@@ -42,6 +45,11 @@ Route::post('/contact', [ContactController::class, 'send'])->name('contact.send'
 
 // Cart page
 Route::get('/cart', [ActivityController::class, 'cart'])->name('cart.index');
+
+// Legal pages
+Route::get('/privacy', [PrivacyController::class, 'index'])->name('privacy');
+Route::get('/terms', [TermsController::class, 'index'])->name('terms');
+Route::get('/return-policy', [ReturnPolicyController::class, 'index'])->name('return-policy');
 
 // API routes for AJAX
 Route::prefix('api')->group(function () {

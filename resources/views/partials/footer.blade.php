@@ -22,14 +22,17 @@
 <div class="footer-container bg-dark text-light py-5">
     <div class="container">
         <div class="row">
-            <div class="col-md-4 mb-4">
+            {{-- Column 1: Logo and Tagline --}}
+            <div class="col-md-3 mb-4">
                 <div class="d-flex align-items-center mb-3">
                     <img src="{{ asset('images/kendea-logo-footer.png') }}" alt="KENDEA Logo" width="160" height="160">
                 </div>
                 <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}
                 </p>
             </div>
-            <div class="col-md-4 mb-4">
+
+            {{-- Column 2: Quick Links --}}
+            <div class="col-md-3 mb-4">
                 <h5>{{ __('Liens Rapides') }}</h5>
                 <ul class="list-unstyled">
                     <li><a href="{{ route('home') }}" class="footer-link">{{ __('Accueil') }}</a></li>
@@ -38,7 +41,19 @@
                     <li><a href="{{ route('contact') }}" class="footer-link">{{ __('Contact') }}</a></li>
                 </ul>
             </div>
-            <div class="col-md-4 mb-4">
+
+            {{-- Column 3: Legal Information --}}
+            <div class="col-md-3 mb-4">
+                <h5>{{ app()->getLocale() === 'en' ? 'Legal Information' : 'Informations Légales' }}</h5>
+                <ul class="list-unstyled">
+                    <li><a href="{{ route('privacy') }}" class="footer-link">{{ app()->getLocale() === 'en' ? 'Privacy Policy' : 'Politique de Confidentialité' }}</a></li>
+                    <li><a href="{{ route('terms') }}" class="footer-link">{{ app()->getLocale() === 'en' ? 'Terms & Conditions' : 'Conditions Générales' }}</a></li>
+                    <li><a href="{{ route('return-policy') }}" class="footer-link">{{ app()->getLocale() === 'en' ? 'Return Policy' : 'Politique de Retour' }}</a></li>
+                </ul>
+            </div>
+
+            {{-- Column 4: Contact --}}
+            <div class="col-md-3 mb-4">
                 <h5>{{ __('Contact') }}</h5>
                 <p><i class="bi bi-whatsapp"></i> {{ __('WhatsApp') }}: +971 582032582</p>
                 <p><i class="bi bi-envelope"></i> {{ __('Email') }}: contact@kendeatravel.com</p>
