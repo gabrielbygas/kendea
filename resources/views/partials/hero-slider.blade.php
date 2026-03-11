@@ -43,10 +43,6 @@
                         </div>
                         
                         <div class="slide-cta-wrapper">
-                            <div class="price-badge">
-                                <p class="price-label">{{ __('À partir de') }}</p>
-                                <p class="price-value">{{ number_format($activity->prix, 0) }} AED</p>
-                            </div>
                             <a href="{{ route('activity.show', $activity->slug) }}" class="cta-button">
                                 {{ __('Réserver') }} →
                             </a>
@@ -248,36 +244,13 @@
         gap: 1.5rem;
     }
 
-    .price-badge {
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, rgba(255, 106, 0, 0.25) 0%, rgba(229, 95, 0, 0.2) 100%);
-        backdrop-filter: blur(8px);
-        border: 1px solid rgba(255, 106, 0, 0.4);
-        border-radius: 0.5rem;
-    }
-
-    .price-label {
-        font-size: 0.75rem;
-        color: rgba(255, 255, 255, 0.85);
-        margin: 0 0 0.25rem 0;
-    }
-
-    .price-value {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.875rem;
-        font-weight: 700;
-        color: #FF8533;
-        margin: 0;
-        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    }
-
     .cta-button {
         display: inline-block;
-        padding: 0.75rem 2rem;
+        padding: 0.875rem 2.5rem;
         background: linear-gradient(135deg, #FF6A00 0%, #E55F00 100%);
         color: #FFFFFF;
         font-weight: 600;
-        font-size: 1rem;
+        font-size: 1.125rem;
         border: none;
         border-radius: 0.5rem;
         cursor: pointer;
@@ -429,7 +402,7 @@
 
         .cta-button {
             width: 100%;
-            padding: 0.875rem 1.5rem;
+            padding: 1rem 1.5rem;
         }
 
         .slider-nav-arrow {
@@ -457,10 +430,6 @@
     @media (max-width: 480px) {
         .slide-title {
             font-size: 1.35rem;
-        }
-
-        .price-value {
-            font-size: 1.5rem;
         }
         
         .slide-description {
