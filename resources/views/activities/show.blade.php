@@ -132,7 +132,7 @@
                                 </div>
 
                                 <div class="d-grid gap-3">
-                                    <button class="btn btn-primary btn-lg add-to-cart-detail" data-activity-id="{{ $activity->id }}" data-activity-prix="{{ $activity->prix }}">
+                                    <button class="btn btn-primary btn-lg btn-add-to-cart" data-activity-id="{{ $activity->id }}">
                                         <i class="bi bi-cart-plus me-2"></i>{{ __('Ajouter au Panier') }}
                                     </button>
                                     
@@ -286,69 +286,7 @@
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Add to cart functionality
-    const addToCartBtn = document.querySelector('.add-to-cart-detail');
-    
-    if (addToCartBtn) {
-        addToCartBtn.addEventListener('click', function() {
-            const activityId = parseInt(this.dataset.activityId);
-            const activityPrix = parseFloat(this.dataset.activityPrix);
-            
-            // Get cart from localStorage
-            let cart = JSON.parse(localStorage.getItem('kendea_cart') || '[]');
-            
-            // Check if already in cart
-            const existingItem = cart.find(item => item.id === activityId);
-            
-            if (existingItem) {
-                // Already in cart - show message
-                this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Already in Cart' : 'Déjà dans le Panier');
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-success');
-            } else {
-                // Add to cart
-                cart.push({
-                    id: activityId,
-                    prix: activityPrix,
-                    quantity: 1
-                });
-                
-                localStorage.setItem('kendea_cart', JSON.stringify(cart));
-                
-                // Update button
-                this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Added to Cart' : 'Ajouté au Panier');
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-success');
-                
-                // Update cart count if function exists
-                if (typeof loadCartFromStorage === 'function') {
-                    loadCartFromStorage();
-                }
-                
-                // Show success notification
-                setTimeout(() => {
-                    const msg = window.appLocale === 'en' ? 'Activity added to cart!' : 'Activité ajoutée au panier !';
-                    if (typeof showToast === 'function') {
-                        showToast(msg, 'success');
-                    } else {
-                        alert(msg);
-                    }
-                }, 100);
-            }
-        });
-        
-        // Check if already in cart on page load
-        const activityId = parseInt(addToCartBtn.dataset.activityId);
-        const cart = JSON.parse(localStorage.getItem('kendea_cart') || '[]');
-        const existingItem = cart.find(item => item.id === activityId);
-        
-        if (existingItem) {
-            addToCartBtn.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Already in Cart' : 'Déjà dans le Panier');
-            addToCartBtn.classList.remove('btn-primary');
-            addToCartBtn.classList.add('btn-success');
-        }
-    }
-});
+// Modified by Claude - Activity detail page uses session-based cart via session-cart.js
+// The btn-add-to-cart class is handled by the global event listener in session-cart.js
 </script>
 @endsection
