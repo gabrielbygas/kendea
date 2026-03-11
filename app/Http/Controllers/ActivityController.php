@@ -137,7 +137,12 @@ class ActivityController extends Controller
     public function showPage($slug)
     {
         $activity = Activity::with('category')->where('slug', $slug)->firstOrFail();
-        return view('activities.show', compact('activity'));
+        
+        // Check if activity is already in cart
+        $cart = session('cart', []);
+        $isInCart = isset($cart[$activity->id]) || isset($cart[(string)$activity->id]);
+        
+        return view('activities.show', compact('activity', 'isInCart'));
     }
 
     /**

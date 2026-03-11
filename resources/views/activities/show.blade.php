@@ -155,11 +155,19 @@
                                 </div>
 
                                 <div class="d-grid gap-3">
-                                    <button class="btn btn-primary btn-lg btn-add-to-cart" data-activity-id="{{ $activity->id }}" data-activity-price="{{ $activity->prix }}">
-                                        <i class="bi bi-cart-plus me-2"></i>{{ __('Ajouter au Panier') }}
-                                    </button>
+                                    @if($isInCart)
+                                        {{-- Activity is in cart - Show "View Cart" button --}}
+                                        <a href="{{ route('cart.index') }}" class="btn btn-success btn-lg" style="color: white !important;">
+                                            <i class="bi bi-cart-check me-2"></i>{{ app()->getLocale() === 'en' ? 'View My Cart' : 'Voir mon Panier' }}
+                                        </a>
+                                    @else
+                                        {{-- Activity not in cart - Show "Add to Cart" button --}}
+                                        <button class="btn btn-outline-primary btn-lg btn-add-to-cart" data-activity-id="{{ $activity->id }}" data-activity-price="{{ $activity->prix }}">
+                                            <i class="bi bi-cart-plus me-2"></i>{{ app()->getLocale() === 'en' ? 'Add to Cart' : 'Ajouter au Panier' }}
+                                        </button>
+                                    @endif
                                     
-                                    <a href="{{ route('cart.index') }}" class="btn btn-outline-primary btn-lg">
+                                    <a href="{{ route('cart.index') }}" class="btn btn-primary btn-lg">
                                         <i class="bi bi-cart-check me-2"></i>{{ __('Voir le Panier') }}
                                     </a>
                                 </div>
@@ -311,6 +319,9 @@
 <script>
 // Modified by Claude - Activity detail page with guest quantity management
 document.addEventListener('DOMContentLoaded', function() {
+    // Set locale early for translations
+    window.appLocale = '{{ app()->getLocale() }}';
+    
     const activityPrice = parseFloat('{{ $activity->prix }}');
     const guestQuantityInput = document.getElementById('guest-quantity');
     const decreaseBtn = document.getElementById('decrease-guest');
@@ -396,12 +407,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 
-                // Show success message
-                this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Added to Cart!' : 'Ajouté au Panier !');
-                this.classList.remove('btn-primary');
-                this.classList.add('btn-success');
+                // Immediately change button to green "Voir mon Panier" (NO delay!)
+                const buttonElement = this;
+                buttonElement.innerHTML = '<i class="bi bi-cart-check me-2"></i>' + (window.appLocale === 'en' ? 'View My Cart' : 'Voir mon Panier');
+                buttonElement.classList.remove('btn-outline-primary');
+                buttonElement.classList.add('btn-success');
+                buttonElement.style.color = 'white !important';
                 
-                // Show alert
+                // Convert button to link behavior
+                buttonElement.onclick = function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = '{{ route("cart.index") }}';
+                };
+                
+                // Show success alert
                 const alertDiv = document.createElement('div');
                 alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
                 alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
@@ -416,13 +436,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     alertDiv.classList.remove('show');
                     setTimeout(() => alertDiv.remove(), 150);
                 }, 3000);
-                
-                // Reset button after 2 seconds
-                setTimeout(() => {
-                    this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Already in Cart' : 'Déjà dans le Panier');
-                    this.classList.add('btn-secondary');
-                    this.style.backgroundColor = '#6c757d';
-                }, 2000);
             } else {
                 throw new Error(data.message || 'Failed to add to cart');
             }
