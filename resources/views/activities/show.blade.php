@@ -127,12 +127,35 @@
                         <div class="card shadow-lg border-0">
                             <div class="card-body p-4">
                                 <div class="text-center mb-4">
-                                    <h3 class="h2 text-primary fw-bold mb-0">{{ number_format($activity->prix, 2) }} AED</h3>
-                                    <p class="text-muted mb-0">{{ __('par personne') }}</p>
+                                    <h3 class="h2 text-primary fw-bold mb-0" id="activity-price-display">{{ number_format($activity->prix, 2) }} AED</h3>
+                                    <p class="text-muted mb-0">{{ app()->getLocale() === 'en' ? 'per person' : 'par personne' }}</p>
+                                </div>
+
+                                <!-- Number of Guests -->
+                                <div class="mb-4">
+                                    <label for="guest-quantity" class="form-label fw-semibold">
+                                        {{ app()->getLocale() === 'en' ? 'Number of Guests' : 'Nombre d\'Invités' }} <span class="text-danger">*</span>
+                                    </label>
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary" type="button" id="decrease-guest">
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <input type="number" class="form-control text-center" id="guest-quantity" value="1" min="1" max="50" required>
+                                        <button class="btn btn-outline-secondary" type="button" id="increase-guest">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                    <small class="text-muted">{{ app()->getLocale() === 'en' ? 'Minimum: 1, Maximum: 50' : 'Minimum : 1, Maximum : 50' }}</small>
+                                </div>
+
+                                <!-- Total Price Display -->
+                                <div class="text-center mb-3 p-3 bg-light rounded">
+                                    <p class="mb-1 text-muted small">{{ app()->getLocale() === 'en' ? 'Total Price' : 'Prix Total' }}</p>
+                                    <h4 class="mb-0 text-primary fw-bold" id="total-price-display">{{ number_format($activity->prix, 2) }} AED</h4>
                                 </div>
 
                                 <div class="d-grid gap-3">
-                                    <button class="btn btn-primary btn-lg btn-add-to-cart" data-activity-id="{{ $activity->id }}">
+                                    <button class="btn btn-primary btn-lg btn-add-to-cart" data-activity-id="{{ $activity->id }}" data-activity-price="{{ $activity->prix }}">
                                         <i class="bi bi-cart-plus me-2"></i>{{ __('Ajouter au Panier') }}
                                     </button>
                                     
@@ -286,7 +309,148 @@
 </style>
 
 <script>
-// Modified by Claude - Activity detail page uses session-based cart via session-cart.js
-// The btn-add-to-cart class is handled by the global event listener in session-cart.js
+// Modified by Claude - Activity detail page with guest quantity management
+document.addEventListener('DOMContentLoaded', function() {
+    const activityPrice = parseFloat('{{ $activity->prix }}');
+    const guestQuantityInput = document.getElementById('guest-quantity');
+    const decreaseBtn = document.getElementById('decrease-guest');
+    const increaseBtn = document.getElementById('increase-guest');
+    const totalPriceDisplay = document.getElementById('total-price-display');
+    const addToCartBtn = document.querySelector('.btn-add-to-cart');
+    
+    // Update total price display
+    function updateTotalPrice() {
+        const quantity = parseInt(guestQuantityInput.value) || 1;
+        const totalPrice = activityPrice * quantity;
+        totalPriceDisplay.textContent = totalPrice.toFixed(2) + ' AED';
+    }
+    
+    // Decrease quantity
+    decreaseBtn.addEventListener('click', function() {
+        let quantity = parseInt(guestQuantityInput.value) || 1;
+        if (quantity > 1) {
+            guestQuantityInput.value = quantity - 1;
+            updateTotalPrice();
+        }
+    });
+    
+    // Increase quantity
+    increaseBtn.addEventListener('click', function() {
+        let quantity = parseInt(guestQuantityInput.value) || 1;
+        const max = parseInt(guestQuantityInput.max) || 50;
+        if (quantity < max) {
+            guestQuantityInput.value = quantity + 1;
+            updateTotalPrice();
+        }
+    });
+    
+    // Manual input change
+    guestQuantityInput.addEventListener('input', function() {
+        let quantity = parseInt(this.value) || 1;
+        const min = parseInt(this.min) || 1;
+        const max = parseInt(this.max) || 50;
+        
+        if (quantity < min) this.value = min;
+        if (quantity > max) this.value = max;
+        
+        updateTotalPrice();
+    });
+    
+    // Modified add to cart to include quantity
+    addToCartBtn.addEventListener('click', async function(e) {
+        e.preventDefault();
+        e.stopPropagation(); // Prevent session-cart.js global handler from firing
+        
+        const activityId = parseInt(this.dataset.activityId);
+        const quantity = parseInt(guestQuantityInput.value) || 1;
+        
+        // Disable button during request
+        this.disabled = true;
+        const originalHtml = this.innerHTML;
+        this.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + (window.appLocale === 'en' ? 'Adding...' : 'Ajout...');
+        
+        try {
+            const response = await fetch('/api/cart/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                credentials: 'same-origin',
+                body: JSON.stringify({ 
+                    activity_id: activityId,
+                    quantity: quantity
+                })
+            });
+            
+            const data = await response.json();
+            
+            if (data.success) {
+                // Update cart count in header
+                document.querySelectorAll('#panier-count, #panier-count-inline').forEach(el => {
+                    if (el.firstChild && el.firstChild.nodeType === Node.TEXT_NODE) {
+                        el.firstChild.textContent = data.count;
+                    }
+                    if (data.count > 0) {
+                        el.classList.remove('d-none');
+                    }
+                });
+                
+                // Show success message
+                this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Added to Cart!' : 'Ajouté au Panier !');
+                this.classList.remove('btn-primary');
+                this.classList.add('btn-success');
+                
+                // Show alert
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+                alertDiv.innerHTML = `
+                    <i class="bi bi-check-circle"></i>
+                    ${window.appLocale === 'en' ? 'Activity successfully added to cart!' : 'Activité ajoutée au panier avec succès !'}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                document.body.appendChild(alertDiv);
+                
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                    setTimeout(() => alertDiv.remove(), 150);
+                }, 3000);
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    this.innerHTML = '<i class="bi bi-check-circle me-2"></i>' + (window.appLocale === 'en' ? 'Already in Cart' : 'Déjà dans le Panier');
+                    this.classList.add('btn-secondary');
+                    this.style.backgroundColor = '#6c757d';
+                }, 2000);
+            } else {
+                throw new Error(data.message || 'Failed to add to cart');
+            }
+        } catch (error) {
+            console.error('Error adding to cart:', error);
+            this.innerHTML = originalHtml;
+            this.disabled = false;
+            
+            // Show error alert
+            const alertDiv = document.createElement('div');
+            alertDiv.className = 'alert alert-danger alert-dismissible fade show position-fixed';
+            alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+            alertDiv.innerHTML = `
+                <i class="bi bi-exclamation-circle"></i>
+                ${window.appLocale === 'en' ? 'Error adding to cart' : 'Erreur lors de l\'ajout au panier'}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            document.body.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 3000);
+        }
+    });
+    
+    // Set initial locale for translations
+    window.appLocale = '{{ app()->getLocale() }}';
+});
 </script>
 @endsection

@@ -202,8 +202,8 @@ class ActivityController extends Controller
      */
     public function addToCart(Request $request)
     {
-        $activityId = $request->input('activity_id');
-        $quantity = $request->input('quantity', 1); // Default 1 guest
+        $activityId = (int)$request->input('activity_id');
+        $quantity = max(1, (int)$request->input('quantity', 1)); // Default 1 guest, minimum 1
         
         // Verify activity exists
         $activity = Activity::find($activityId);
@@ -211,19 +211,19 @@ class ActivityController extends Controller
             return response()->json(['success' => false, 'message' => 'Activity not found'], 404);
         }
         
-        // Get current cart (now stores ['id' => ['quantity' => X]])
+        // Get current cart (stores ['id' => ['quantity' => X]])
         $cart = session('cart', []);
         
-        // Add or update quantity
-        if (!isset($cart[$activityId])) {
-            $cart[$activityId] = ['quantity' => max(1, (int)$quantity)];
-        }
+        // Add or update quantity - always replace with new quantity from request
+        // Use string key for consistency with array_keys() in cart() method
+        $cart[(string)$activityId] = ['quantity' => $quantity];
         
         session(['cart' => $cart]);
         
         return response()->json([
             'success' => true,
-            'count' => count($cart)
+            'count' => count($cart),
+            'message' => 'Activity added to cart'
         ]);
     }
     
