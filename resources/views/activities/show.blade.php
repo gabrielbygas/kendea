@@ -167,9 +167,9 @@
                                         </button>
                                     @endif
                                     
-                                    <a href="{{ route('cart.index') }}" class="btn btn-primary btn-lg">
-                                        <i class="bi bi-cart-check me-2"></i>{{ __('Voir le Panier') }}
-                                    </a>
+                                    <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#singleActivityOrderModal">
+                                        <i class="bi bi-credit-card me-2"></i>{{ app()->getLocale() === 'en' ? 'Pay Now' : 'Payer Maintenant' }}
+                                    </button>
                                 </div>
 
                                 <!-- Quick Info -->
@@ -462,8 +462,172 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Single Activity Order Form Handler
+    const singleOrderForm = document.getElementById('single-activity-order-form');
+    if (singleOrderForm) {
+        singleOrderForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Get quantity from guest input
+            const quantity = parseInt(guestQuantityInput.value) || 1;
+            const activityId = '{{ $activity->id }}';
+            
+            // Set quantities in hidden input
+            const quantitiesInput = document.getElementById('single-activities-quantities-input');
+            const quantities = {};
+            quantities[activityId] = quantity;
+            quantitiesInput.value = JSON.stringify(quantities);
+            
+            // Disable submit button and show loading
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnHtml = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            const loadingText = window.appLocale === 'en' ? 'Processing...' : 'Traitement...';
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>' + loadingText;
+            
+            try {
+                const formData = new FormData(this);
+                const data = Object.fromEntries(formData);
+                data.activities = JSON.parse(data.activities);
+                data.activities_quantities = JSON.parse(data.activities_quantities);
+                
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // Remove this activity from cart if it exists
+                    try {
+                        await fetch('{{ route("api.cart.remove") }}', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                            credentials: 'same-origin',
+                            body: JSON.stringify({ activity_id: parseInt(activityId) })
+                        });
+                    } catch (error) {
+                        console.log('Activity was not in cart or error removing:', error);
+                    }
+                    
+                    // Close modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('singleActivityOrderModal'));
+                    modal.hide();
+                    
+                    // Open WhatsApp
+                    const whatsappLink = document.createElement('a');
+                    whatsappLink.href = result.whatsapp_url;
+                    whatsappLink.target = '_blank';
+                    whatsappLink.rel = 'noopener noreferrer';
+                    document.body.appendChild(whatsappLink);
+                    whatsappLink.click();
+                    document.body.removeChild(whatsappLink);
+                    
+                    // Show success message
+                    const successMsg = window.appLocale === 'en' 
+                        ? 'Thank you for your order! We will contact you shortly via WhatsApp.'
+                        : 'Merci pour votre commande ! Nous vous contacterons bientôt via WhatsApp.';
+                    
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                    alertDiv.style.cssText = 'top: 80px; right: 20px; z-index: 9999; min-width: 300px;';
+                    alertDiv.innerHTML = `
+                        <i class="bi bi-check-circle"></i>
+                        ${successMsg}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.body.appendChild(alertDiv);
+                    
+                    setTimeout(() => {
+                        alertDiv.classList.remove('show');
+                        setTimeout(() => alertDiv.remove(), 150);
+                    }, 5000);
+                    
+                    // Reset form
+                    this.reset();
+                } else {
+                    throw new Error(result.message || 'Order failed');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalBtnHtml;
+                
+                const errorMsg = window.appLocale === 'en' 
+                    ? 'Error creating order'
+                    : 'Erreur lors de la création de la commande';
+                alert(errorMsg);
+            }
+        });
+    }
+    
     // Set initial locale for translations
     window.appLocale = '{{ app()->getLocale() }}';
 });
 </script>
+
+{{-- Single Activity Order Modal --}}
+<div class="modal fade" id="singleActivityOrderModal" tabindex="-1" aria-labelledby="singleActivityOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="max-height: 90vh; display: flex; flex-direction: column;">
+            <div class="modal-header" style="flex-shrink: 0;">
+                <h5 class="modal-title fs-6 fs-md-5" id="singleActivityOrderModalLabel">
+                    <i class="bi bi-clipboard-check"></i> {{ app()->getLocale() === 'en' ? 'Complete Your Order' : 'Finaliser votre Commande' }}
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{{ app()->getLocale() === 'en' ? 'Close' : 'Fermer' }}"></button>
+            </div>
+            <form id="single-activity-order-form" action="{{ route('api.commandes.store') }}" method="POST" style="display: flex; flex-direction: column; flex: 1; min-height: 0;">
+                @csrf
+                <div class="modal-body" style="overflow-y: auto; flex: 1;">
+                    <div class="row g-3">
+                        <div class="col-12 col-md-6">
+                            <label for="single_prenom" class="form-label small">{{ app()->getLocale() === 'en' ? 'First Name' : 'Prénom' }} *</label>
+                            <input type="text" class="form-control form-control-sm" id="single_prenom" name="prenom" required>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="single_nom" class="form-label small">{{ app()->getLocale() === 'en' ? 'Last Name' : 'Nom' }} *</label>
+                            <input type="text" class="form-control form-control-sm" id="single_nom" name="nom" required>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="single_email" class="form-label small">{{ app()->getLocale() === 'en' ? 'Email' : 'Email' }} *</label>
+                            <input type="email" class="form-control form-control-sm" id="single_email" name="email" required>
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <label for="single_telephone" class="form-label small">{{ app()->getLocale() === 'en' ? 'WhatsApp Phone' : 'Téléphone WhatsApp' }} *</label>
+                            <input type="tel" class="form-control form-control-sm" id="single_telephone" name="telephone" required 
+                                   placeholder="+243 XX XXX XXXX">
+                        </div>
+                        <div class="col-12">
+                            <label for="single_datetime" class="form-label small">{{ app()->getLocale() === 'en' ? 'Preferred Date & Time' : 'Date et Heure souhaitée' }} *</label>
+                            <input type="datetime-local" class="form-control form-control-sm" id="single_datetime" name="datetime" required>
+                        </div>
+                        <div class="col-12">
+                            <label for="single_message" class="form-label small">{{ app()->getLocale() === 'en' ? 'Special Requests' : 'Message ou demandes spéciales' }}</label>
+                            <textarea class="form-control form-control-sm" id="single_message" name="message" rows="3"></textarea>
+                        </div>
+                        <input type="hidden" name="activities" id="single-activities-input" value='[{{ $activity->id }}]'>
+                        <input type="hidden" name="activities_quantities" id="single-activities-quantities-input" value="">
+                    </div>
+                    <div class="alert alert-info mt-3 small mb-0">
+                        <i class="bi bi-info-circle"></i> {{ app()->getLocale() === 'en' ? 'Your order will be confirmed via WhatsApp.' : 'Votre commande sera confirmée via WhatsApp.' }}
+                    </div>
+                </div>
+                <div class="modal-footer" style="flex-shrink: 0;">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">{{ app()->getLocale() === 'en' ? 'Cancel' : 'Annuler' }}</button>
+                    <button type="submit" class="btn btn-success btn-sm">
+                        <i class="bi bi-whatsapp"></i> {{ app()->getLocale() === 'en' ? 'Confirm via WhatsApp' : 'Confirmer via WhatsApp' }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 @endsection

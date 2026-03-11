@@ -301,7 +301,7 @@ function submitOrder() {
             message += `\nNuméro de commande: #${response.commande.id}`;
             
             // Redirect to WhatsApp
-            const whatsappNumber = '+971582032582'; // TODO: Make configurable
+            const whatsappNumber = '971582032582'; // TODO: Make configurable
             window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
             
             // Clear cart
