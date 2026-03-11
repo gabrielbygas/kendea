@@ -27,7 +27,7 @@
                 <div class="d-flex align-items-center mb-3">
                     <img src="{{ asset('images/kendea-logo-footer.png') }}" alt="KENDEA Logo" width="160" height="160">
                 </div>
-                <p>{{ __('Votre partenaire de confiance pour découvrir des expériences inoubliables. Service de qualité garanti.') }}
+                <p>{{ app()->getLocale() === 'en' ? 'Born in Africa, built for the world.' : 'Né en Afrique, fait pour le monde.' }}
                 </p>
             </div>
 
